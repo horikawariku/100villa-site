@@ -27,25 +27,27 @@ export function RegionTiles() {
 
     return (
         <section id="area" className="py-14 md:py-20">
-            <div className="container mx-auto px-5 md:px-7">
-                <div className="text-center mb-10">
+            <div className="container mx-auto px-5 md:px-7 mb-8 md:mb-10">
+                <div className="text-center">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">Area</p>
                     <h2 className="font-mincho text-2xl md:text-3xl font-bold tracking-wide">エリアから探す</h2>
                 </div>
-                {/* 写真背景タイル */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 max-w-5xl mx-auto">
+            </div>
+            {/* 横スクロール写真タイル */}
+            <div className="overflow-x-auto no-scrollbar">
+                <div className="inline-flex gap-2 md:gap-3 px-5 md:px-7">
                     {REGIONS.map((r) => (
                         <Link
                             key={r}
                             href={`/area/${r}`}
-                            className="group relative aspect-[4/3] md:aspect-[3/2] overflow-hidden bg-ink"
+                            className="group relative w-[44vw] sm:w-[260px] md:w-[300px] aspect-[4/3] shrink-0 overflow-hidden bg-ink"
                         >
                             <Image
                                 src={REGION_IMAGE[r]}
                                 alt={REGION_LABEL[r]}
                                 fill
                                 className="object-cover opacity-75 group-hover:opacity-90 group-hover:scale-[1.05] transition-all duration-700"
-                                sizes="(max-width: 768px) 50vw, 33vw"
+                                sizes="(max-width: 640px) 44vw, 300px"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
                             <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-5 text-bg">
@@ -63,6 +65,7 @@ export function RegionTiles() {
                             </div>
                         </Link>
                     ))}
+                    <div className="w-3 shrink-0" />
                 </div>
             </div>
         </section>

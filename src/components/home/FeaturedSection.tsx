@@ -9,9 +9,9 @@ export function FeaturedSection() {
             <div className="container mx-auto px-5 md:px-7">
                 <div className="text-center mb-10">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
-                        Editor&apos;s Pick
+                        Popular Stays
                     </p>
-                    <h2 className="font-mincho text-2xl md:text-3xl font-bold tracking-wide">編集部のおすすめ</h2>
+                    <h2 className="font-mincho text-2xl md:text-3xl font-bold tracking-wide">人気の宿</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
                     {featured.map((p) => (
