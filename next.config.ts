@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "a0.muscache.com" },
       { protocol: "https", hostname: "p16-sign-va.tiktokcdn.com" },
       { protocol: "https", hostname: "hotel-mysa.com" },
+      { protocol: "https", hostname: "hotel-mysa-fuji.com" },
+      { protocol: "https", hostname: "j1wellness.com" },
+      { protocol: "https", hostname: "villa-sanctuary.com" },
+      { protocol: "https", hostname: "villa-saison-fuji.com" },
+      { protocol: "https", hostname: "storage.googleapis.com" },
+      { protocol: "https", hostname: "img-ikyu.com" },
+      { protocol: "https", hostname: "www.img-ikyu.com" },
     ],
   },
 };
