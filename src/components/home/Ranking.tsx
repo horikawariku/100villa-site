@@ -6,15 +6,35 @@ import { REGION_LABEL, FEATURE_LABEL } from "@/data/types";
 
 const RANKING_LIMIT = 10;
 
+/** 特定slugを特定順位 (1-indexed) に固定する */
+const PINS: Record<string, number> = {
+    "hiire-olive": 3,
+};
+
 /**
- * 編集部ランキング. 巨大番号 + 写真 + 宿名のエディトリアルレイアウト.
+ * 保存数ランキング. 巨大番号 + 写真 + 宿名のエディトリアルレイアウト.
  * featured を優先しつつ、足りなければ新着で埋めて TOP10 を作る.
+ * PINS 指定がある宿は強制的にその順位に固定。
  */
 export function Ranking() {
     const all = getAllProperties();
     const featured = all.filter((p) => p.featured);
     const rest = all.filter((p) => !p.featured);
-    const ranked = [...featured, ...rest].slice(0, RANKING_LIMIT);
+    let ranked = [...featured, ...rest].slice(0, RANKING_LIMIT);
+
+    // PINS 適用: 指定slugを指定順位に挿入
+    for (const [slug, pos] of Object.entries(PINS)) {
+        const target = all.find((p) => p.id === slug);
+        if (!target) continue;
+        // 既に正しい位置なら何もしない
+        if (ranked[pos - 1]?.id === slug) continue;
+        // 既存位置から削除
+        ranked = ranked.filter((p) => p.id !== slug);
+        // 指定位置に挿入 (1-indexed → 0-indexed)
+        ranked.splice(Math.min(pos - 1, ranked.length), 0, target);
+        ranked = ranked.slice(0, RANKING_LIMIT);
+    }
+
     if (ranked.length === 0) return null;
 
     return (
@@ -23,13 +43,13 @@ export function Ranking() {
                 {/* ヘッダ */}
                 <div className="text-center mb-10 md:mb-14">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-display mb-2">
-                        Editor&apos;s Ranking
+                        Most Saved
                     </p>
                     <h2 className="font-mincho text-2xl md:text-4xl font-bold tracking-wide">
-                        2026 春の編集部ランキング
+                        保存数ランキング
                     </h2>
                     <p className="text-[11px] md:text-xs tracking-widest text-bg/55 mt-3">
-                        フォロワー15万人が選ぶ、いま予約したい宿
+                        ユーザーが「気になる」したヴィラ TOP10
                     </p>
                 </div>
 

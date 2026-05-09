@@ -20,8 +20,8 @@ interface Props {
 export function OfficialSiteCTA({ property, placement, variant = "primary", fullWidth = false }: Props) {
     const url = bookingUrl({
         propertyId: property.redirectId,
-        source: "media",
-        cta: `media-${placement}`,
+        source: "100villa",
+        cta: `100villa-${placement}`,
         campaign: property.id,
     });
     const base = fullWidth ? "w-full" : "inline-flex";

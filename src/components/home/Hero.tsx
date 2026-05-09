@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
@@ -12,14 +12,16 @@ export function Hero() {
     const [loaded, setLoaded] = useState(false);
     const imgs = siteMeta.heroImages;
 
-    useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+    useEffect(() => {
+        setTimeout(() => setLoaded(true), 100);
+    }, []);
     useEffect(() => {
         const t = setInterval(() => setImgIdx((i) => (i + 1) % imgs.length), 5000);
         return () => clearInterval(t);
     }, [imgs.length]);
 
     return (
-        <section className="relative h-[78vh] md:h-[82vh] min-h-[560px] flex flex-col overflow-hidden bg-ink">
+        <section className="relative h-[78vh] md:h-[82vh] min-h-[600px] flex flex-col overflow-hidden bg-ink">
             {/* 背景写真クロスフェード */}
             <AnimatePresence mode="sync">
                 <motion.div
@@ -42,16 +44,16 @@ export function Hero() {
             </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70" />
 
-            {/* 上部: ロゴ・キャッチ (押し上げ) */}
+            {/* 上部: 100 VILLA + tagline (押し上げ) */}
             <div className="relative z-10 container mx-auto px-5 md:px-7 pt-20 md:pt-24 text-bg">
                 <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-bg/65 mb-2.5 font-display">
                     Curated Vacation Rentals
                 </p>
                 <div className="flex items-end gap-3 md:gap-4">
-                    <span className="font-display text-[20vw] md:text-[10rem] lg:text-[12rem] font-semibold leading-none tracking-tighter">
+                    <span className="font-display text-[18vw] md:text-[9rem] lg:text-[11rem] font-semibold leading-none tracking-tighter">
                         100
                     </span>
-                    <div className="pb-2 md:pb-5">
+                    <div className="pb-1.5 md:pb-4">
                         <p className="font-display text-2xl md:text-5xl tracking-[0.15em] font-medium leading-none">
                             VILLA
                         </p>
@@ -60,14 +62,18 @@ export function Hero() {
                         </p>
                     </div>
                 </div>
-                <p className="font-mincho text-base md:text-2xl font-bold tracking-wider mt-4 md:mt-5 max-w-2xl leading-relaxed">
+                <p className="font-mincho text-base md:text-2xl font-bold tracking-wider mt-3 md:mt-4 max-w-2xl leading-relaxed">
                     {siteMeta.tagline}
                 </p>
             </div>
 
-            {/* 中央: 検索バー */}
-            <div className="relative z-10 container mx-auto px-5 md:px-7 mt-auto mb-10 md:mb-14">
-                <SearchBar />
+            {/* 中央: 検索バー (flex-grow で空きスペース全部使って中央配置) */}
+            <div className="relative z-10 container mx-auto px-5 md:px-7 flex-grow flex items-center">
+                <div className="w-full">
+                    <Suspense fallback={<div className="h-14" />}>
+                        <SearchBar />
+                    </Suspense>
+                </div>
             </div>
 
             {/* 写真インジケータドット (右下) */}
@@ -77,7 +83,9 @@ export function Hero() {
                         key={i}
                         onClick={() => setImgIdx(i)}
                         aria-label={`画像 ${i + 1}`}
-                        className={`h-1 rounded-full transition-all duration-500 ${i === imgIdx ? "bg-bg/85 w-5" : "bg-bg/30 w-1.5"}`}
+                        className={`h-1 rounded-full transition-all duration-500 ${
+                            i === imgIdx ? "bg-bg/85 w-5" : "bg-bg/30 w-1.5"
+                        }`}
                     />
                 ))}
             </div>
@@ -87,7 +95,7 @@ export function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: loaded ? 1 : 0 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-bg/65 pointer-events-none"
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-bg/65 pointer-events-none"
             >
                 <span className="text-[9px] tracking-[0.4em] uppercase mb-1 font-display">Discover</span>
                 <motion.div

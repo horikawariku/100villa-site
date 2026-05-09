@@ -34,7 +34,7 @@ export const siteMeta = {
 export function bookingUrl(opts: { propertyId: string; source?: string; cta?: string; campaign?: string }) {
     const params = new URLSearchParams();
     params.set("p", opts.propertyId);
-    params.set("s", opts.source ?? "media");
+    params.set("s", opts.source ?? "100villa");
     if (opts.cta) params.set("cta", opts.cta);
     if (opts.campaign) params.set("c", opts.campaign);
     return `${siteMeta.trackerOrigin}/api/redirect?${params.toString()}`;
