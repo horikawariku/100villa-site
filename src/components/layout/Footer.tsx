@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Instagram } from "lucide-react";
 import { siteMeta } from "@/data/siteMeta";
 import { REGION_LABEL, FEATURE_LABEL } from "@/data/types";
+import { ViewerCounter } from "@/components/home/ViewerCounter";
 
 const REGIONS_FOR_FOOTER = ["hokkaido", "tohoku", "kanto", "chubu", "kansai", "chugoku", "shikoku", "kyushu", "okinawa"] as const;
 const FEATURES_FOR_FOOTER = ["sauna", "private", "pool", "ocean-view", "onsen", "bbq", "kominka", "anniversary"] as const;
@@ -94,9 +95,12 @@ export function Footer() {
                     <p className="text-[10px] tracking-widest text-bg/35">
                         © {new Date().getFullYear()} {siteMeta.name}. All rights reserved.
                     </p>
-                    <p className="text-[10px] tracking-widest text-bg/35">
-                        本サイトは民泊メディアです。予約は各宿の公式サイトでお願いします。
-                    </p>
+                    <div className="flex items-center gap-4">
+                        <ViewerCounter className="text-bg/45" />
+                        <p className="text-[10px] tracking-widest text-bg/35">
+                            本サイトは民泊メディアです。予約は各宿の公式サイトでお願いします。
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>

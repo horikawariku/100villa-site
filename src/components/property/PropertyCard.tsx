@@ -65,11 +65,11 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                         {REGION_LABEL[p.area.region]}
                     </div>
 
-                    {/* 上中央: 本日の閲覧数 (count > 0 のとき表示) */}
+                    {/* 右上: 本日の閲覧数 (count > 0 のとき、目アイコン+数字のみ) */}
                     {viewCount !== null && (
-                        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-2 py-0.5 bg-black/55 backdrop-blur-sm text-bg text-[9px] md:text-[10px] tracking-[0.1em] font-light">
-                            <Eye className="w-2.5 h-2.5" strokeWidth={1.4} />
-                            本日 {viewCount} 人が閲覧中
+                        <div className="absolute top-2.5 right-12 inline-flex items-center gap-1 text-bg text-[11px] md:text-[12px] font-light drop-shadow-md">
+                            <Eye className="w-3 h-3" strokeWidth={1.5} />
+                            {viewCount}
                         </div>
                     )}
 
