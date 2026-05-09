@@ -6,8 +6,8 @@ import type { Region } from "./types";
  * 物件のない地域は Unsplash の地域代表写真。
  */
 export const REGION_IMAGE: Record<Region, string> = {
-    // 北海道: 雪原 (Unsplash)
-    hokkaido: "https://images.unsplash.com/photo-1542556398-95fb5b9ed3a4?w=800&q=80",
+    // 北海道: 雪原 (Unsplash, HEAD 200確認済み)
+    hokkaido: "https://images.unsplash.com/photo-1551582045-6ec9c11d8697?w=800&q=80",
     // 東北: 桜・紅葉 (Unsplash)
     tohoku: "https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80",
     // 関東: mysa hakone 外観 (実物件)

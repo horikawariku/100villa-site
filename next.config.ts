@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "storage.googleapis.com" },
       { protocol: "https", hostname: "img-ikyu.com" },
       { protocol: "https", hostname: "www.img-ikyu.com" },
+      { protocol: "https", hostname: "prd-assets.chillnn.com" },
     ],
   },
 };

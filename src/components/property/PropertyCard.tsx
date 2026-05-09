@@ -48,19 +48,19 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
 
                     {/* オーバーレイ情報 (下) */}
                     <div className="absolute inset-x-0 bottom-0 p-3 md:p-3.5 text-bg">
-                        <h3 className="font-mincho text-[13px] md:text-sm font-bold tracking-wide leading-snug line-clamp-1 mb-1">
+                        <h3 className="font-sans text-[14px] md:text-[15px] font-bold tracking-tight leading-snug line-clamp-1 mb-1">
                             {p.name}
                         </h3>
-                        <div className="flex items-center justify-between gap-2 text-[10px] md:text-[11px]">
-                            <span className="flex items-center gap-1 text-bg/80 whitespace-nowrap">
+                        <div className="flex items-center justify-between gap-2 text-[11px] md:text-[12px] font-sans">
+                            <span className="flex items-center gap-1 text-bg/85 whitespace-nowrap">
                                 <Users className="w-3 h-3 shrink-0" />
-                                <span className="font-display">{p.capacity.min}–{p.capacity.max}</span>
-                                <span className="text-[9px] text-bg/60">名</span>
+                                <span className="font-semibold">{p.capacity.min}–{p.capacity.max}</span>
+                                <span className="text-[10px] text-bg/65">名</span>
                             </span>
-                            <span className="font-display whitespace-nowrap">
-                                <span className="text-bg/55">¥</span>
+                            <span className="whitespace-nowrap">
+                                <span className="text-bg/60">¥</span>
                                 <span className="font-bold">{p.pricePerPersonFrom.toLocaleString()}</span>
-                                <span className="text-bg/55 text-[9px] ml-0.5">〜/人</span>
+                                <span className="text-bg/60 text-[10px] ml-0.5">〜/人</span>
                             </span>
                         </div>
                     </div>
