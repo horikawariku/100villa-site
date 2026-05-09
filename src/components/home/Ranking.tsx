@@ -18,7 +18,7 @@ export function Ranking() {
     if (ranked.length === 0) return null;
 
     return (
-        <section className="py-14 md:py-20 bg-ink text-bg">
+        <section className="py-9 md:py-12 bg-ink text-bg">
             <div className="container mx-auto px-5 md:px-7">
                 {/* ヘッダ */}
                 <div className="text-center mb-10 md:mb-14">

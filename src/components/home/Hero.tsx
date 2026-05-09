@@ -19,7 +19,7 @@ export function Hero() {
     }, [imgs.length]);
 
     return (
-        <section className="relative min-h-[90vh] md:min-h-screen flex flex-col justify-center overflow-hidden bg-ink">
+        <section className="relative h-[78vh] md:h-[82vh] min-h-[560px] flex flex-col overflow-hidden bg-ink">
             {/* 背景写真クロスフェード */}
             <AnimatePresence mode="sync">
                 <motion.div
@@ -40,40 +40,38 @@ export function Hero() {
                     />
                 </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/45 to-black/75" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70" />
 
-            {/* コンテンツ */}
-            <div className="relative z-10 container mx-auto px-5 md:px-7 pt-28 md:pt-32 pb-12 text-bg">
-                <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-bg/65 mb-4 font-display">
+            {/* 上部: ロゴ・キャッチ (押し上げ) */}
+            <div className="relative z-10 container mx-auto px-5 md:px-7 pt-20 md:pt-24 text-bg">
+                <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-bg/65 mb-2.5 font-display">
                     Curated Vacation Rentals
                 </p>
-
-                {/* 巨大数字 100 */}
-                <div className="flex items-end gap-3 md:gap-5 mb-1 md:mb-2">
-                    <span className="font-display text-[28vw] md:text-[16rem] lg:text-[20rem] font-semibold leading-none tracking-tighter">
+                <div className="flex items-end gap-3 md:gap-4">
+                    <span className="font-display text-[20vw] md:text-[10rem] lg:text-[12rem] font-semibold leading-none tracking-tighter">
                         100
                     </span>
-                    <div className="pb-3 md:pb-8">
-                        <p className="font-display text-3xl md:text-6xl tracking-[0.15em] font-medium leading-none">
+                    <div className="pb-2 md:pb-5">
+                        <p className="font-display text-2xl md:text-5xl tracking-[0.15em] font-medium leading-none">
                             VILLA
                         </p>
-                        <p className="text-[10px] md:text-xs tracking-[0.3em] text-bg/60 mt-2 font-display uppercase">
+                        <p className="text-[10px] md:text-xs tracking-[0.3em] text-bg/60 mt-1.5 font-display uppercase">
                             JAPAN&apos;s Best Stays
                         </p>
                     </div>
                 </div>
-
-                {/* タグライン */}
-                <p className="font-mincho text-xl md:text-3xl font-bold tracking-wider mt-3 md:mt-4 mb-9 md:mb-12 max-w-2xl leading-relaxed">
+                <p className="font-mincho text-base md:text-2xl font-bold tracking-wider mt-4 md:mt-5 max-w-2xl leading-relaxed">
                     {siteMeta.tagline}
                 </p>
+            </div>
 
-                {/* 検索バー */}
+            {/* 中央: 検索バー */}
+            <div className="relative z-10 container mx-auto px-5 md:px-7 mt-auto mb-10 md:mb-14">
                 <SearchBar />
             </div>
 
             {/* 写真インジケータドット (右下) */}
-            <div className="absolute bottom-8 right-5 md:right-10 z-10 flex gap-1.5">
+            <div className="absolute bottom-3 right-5 md:right-10 z-10 flex gap-1.5">
                 {imgs.map((_, i) => (
                     <button
                         key={i}
@@ -89,9 +87,9 @@ export function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: loaded ? 1 : 0 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-bg/65 pointer-events-none"
+                className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-bg/65 pointer-events-none"
             >
-                <span className="text-[9px] tracking-[0.4em] uppercase mb-1.5 font-display">Discover</span>
+                <span className="text-[9px] tracking-[0.4em] uppercase mb-1 font-display">Discover</span>
                 <motion.div
                     animate={{ y: [0, 5, 0] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}

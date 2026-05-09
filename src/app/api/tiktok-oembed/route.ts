@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
  * TikTok oEmbed プロキシ。
  * vt.tiktok.com の短縮URLでも動くよう、TikTok公式 oEmbed に委譲。
  *
- * 戻り値: { thumbnail_url, author_name, title }
+ * 戻り値: { thumbnail_url, author_name, title, html, embed_url }
  * キャッシュ: 1日 (TikTok側でURL署名が回っても影響を最小化)
  */
 export async function GET(req: NextRequest) {
@@ -26,11 +26,25 @@ export async function GET(req: NextRequest) {
             );
         }
         const data = await res.json();
+
+        // html から canonical URL (cite=) と video_id を抽出 (短縮URLでも再生できるように)
+        let embedUrl: string | null = null;
+        let videoId: string | null = null;
+        if (typeof data.html === "string") {
+            const citeMatch = data.html.match(/cite="([^"]+)"/);
+            if (citeMatch) embedUrl = citeMatch[1];
+            const idMatch = data.html.match(/data-video-id="(\d+)"/);
+            if (idMatch) videoId = idMatch[1];
+        }
+
         return NextResponse.json(
             {
                 thumbnail_url: data.thumbnail_url ?? null,
                 author_name: data.author_name ?? null,
                 title: data.title ?? null,
+                html: data.html ?? null,
+                embed_url: embedUrl,
+                video_id: videoId,
             },
             {
                 headers: {

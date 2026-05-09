@@ -14,7 +14,7 @@ export function TikTokFeed() {
     if (list.length === 0) return null;
 
     return (
-        <section className="py-12 md:py-16">
+        <section className="py-8 md:py-12">
             <div className="container mx-auto px-5 md:px-7 mb-6 md:mb-8">
                 <div className="flex items-end justify-between gap-3">
                     <div>

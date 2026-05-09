@@ -17,18 +17,21 @@ interface OEmbedResult {
     thumbnail_url: string | null;
     author_name: string | null;
     title: string | null;
+    html: string | null;
+    embed_url: string | null;
+    video_id: string | null;
 }
 
 /**
  * TikTok 動画埋め込み.
- * デフォルトは TikTok 実物サムネを /api/tiktok-oembed 経由で取得して表示。
- * クリックで TikTok blockquote + embed.js を遅延ロードして実プレイヤー表示。
+ * - サムネ: oEmbed の thumbnail_url を使用 (TikTok実物)
+ * - 再生: oEmbed の html (cite + data-video-id) を埋め込んで embed.js を起動
+ *   → vt.tiktok.com 短縮URLでも canonical URLに解決されて確実に再生される
  */
 export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
     const [activated, setActivated] = useState(false);
     const [oembed, setOembed] = useState<OEmbedResult | null>(null);
 
-    // TikTok 公式サムネイルを取得
     useEffect(() => {
         let cancelled = false;
         fetch(`/api/tiktok-oembed?url=${encodeURIComponent(url)}`)
@@ -36,28 +39,24 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
             .then((data: OEmbedResult | null) => {
                 if (!cancelled && data) setOembed(data);
             })
-            .catch(() => {
-                /* silent — fallback使用 */
-            });
+            .catch(() => {});
         return () => {
             cancelled = true;
         };
     }, [url]);
 
-    // URLからvideo IDを抽出 (フルURLの場合のみ)
-    const idMatch = url.match(/\/video\/(\d+)/);
-    const videoId = idMatch ? idMatch[1] : null;
-
-    // activated 後に TikTok embed.js を初期化
     useEffect(() => {
         if (!activated) return;
         const w = window as { tiktokEmbed?: { reloadEmbeds?: () => void } };
+        // embed.js が既にロードされてれば手動リロード
         w.tiktokEmbed?.reloadEmbeds?.();
     }, [activated]);
 
     const displayThumbnail = oembed?.thumbnail_url || fallbackThumbnail;
     const displayTitle = title || oembed?.title || undefined;
-    const usingTiktokThumb = !!oembed?.thumbnail_url;
+    const usingTtThumb = !!oembed?.thumbnail_url;
+    const canonicalUrl = oembed?.embed_url || url;
+    const videoId = oembed?.video_id || null;
 
     if (!activated) {
         return (
@@ -66,7 +65,7 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
                 className="group relative block w-full max-w-[340px] aspect-[9/16] overflow-hidden rounded-xl bg-ink hover:scale-[1.02] transition-transform"
                 aria-label="TikTok動画を再生"
             >
-                {usingTiktokThumb ? (
+                {usingTtThumb ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                         src={displayThumbnail}
@@ -105,19 +104,19 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
         <div className="max-w-[340px]">
             <blockquote
                 className="tiktok-embed"
-                cite={url}
+                cite={canonicalUrl}
                 data-video-id={videoId ?? undefined}
                 style={{ maxWidth: 605, minWidth: 280 }}
             >
                 <section>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                        {url}
+                    <a href={canonicalUrl} target="_blank" rel="noopener noreferrer">
+                        {canonicalUrl}
                     </a>
                 </section>
             </blockquote>
             <Script src="https://www.tiktok.com/embed.js" strategy="lazyOnload" async />
             <a
-                href={url}
+                href={canonicalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 mt-3 text-[11px] tracking-widest text-ink-soft hover:text-ink transition-colors"

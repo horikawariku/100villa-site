@@ -23,7 +23,7 @@ export function FeatureTiles() {
     }, {});
 
     return (
-        <section id="feature" className="py-14 md:py-20">
+        <section id="feature" className="py-9 md:py-12">
             <div className="container mx-auto px-5 md:px-7 mb-8 md:mb-10">
                 <div className="text-center">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">Feature</p>

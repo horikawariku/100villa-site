@@ -5,7 +5,7 @@ export function FeaturedSection() {
     const featured = getFeaturedProperties();
     if (featured.length === 0) return null;
     return (
-        <section className="py-14 md:py-20 bg-bg-card/40 border-y border-line">
+        <section className="py-9 md:py-12 bg-bg-card/40 border-y border-line">
             <div className="container mx-auto px-5 md:px-7">
                 <div className="text-center mb-10">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">

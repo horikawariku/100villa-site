@@ -20,11 +20,8 @@ const SIZE_CLASS: Record<NonNullable<Props["size"]>, { card: string; img: string
 };
 
 /**
- * 横長 + 全情報オーバーレイ型カード (bestvilla.jp 風)。
- * - 写真左上にエリアバッジ
- * - 写真右上にハート (wishlist保存)
- * - 写真下部にグラデーション + 宿名 / 県・定員 / 価格 をオーバーレイ
- * - ホバーで下に浮く + 写真ズーム
+ * 横長 + 全情報オーバーレイ型カード。
+ * 写真左上にエリアバッジ / 右上にハート / 写真下部に宿名+定員+価格。
  */
 export function PropertyCard({ property: p, size = "md" }: Props) {
     const cls = SIZE_CLASS[size];
@@ -42,7 +39,6 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                         sizes="(max-width: 768px) 64vw, 33vw"
                     />
-                    {/* 下部グラデーション (テキスト読みやすく) */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 from-0% via-black/30 via-30% to-transparent to-65%" />
 
                     {/* 左上: エリアバッジ */}
@@ -51,30 +47,27 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                     </div>
 
                     {/* オーバーレイ情報 (下) */}
-                    <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 text-bg">
-                        <h3 className="font-mincho text-base md:text-lg font-bold tracking-wide leading-snug line-clamp-1 mb-1.5">
+                    <div className="absolute inset-x-0 bottom-0 p-3 md:p-3.5 text-bg">
+                        <h3 className="font-mincho text-[13px] md:text-sm font-bold tracking-wide leading-snug line-clamp-1 mb-1">
                             {p.name}
                         </h3>
-                        <div className="flex items-center justify-between text-[10px] md:text-[11px] tracking-widest">
-                            <div className="flex items-center gap-2 text-bg/75">
-                                <span>{p.area.prefecture}</span>
-                                <span className="text-bg/30">·</span>
-                                <span className="flex items-center gap-1">
-                                    <Users className="w-3 h-3" />
-                                    {p.capacity.min}〜{p.capacity.max}名
-                                </span>
-                            </div>
-                            <p className="font-display">
+                        <div className="flex items-center justify-between gap-2 text-[10px] md:text-[11px]">
+                            <span className="flex items-center gap-1 text-bg/80 whitespace-nowrap">
+                                <Users className="w-3 h-3 shrink-0" />
+                                <span className="font-display">{p.capacity.min}–{p.capacity.max}</span>
+                                <span className="text-[9px] text-bg/60">名</span>
+                            </span>
+                            <span className="font-display whitespace-nowrap">
                                 <span className="text-bg/55">¥</span>
                                 <span className="font-bold">{p.pricePerPersonFrom.toLocaleString()}</span>
                                 <span className="text-bg/55 text-[9px] ml-0.5">〜/人</span>
-                            </p>
+                            </span>
                         </div>
                     </div>
                 </div>
             </Link>
 
-            {/* 右上: ハート (Linkの外側に配置、独立クリック領域) */}
+            {/* 右上: ハート */}
             <div className="absolute top-2.5 right-2.5 z-10">
                 <HeartButton slug={p.id} />
             </div>

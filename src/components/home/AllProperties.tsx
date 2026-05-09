@@ -4,7 +4,7 @@ import { getAllProperties } from "@/data/properties";
 export function AllProperties() {
     const all = getAllProperties();
     return (
-        <section id="all" className="py-14 md:py-20">
+        <section id="all" className="py-9 md:py-12">
             <div className="container mx-auto px-5 md:px-7">
                 <div className="flex items-end justify-between mb-8 md:mb-10">
                     <div>
