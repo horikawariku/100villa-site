@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Users, Eye } from "lucide-react";
 import type { Property } from "@/data/types";
 import { REGION_LABEL } from "@/data/types";
 import { HeartButton } from "./HeartButton";
+import { fetchAllPropertyViews } from "@/lib/propertyViews";
 
 interface Props {
     property: Property;
@@ -21,10 +23,27 @@ const SIZE_CLASS: Record<NonNullable<Props["size"]>, { card: string; img: string
 
 /**
  * 縦長 + 全情報オーバーレイ型カード。
- * 写真左上にエリアバッジ / 右上にハート (アイコンのみ・白) / 写真下部に宿名+定員+価格。
+ * - 写真左上にエリアバッジ
+ * - 写真右上にハート (アイコンのみ・白)
+ * - 写真上に「本日 X 人が閲覧中」 (page view 数, redirect-tracker /api/property-views-today から取得)
+ * - 写真下部に宿名 + 定員 + 価格 (細いゴシック・全部白)
  */
 export function PropertyCard({ property: p, size = "md" }: Props) {
     const cls = SIZE_CLASS[size];
+    const [viewCount, setViewCount] = useState<number | null>(null);
+
+    useEffect(() => {
+        let cancelled = false;
+        fetchAllPropertyViews().then((counts) => {
+            if (cancelled) return;
+            const c = counts[p.id];
+            if (typeof c === "number" && c >= 1) setViewCount(c);
+        });
+        return () => {
+            cancelled = true;
+        };
+    }, [p.id]);
+
     return (
         <div className={`group relative ${cls.card} shrink-0 transition-transform duration-500 hover:-translate-y-1`}>
             <Link
@@ -46,21 +65,26 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                         {REGION_LABEL[p.area.region]}
                     </div>
 
+                    {/* 上中央: 本日の閲覧数 (count > 0 のとき表示) */}
+                    {viewCount !== null && (
+                        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-2 py-0.5 bg-black/55 backdrop-blur-sm text-bg text-[9px] md:text-[10px] tracking-[0.1em] font-light">
+                            <Eye className="w-2.5 h-2.5" strokeWidth={1.4} />
+                            本日 {viewCount} 人が閲覧中
+                        </div>
+                    )}
+
                     {/* オーバーレイ情報 (下) */}
                     <div className="absolute inset-x-0 bottom-0 p-3 md:p-3.5 text-bg">
-                        <h3 className="font-sans text-[14px] md:text-[15px] font-bold tracking-tight leading-snug line-clamp-1 mb-1">
+                        <h3 className="font-sans text-[14px] md:text-[15px] font-semibold tracking-tight leading-snug line-clamp-1 mb-1.5 text-bg">
                             {p.name}
                         </h3>
-                        <div className="flex items-center justify-between gap-2 text-[11px] md:text-[12px] font-sans">
-                            <span className="flex items-center gap-1 text-bg/85 whitespace-nowrap">
-                                <Users className="w-3 h-3 shrink-0" />
-                                <span className="font-semibold">{p.capacity.min}–{p.capacity.max}</span>
-                                <span className="text-[10px] text-bg/65">名</span>
+                        <div className="flex items-center justify-between gap-2 text-[12px] md:text-[13px] font-sans font-light text-bg">
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                                <Users className="w-3 h-3 shrink-0" strokeWidth={1.5} />
+                                {p.capacity.min}–{p.capacity.max}名
                             </span>
                             <span className="whitespace-nowrap">
-                                <span className="text-bg/60">¥</span>
-                                <span className="font-bold">{p.pricePerPersonFrom.toLocaleString()}</span>
-                                <span className="text-bg/60 text-[10px] ml-0.5">〜/人</span>
+                                ¥{p.pricePerPersonFrom.toLocaleString()}〜/人
                             </span>
                         </div>
                     </div>

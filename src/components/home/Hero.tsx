@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { siteMeta } from "@/data/siteMeta";
 import { SearchBar } from "./SearchBar";
+import { ViewerCounter } from "./ViewerCounter";
 
 export function Hero() {
     const [imgIdx, setImgIdx] = useState(0);
@@ -65,6 +66,9 @@ export function Hero() {
                 <p className="font-mincho text-base md:text-2xl font-bold tracking-wider mt-3 md:mt-4 max-w-2xl leading-relaxed">
                     {siteMeta.tagline}
                 </p>
+                <div className="mt-3">
+                    <ViewerCounter />
+                </div>
             </div>
 
             {/* 中央上寄せ: 検索バー (タグライン直後に近い位置) */}

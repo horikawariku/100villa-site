@@ -26,6 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
         title,
         description: `${p.catchcopy} / ${p.area.prefecture}${p.area.city} / 定員${p.capacity.min}〜${p.capacity.max}名 / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人`,
+        other: {
+            // 各物件ページのアクセスをproperty別に記録 (PropertyCardの本日閲覧数表示用)
+            "rt-property": p.id,
+        },
         openGraph: {
             title,
             description: p.catchcopy,
@@ -76,21 +80,17 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     {p.catchcopy}
                 </p>
 
-                {/* 主要スペック行 */}
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-6">
-                    <div className="flex items-center gap-1.5">
-                        <Users className="w-3.5 h-3.5 text-ink-soft" />
-                        <span className="font-display text-sm font-medium">
-                            {p.capacity.min}〜{p.capacity.max} <span className="text-mute text-xs">名</span>
-                        </span>
+                {/* 主要スペック行 (細いゴシック・全テキスト同色) */}
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-6 font-sans font-light text-ink">
+                    <div className="flex items-center gap-1.5 text-sm">
+                        <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        <span>{p.capacity.min}〜{p.capacity.max} 名</span>
                     </div>
-                    <div className="font-display">
-                        <span className="text-mute mr-0.5">¥</span>
-                        <span className="text-lg font-bold">{p.pricePerPersonFrom.toLocaleString()}</span>
-                        <span className="text-mute text-[11px] ml-0.5">〜 / 人</span>
+                    <div className="text-base md:text-lg">
+                        ¥{p.pricePerPersonFrom.toLocaleString()}<span className="text-xs ml-0.5">〜 / 人</span>
                     </div>
                     {p.pricePerNightFrom && (
-                        <div className="text-[11px] tracking-widest text-mute">
+                        <div className="text-xs tracking-wide">
                             (1棟 ¥{p.pricePerNightFrom.toLocaleString()}〜)
                         </div>
                     )}
@@ -144,12 +144,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                 {p.specs.bedroom && <Row label="寝具">{p.specs.bedroom}</Row>}
                                 {p.specs.sauna && (
                                     <Row icon={<Flame className="w-3.5 h-3.5" />} label="サウナ">
-                                        <div className="flex flex-wrap gap-x-4 gap-y-1">
+                                        <div className="flex flex-wrap gap-x-4 gap-y-1 font-light">
                                             {p.specs.sauna.tempMax && (
-                                                <span>サウナ室 最高 <strong>{p.specs.sauna.tempMax}℃</strong></span>
+                                                <span>サウナ室 最高 {p.specs.sauna.tempMax}℃</span>
                                             )}
                                             {p.specs.sauna.tempMin && (
-                                                <span>水風呂 最低 <strong>{p.specs.sauna.tempMin}℃</strong></span>
+                                                <span>水風呂 最低 {p.specs.sauna.tempMin}℃</span>
                                             )}
                                             {p.specs.sauna.selfRoukyu && <span>セルフロウリュ可</span>}
                                             {p.specs.sauna.entertainment && <span>{p.specs.sauna.entertainment}</span>}
