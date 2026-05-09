@@ -6,31 +6,58 @@ import Script from "next/script";
 import { Play, ArrowUpRight } from "lucide-react";
 
 interface Props {
-    /** TikTok 動画URL (例: https://www.tiktok.com/@user/video/1234567) */
+    /** TikTok 動画URL (vt.tiktok.com 短縮 or www.tiktok.com フルURL どちらも可) */
     url: string;
-    /** クリック前に表示するサムネ画像 (物件メイン写真などでOK) */
+    /** TikTok 取得失敗時のフォールバック画像 (物件メイン写真などでOK) */
     fallbackThumbnail: string;
     title?: string;
 }
 
+interface OEmbedResult {
+    thumbnail_url: string | null;
+    author_name: string | null;
+    title: string | null;
+}
+
 /**
  * TikTok 動画埋め込み.
- * デフォルトは軽量なサムネ表示。クリックで TikTok blockquote を読み込み、
- * embed.js を遅延ロードして実際の動画プレイヤーを表示する。
+ * デフォルトは TikTok 実物サムネを /api/tiktok-oembed 経由で取得して表示。
+ * クリックで TikTok blockquote + embed.js を遅延ロードして実プレイヤー表示。
  */
 export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
     const [activated, setActivated] = useState(false);
+    const [oembed, setOembed] = useState<OEmbedResult | null>(null);
 
-    // URLからvideo IDを抽出 (例: /video/1234567 → 1234567)
+    // TikTok 公式サムネイルを取得
+    useEffect(() => {
+        let cancelled = false;
+        fetch(`/api/tiktok-oembed?url=${encodeURIComponent(url)}`)
+            .then((r) => (r.ok ? r.json() : null))
+            .then((data: OEmbedResult | null) => {
+                if (!cancelled && data) setOembed(data);
+            })
+            .catch(() => {
+                /* silent — fallback使用 */
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [url]);
+
+    // URLからvideo IDを抽出 (フルURLの場合のみ)
     const idMatch = url.match(/\/video\/(\d+)/);
     const videoId = idMatch ? idMatch[1] : null;
 
-    // activated になったらTikTok embed scriptを動的ロード&実行
+    // activated 後に TikTok embed.js を初期化
     useEffect(() => {
         if (!activated) return;
         const w = window as { tiktokEmbed?: { reloadEmbeds?: () => void } };
         w.tiktokEmbed?.reloadEmbeds?.();
     }, [activated]);
+
+    const displayThumbnail = oembed?.thumbnail_url || fallbackThumbnail;
+    const displayTitle = title || oembed?.title || undefined;
+    const usingTiktokThumb = !!oembed?.thumbnail_url;
 
     if (!activated) {
         return (
@@ -39,13 +66,23 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
                 className="group relative block w-full max-w-[340px] aspect-[9/16] overflow-hidden rounded-xl bg-ink hover:scale-[1.02] transition-transform"
                 aria-label="TikTok動画を再生"
             >
-                <Image
-                    src={fallbackThumbnail}
-                    alt={title ?? "TikTok video"}
-                    fill
-                    className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                    sizes="(max-width: 768px) 100vw, 340px"
-                />
+                {usingTiktokThumb ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                        src={displayThumbnail}
+                        alt={displayTitle ?? "TikTok video"}
+                        className="absolute inset-0 w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
+                        loading="lazy"
+                    />
+                ) : (
+                    <Image
+                        src={displayThumbnail}
+                        alt={displayTitle ?? "TikTok video"}
+                        fill
+                        className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                        sizes="(max-width: 768px) 100vw, 340px"
+                    />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-bg/95 flex items-center justify-center shadow-lg">
@@ -54,13 +91,16 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
                 </div>
                 <div className="absolute inset-x-0 bottom-0 p-4 text-bg">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-bg/70 mb-1 font-display">TikTok</p>
-                    <p className="font-mincho text-sm font-bold tracking-wide line-clamp-2">{title}</p>
+                    {displayTitle && (
+                        <p className="font-mincho text-sm font-bold tracking-wide line-clamp-2">
+                            {displayTitle}
+                        </p>
+                    )}
                 </div>
             </button>
         );
     }
 
-    // activated: blockquote + script
     return (
         <div className="max-w-[340px]">
             <blockquote
@@ -70,7 +110,9 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
                 style={{ maxWidth: 605, minWidth: 280 }}
             >
                 <section>
-                    <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                        {url}
+                    </a>
                 </section>
             </blockquote>
             <Script src="https://www.tiktok.com/embed.js" strategy="lazyOnload" async />

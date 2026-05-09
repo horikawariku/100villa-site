@@ -67,6 +67,7 @@ export const PROPERTIES: Property[] = [
         mapEmbedUrl:
             "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d136.0145722!3d35.4243012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600193036b47b653%3A0xae4ce47a9fda2c78!2sSauna+Private+Villa+AO!5e0!3m2!1sja!2sjp",
         accessNotes: ["京都から車 約1.5h", "大阪から車 約2h", "JR近江今津駅から車 9分"],
+        tiktokVideoUrl: "https://vt.tiktok.com/ZS9Wu9jMX/",
         officialSiteUrl: "https://ao-villa.vercel.app",
         redirectId: "ao",
         isClient: true,
@@ -103,6 +104,7 @@ export const PROPERTIES: Property[] = [
         },
         address: "〒517-0705 三重県志摩市志摩町御座457-1",
         accessNotes: ["名古屋から車 約2.5h", "大阪から車 約3h"],
+        tiktokVideoUrl: "https://vt.tiktok.com/ZS9WuxTvy/",
         officialSiteUrl: "https://gozahills.vercel.app",
         redirectId: "gozahills",
         isClient: true,
