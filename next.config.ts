@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "img-ikyu.com" },
       { protocol: "https", hostname: "www.img-ikyu.com" },
       { protocol: "https", hostname: "prd-assets.chillnn.com" },
+      { protocol: "https", hostname: "upload.wikimedia.org" },
     ],
   },
 };
