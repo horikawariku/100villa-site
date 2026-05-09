@@ -3,6 +3,7 @@ import Image from "next/image";
 import { REGION_LABEL, type Region } from "@/data/types";
 import { REGION_IMAGE } from "@/data/regionImages";
 import { getAllProperties } from "@/data/properties";
+import { SectionHeader } from "./SectionHeader";
 
 const REGIONS: Region[] = ["hokkaido", "tohoku", "kanto", "chubu", "kansai", "chugoku", "shikoku", "kyushu", "okinawa"];
 
@@ -26,14 +27,10 @@ export function RegionTiles() {
     }, {} as Record<Region, number>);
 
     return (
-        <section id="area" className="py-9 md:py-12">
-            <div className="container mx-auto px-5 md:px-7 mb-8 md:mb-10">
-                <div className="text-center">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">Area</p>
-                    <h2 className="font-mincho text-2xl md:text-3xl font-bold tracking-wide">エリアから探す</h2>
-                </div>
+        <section id="area" className="py-6 md:py-8">
+            <div className="container mx-auto px-5 md:px-7">
+                <SectionHeader eyebrow="Area" title="エリアから探す" />
             </div>
-            {/* 横スクロール写真タイル */}
             <div className="overflow-x-auto no-scrollbar">
                 <div className="inline-flex gap-2 md:gap-3 px-5 md:px-7">
                     {REGIONS.map((r) => (

@@ -1,6 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FEATURE_LABEL, type FeatureTag } from "@/data/types";
+import { FEATURE_IMAGE } from "@/data/featureImages";
 import { getAllProperties } from "@/data/properties";
+import { SectionHeader } from "./SectionHeader";
 
 const FEATURES: FeatureTag[] = [
     "sauna",
@@ -23,26 +26,40 @@ export function FeatureTiles() {
     }, {});
 
     return (
-        <section id="feature" className="py-9 md:py-12">
-            <div className="container mx-auto px-5 md:px-7 mb-8 md:mb-10">
-                <div className="text-center">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">Feature</p>
-                    <h2 className="font-mincho text-2xl md:text-3xl font-bold tracking-wide">体験から探す</h2>
-                </div>
+        <section id="feature" className="py-6 md:py-8">
+            <div className="container mx-auto px-5 md:px-7">
+                <SectionHeader eyebrow="Feature" title="体験から探す" />
             </div>
-            {/* 横スクロール */}
+            {/* 横スクロール (写真付きタイル) */}
             <div className="overflow-x-auto no-scrollbar">
                 <div className="inline-flex gap-2 md:gap-3 px-5 md:px-7">
                     {FEATURES.map((f) => (
                         <Link
                             key={f}
                             href={`/feature/${f}`}
-                            className="group inline-flex items-center gap-2 px-4 py-2.5 border border-line bg-bg hover:border-gold hover:bg-gold hover:text-bg transition-colors shrink-0 whitespace-nowrap"
+                            className="group relative w-[36vw] sm:w-[200px] md:w-[220px] aspect-[4/5] shrink-0 overflow-hidden bg-ink"
                         >
-                            <span className="text-sm tracking-wide font-medium">{FEATURE_LABEL[f]}</span>
-                            <span className="text-[10px] tracking-widest text-mute group-hover:text-bg/65 font-display">
-                                {counts[f]}
-                            </span>
+                            <Image
+                                src={FEATURE_IMAGE[f]}
+                                alt={FEATURE_LABEL[f]}
+                                fill
+                                className="object-cover opacity-80 group-hover:opacity-95 group-hover:scale-[1.05] transition-all duration-700"
+                                sizes="(max-width: 640px) 36vw, 220px"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                            <div className="absolute inset-x-0 bottom-0 p-3 md:p-4 text-bg">
+                                <p className="text-[9px] tracking-[0.25em] uppercase text-bg/65 font-display mb-0.5">
+                                    {f.toUpperCase()}
+                                </p>
+                                <div className="flex items-baseline justify-between gap-2">
+                                    <h3 className="font-mincho text-sm md:text-base font-bold tracking-wide leading-none">
+                                        {FEATURE_LABEL[f]}
+                                    </h3>
+                                    <span className="font-display text-[10px] tracking-widest text-bg/65 shrink-0">
+                                        {counts[f]}
+                                    </span>
+                                </div>
+                            </div>
                         </Link>
                     ))}
                     <div className="w-3 shrink-0" />

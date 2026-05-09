@@ -1,8 +1,8 @@
 import type { Region } from "./types";
 
-/** リージョン別代表写真 (Unsplash, ダミー) */
+/** リージョン別代表写真 (Unsplash). 16:10 横長前提. */
 export const REGION_IMAGE: Record<Region, string> = {
-    hokkaido: "https://images.unsplash.com/photo-1545245828-0bc7e7d49b1e?w=800&q=80",
+    hokkaido: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=800&q=80",
     tohoku: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80",
     kanto: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80",
     chubu: "https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80",

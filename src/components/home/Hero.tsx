@@ -67,8 +67,8 @@ export function Hero() {
                 </p>
             </div>
 
-            {/* 中央: 検索バー (flex-grow で空きスペース全部使って中央配置) */}
-            <div className="relative z-10 container mx-auto px-5 md:px-7 flex-grow flex items-center">
+            {/* 中央上寄せ: 検索バー (タグライン直後に近い位置) */}
+            <div className="relative z-10 container mx-auto px-5 md:px-7 flex-grow flex items-start pt-6 md:pt-10">
                 <div className="w-full">
                     <Suspense fallback={<div className="h-14" />}>
                         <SearchBar />

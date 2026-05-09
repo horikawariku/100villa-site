@@ -14,20 +14,20 @@ export function TikTokFeed() {
     if (list.length === 0) return null;
 
     return (
-        <section className="py-8 md:py-12">
-            <div className="container mx-auto px-5 md:px-7 mb-6 md:mb-8">
-                <div className="flex items-end justify-between gap-3">
+        <section className="py-6 md:py-8">
+            <div className="container mx-auto px-5 md:px-7">
+                <div className="border-b border-line/70 pb-3 mb-6 md:mb-7 flex items-end justify-between gap-3">
                     <div>
-                        <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1.5">
+                        <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1">
                             From TikTok
                         </p>
-                        <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide">
+                        <h2 className="font-display text-lg md:text-2xl font-bold tracking-wider text-ink">
                             TikTokで紹介中の宿
                         </h2>
                     </div>
                     <Link
                         href="/search"
-                        className="text-[11px] tracking-widest text-ink-soft hover:text-ink underline underline-offset-4 decoration-line-strong"
+                        className="text-[11px] tracking-widest text-ink-soft hover:text-ink underline underline-offset-4 decoration-line-strong shrink-0 pb-1"
                     >
                         宿名で探す →
                     </Link>

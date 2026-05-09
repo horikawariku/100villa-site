@@ -38,17 +38,17 @@ export function Ranking() {
     if (ranked.length === 0) return null;
 
     return (
-        <section className="py-9 md:py-12 bg-ink text-bg">
+        <section className="py-6 md:py-8 bg-ink text-bg">
             <div className="container mx-auto px-5 md:px-7">
-                {/* ヘッダ */}
-                <div className="text-center mb-10 md:mb-14">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-display mb-2">
+                {/* ヘッダ (左寄せ・ゴシック・下線) */}
+                <div className="border-b border-bg/15 pb-3 mb-6 md:mb-7">
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-display mb-1">
                         Most Saved
                     </p>
-                    <h2 className="font-mincho text-2xl md:text-4xl font-bold tracking-wide">
+                    <h2 className="font-display text-lg md:text-2xl font-bold tracking-wider">
                         保存数ランキング
                     </h2>
-                    <p className="text-[11px] md:text-xs tracking-widest text-bg/55 mt-3">
+                    <p className="text-[10px] md:text-[11px] tracking-widest text-bg/55 mt-1.5">
                         ユーザーが「気になる」したヴィラ TOP10
                     </p>
                 </div>

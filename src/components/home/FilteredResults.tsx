@@ -47,23 +47,25 @@ export function FilteredResults() {
     features.forEach((f) => labels.push(FEATURE_LABEL[f]));
 
     return (
-        <section id="results" className="py-8 md:py-12 bg-bg-card/50 border-y border-line">
+        <section id="results" className="py-6 md:py-8 bg-bg-card/50 border-y border-line">
             <div className="container mx-auto px-5 md:px-7">
-                <div className="flex items-end justify-between gap-3 mb-6 md:mb-8">
-                    <div>
-                        <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1.5">
-                            Filtered
-                        </p>
-                        <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide">
+                <div className="border-b border-line/70 pb-3 mb-6 md:mb-7">
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1">
+                        Filtered
+                    </p>
+                    <div className="flex items-baseline gap-3">
+                        <h2 className="font-display text-lg md:text-2xl font-bold tracking-wider text-ink">
                             絞り込み結果
-                            <span className="ml-2 text-sm md:text-base text-mute font-normal">
-                                {results.length} 件
-                            </span>
                         </h2>
-                        <p className="text-[11px] tracking-wide text-mute mt-1">
+                        <span className="text-xs md:text-sm text-mute font-normal">
+                            {results.length} 件
+                        </span>
+                    </div>
+                    {labels.length > 0 && (
+                        <p className="text-[11px] tracking-wide text-mute mt-1.5">
                             {labels.join(" / ")}
                         </p>
-                    </div>
+                    )}
                 </div>
 
                 {results.length === 0 ? (

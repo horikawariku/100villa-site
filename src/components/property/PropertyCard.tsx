@@ -14,14 +14,14 @@ interface Props {
 }
 
 const SIZE_CLASS: Record<NonNullable<Props["size"]>, { card: string; img: string }> = {
-    sm: { card: "w-[64vw] max-w-[280px]", img: "aspect-[4/3]" },
-    md: { card: "w-full", img: "aspect-[4/3]" },
-    lg: { card: "w-full", img: "aspect-[3/2]" },
+    sm: { card: "w-[64vw] max-w-[280px]", img: "aspect-[4/5]" },
+    md: { card: "w-full", img: "aspect-[4/5]" },
+    lg: { card: "w-full", img: "aspect-[3/4]" },
 };
 
 /**
- * 横長 + 全情報オーバーレイ型カード。
- * 写真左上にエリアバッジ / 右上にハート / 写真下部に宿名+定員+価格。
+ * 縦長 + 全情報オーバーレイ型カード。
+ * 写真左上にエリアバッジ / 右上にハート (アイコンのみ・白) / 写真下部に宿名+定員+価格。
  */
 export function PropertyCard({ property: p, size = "md" }: Props) {
     const cls = SIZE_CLASS[size];
@@ -37,9 +37,9 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                         alt={p.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        sizes="(max-width: 768px) 64vw, 33vw"
+                        sizes="(max-width: 768px) 50vw, 25vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 from-0% via-black/30 via-30% to-transparent to-65%" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 from-0% via-black/20 via-35% to-transparent to-65%" />
 
                     {/* 左上: エリアバッジ */}
                     <div className="absolute top-2.5 left-2.5 px-2 py-0.5 bg-bg/90 backdrop-blur-sm text-[9px] tracking-[0.25em] uppercase font-display text-ink">
@@ -67,8 +67,8 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                 </div>
             </Link>
 
-            {/* 右上: ハート */}
-            <div className="absolute top-2.5 right-2.5 z-10">
+            {/* 右上: ハート (アイコンのみ・白) */}
+            <div className="absolute top-1.5 right-1.5 z-10">
                 <HeartButton slug={p.id} />
             </div>
         </div>

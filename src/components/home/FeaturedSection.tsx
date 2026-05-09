@@ -1,21 +1,17 @@
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { getFeaturedProperties } from "@/data/properties";
+import { SectionHeader } from "./SectionHeader";
 
 export function FeaturedSection() {
     const featured = getFeaturedProperties();
     if (featured.length === 0) return null;
     return (
-        <section className="py-9 md:py-12 bg-bg-card/40 border-y border-line">
+        <section className="py-6 md:py-8 bg-bg-card/40 border-y border-line">
             <div className="container mx-auto px-5 md:px-7">
-                <div className="text-center mb-10">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
-                        Popular Stays
-                    </p>
-                    <h2 className="font-mincho text-2xl md:text-3xl font-bold tracking-wide">人気の宿</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+                <SectionHeader eyebrow="Popular Stays" title="人気の宿" />
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
                     {featured.map((p) => (
-                        <PropertyCard key={p.id} property={p} size="lg" />
+                        <PropertyCard key={p.id} property={p} size="md" />
                     ))}
                 </div>
             </div>
