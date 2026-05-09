@@ -5,12 +5,13 @@ export const siteMeta = {
     description: "フォロワー15万人の編集部が選ぶ、日本中の極上ヴィラ・宿。サウナ、貸切、絶景、古民家。次に泊まりたい一棟がここに。",
     url: "https://100villa.vercel.app",
     ogImage: "https://i.imgur.com/5fv3XpV.png",
-    /** Hero背景ローテ用の写真 (複数枚 5秒ずつクロスフェード) */
+    /** Hero背景ローテ用 (実物件の写真) */
     heroImages: [
-        "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1920&q=80",
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=80",
-        "https://images.unsplash.com/photo-1610527003928-47afd7d4f8a0?w=1920&q=80",
-        "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=1920&q=80",
+        "https://i.imgur.com/3YSUYco.png", // gozahills オーシャンビュー
+        "https://i.imgur.com/LL2QPJp.png", // AO 夕焼け
+        "https://hotel-mysa.com/wp-content/uploads/2022/10/s_myh_50-1.jpg", // mysa hakone 外観
+        "https://villa-saison-fuji.com/wp-content/uploads/2024/05/topintro_600_05.jpg", // VILLA SAISON FUJI 外観
+        "https://i.imgur.com/5fv3XpV.png", // AO サウナ室
     ],
     instagram: "https://www.instagram.com/",  // TODO: 実アカウント
     tiktok: "https://www.tiktok.com/",         // TODO: 実アカウント
