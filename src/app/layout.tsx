@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter, Cinzel, Playfair_Display, Zen_Old_Mincho } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -40,6 +39,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="ja">
+            <head>
+                {/* redirect-tracker page-view 計測スクリプト. <head> 直挿し + defer で確実発火させる. */}
+                <script src={`${siteMeta.trackerOrigin}/api/site-tracker-js`} defer />
+            </head>
             <body
                 className={`${inter.variable} ${cinzel.variable} ${playfair.variable} ${zenMincho.variable} antialiased bg-bg text-ink`}
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
@@ -47,10 +50,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Header />
                 {children}
                 <Footer />
-                <Script
-                    src={`${siteMeta.trackerOrigin}/api/site-tracker-js`}
-                    strategy="afterInteractive"
-                />
             </body>
         </html>
     );
