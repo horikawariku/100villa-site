@@ -18,7 +18,10 @@ export function ViewerCounter({ className = "text-bg/85", minCount = 1 }: Props)
 
     useEffect(() => {
         let cancelled = false;
-        fetch(`${siteMeta.trackerOrigin}/api/viewer-count?p=100villa`)
+        // セッションごとに timestamp 付与 → CDN/ブラウザ cache を bypass。
+        fetch(`${siteMeta.trackerOrigin}/api/viewer-count?p=100villa&_t=${Date.now()}`, {
+            cache: "no-store",
+        })
             .then((r) => (r.ok ? r.json() : null))
             .then((d: { count?: number } | null) => {
                 if (cancelled) return;
