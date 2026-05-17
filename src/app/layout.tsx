@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Cinzel, Playfair_Display, Zen_Old_Mincho } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageViewBeacon } from "@/components/PageViewBeacon";
 import { siteMeta } from "@/data/siteMeta";
 import "./globals.css";
 
@@ -40,13 +41,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="ja">
             <head>
-                {/* redirect-tracker page-view 計測スクリプト. <head> 直挿し + defer で確実発火させる. */}
-                <script src={`${siteMeta.trackerOrigin}/api/site-tracker-js`} defer />
+                {/* DNS+TLS pre-establish で page-view POST を高速化 */}
+                <link rel="preconnect" href={siteMeta.trackerOrigin} />
             </head>
             <body
                 className={`${inter.variable} ${cinzel.variable} ${playfair.variable} ${zenMincho.variable} antialiased bg-bg text-ink`}
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
+                {/*
+                 * page-view 計測: route 切替毎に発火する React Client Component に置き換え.
+                 * 旧 <script defer src=".../site-tracker-js"> は client-side navigation で再発火しないため廃止.
+                 */}
+                <PageViewBeacon />
                 <Header />
                 {children}
                 <Footer />
