@@ -11,16 +11,16 @@ import { AllProperties } from "@/components/home/AllProperties";
 export default function Home() {
     return (
         <main>
-            <Hero />
             {/* SearchBar の絞り込みが効いた時に最上位で表示。空のときは null */}
             <Suspense fallback={null}>
                 <FilteredResults />
             </Suspense>
             <TikTokFeed />
+            <AllProperties />
+            <Hero />
             <RegionTiles />
             <FeatureTiles />
             <FeaturedSection />
-            <AllProperties />
             <Ranking />
         </main>
     );

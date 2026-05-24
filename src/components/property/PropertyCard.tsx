@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Users, Eye } from "lucide-react";
 import type { Property } from "@/data/types";
-import { REGION_LABEL } from "@/data/types";
 import { HeartButton } from "./HeartButton";
 import { fetchAllPropertyViews } from "@/lib/propertyViews";
 
@@ -59,11 +58,6 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                         sizes="(max-width: 768px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 from-0% via-black/20 via-35% to-transparent to-65%" />
-
-                    {/* 左上: エリアバッジ */}
-                    <div className="absolute top-2.5 left-2.5 px-2 py-0.5 bg-bg/90 backdrop-blur-sm text-[9px] tracking-[0.25em] uppercase font-display text-ink">
-                        {REGION_LABEL[p.area.region]}
-                    </div>
 
                     {/* 右上: 本日の閲覧数 (count > 0 のとき、目アイコン+数字のみ) */}
                     {viewCount !== null && (
