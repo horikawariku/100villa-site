@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Users, MapPin, Wifi, Flame, Tv, Calendar } from "lucide-react";
 import { PROPERTIES, getProperty, getSimilarProperties, getSameRegionProperties } from "@/data/properties";
 import { FEATURE_LABEL, REGION_LABEL } from "@/data/types";
 import { siteMeta } from "@/data/siteMeta";
-import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { OfficialSiteCTA } from "@/components/property/OfficialSiteCTA";
 import { BookingCard } from "@/components/property/BookingCard";
 import { SimilarProperties } from "@/components/property/SimilarProperties";
@@ -54,55 +54,147 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     const sameRegion = getSameRegionProperties(p, 4);
 
     return (
-        <main className="pt-16 md:pt-20 pb-24 md:pb-0">
+        <main className="pb-24 md:pb-0">
             <RecordView propertyId={p.id} />
 
+            {/* ============================== */}
+            {/* UNIQ 風フルブリード Hero */}
+            {/* ============================== */}
+            <section className="relative h-[100vh] min-h-[680px] overflow-hidden bg-ink">
+                <Image
+                    src={p.mainPhoto}
+                    alt={p.name}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="100vw"
+                />
+                {/* 控えめ overlay (写真を見せる) */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/45" />
+                {/* 微細グレイン */}
+                <div
+                    className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
+                    style={{
+                        backgroundImage:
+                            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='nf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23nf)'/%3E%3C/svg%3E\")",
+                    }}
+                />
+
+                {/* キャッチコピー上部 */}
+                <div className="absolute inset-x-0 top-0 pt-24 md:pt-32 px-5 md:px-7 z-10">
+                    <p
+                        className="text-center text-[11px] md:text-sm tracking-[0.32em] uppercase text-bg/95 max-w-3xl mx-auto leading-relaxed font-light"
+                        style={{ textWrap: "balance" }}
+                    >
+                        {p.catchcopy}
+                    </p>
+                </div>
+
+                {/* 中央: 宿名 + 場所 */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-5 md:px-7 z-10 text-bg text-center">
+                    <h1
+                        className="font-mincho italic text-5xl md:text-7xl lg:text-[7rem] font-light leading-[0.95]"
+                        style={{ letterSpacing: "0.005em", textWrap: "balance" }}
+                    >
+                        {p.name}
+                    </h1>
+                    <p className="mt-5 md:mt-7 text-[11px] md:text-sm tracking-[0.4em] uppercase text-bg/80 font-light">
+                        {p.area.prefecture}, {REGION_LABEL[p.area.region]}
+                    </p>
+                </div>
+
+                {/* スクロールヒント (下部) */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-bg/70 text-[10px] tracking-[0.3em] uppercase">
+                    scroll
+                </div>
+            </section>
+
+            {/* ============================== */}
+            {/* Hero 下から横スクロール ギャラリー */}
+            {/* ============================== */}
+            <div className="relative z-20 -mt-16 md:-mt-24 mb-12 md:mb-20">
+                <div className="overflow-x-auto no-scrollbar">
+                    <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
+                        {p.gallery.map((img, i) => (
+                            <div
+                                key={i}
+                                className="relative w-[72vw] sm:w-[420px] md:w-[480px] aspect-[4/5] overflow-hidden bg-line shadow-2xl shrink-0"
+                            >
+                                <Image
+                                    src={img.src}
+                                    alt={img.caption || `${p.name} ${i + 1}`}
+                                    fill
+                                    className="object-cover transition-transform duration-700 hover:scale-105"
+                                    sizes="(max-width: 640px) 72vw, 480px"
+                                    priority={i < 2}
+                                />
+                                {img.caption && (
+                                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
+                                        <p className="text-bg/95 text-xs md:text-sm tracking-wide font-mincho italic">
+                                            {img.caption}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                        <div className="w-3 shrink-0" />
+                    </div>
+                </div>
+            </div>
+
             {/* パンくず */}
-            <nav className="container mx-auto px-5 md:px-7 mt-3 mb-5 text-[10px] tracking-widest text-mute">
-                <Link href="/" className="hover:text-ink transition-colors">HOME</Link>
-                <span className="mx-2">/</span>
-                <Link href={`/area/${p.area.region}`} className="hover:text-ink transition-colors">
+            <nav className="container mx-auto px-5 md:px-7 mb-6 text-[11px] tracking-[0.12em] text-mute">
+                <Link href="/" className="hover:text-ink transition-colors duration-300">home</Link>
+                <span className="mx-2 opacity-50">›</span>
+                <Link href={`/area/${p.area.region}`} className="hover:text-ink transition-colors duration-300">
                     {REGION_LABEL[p.area.region]}
                 </Link>
-                <span className="mx-2">/</span>
+                <span className="mx-2 opacity-50">›</span>
                 <span className="text-ink-soft">{p.name}</span>
             </nav>
 
             {/* タイトル + 主要情報 */}
-            <div className="container mx-auto px-5 md:px-7 mb-6">
-                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
-                    {REGION_LABEL[p.area.region]} / {p.area.prefecture}
+            <div className="container mx-auto px-5 md:px-7 mb-10 md:mb-14">
+                <p className="text-[11px] md:text-xs tracking-[0.18em] text-gold-deep font-display italic mb-4">
+                    {p.area.prefecture} — {REGION_LABEL[p.area.region]}
                 </p>
-                <h1 className="font-mincho text-3xl md:text-5xl font-bold tracking-wide leading-tight mb-3">
+                <h2
+                    className="font-mincho text-3xl md:text-5xl font-medium leading-[1.05] mb-6"
+                    style={{ letterSpacing: "-0.01em", textWrap: "balance" }}
+                >
                     {p.name}
-                </h1>
-                <p className="text-sm md:text-base text-ink-soft tracking-wide leading-relaxed mb-5 md:mb-6">
+                </h2>
+                <p
+                    className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-mincho italic"
+                    style={{ textWrap: "pretty" }}
+                >
                     {p.catchcopy}
                 </p>
 
-                {/* 主要スペック行 (細いゴシック・全テキスト同色) */}
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-6 font-sans font-light text-ink">
-                    <div className="flex items-center gap-1.5 text-sm">
+                {/* 主要スペック行 — 価格を主役に */}
+                <div className="flex flex-wrap items-baseline gap-x-7 gap-y-3 mb-7 text-ink">
+                    <div className="font-mincho text-2xl md:text-3xl font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
+                        ¥{p.pricePerPersonFrom.toLocaleString()}
+                        <span className="text-xs ml-1.5 font-sans font-light tracking-wide text-ink-soft">〜 / 人</span>
+                    </div>
+                    {p.pricePerNightFrom && (
+                        <div className="text-xs font-sans font-light text-mute" style={{ fontVariantNumeric: "tabular-nums" }}>
+                            1棟 ¥{p.pricePerNightFrom.toLocaleString()}〜
+                        </div>
+                    )}
+                    <div className="flex items-center gap-1.5 text-sm font-sans font-light text-ink-soft">
                         <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
                         <span>{p.capacity.min}〜{p.capacity.max} 名</span>
                     </div>
-                    <div className="text-base md:text-lg">
-                        ¥{p.pricePerPersonFrom.toLocaleString()}<span className="text-xs ml-0.5">〜 / 人</span>
-                    </div>
-                    {p.pricePerNightFrom && (
-                        <div className="text-xs tracking-wide">
-                            (1棟 ¥{p.pricePerNightFrom.toLocaleString()}〜)
-                        </div>
-                    )}
                 </div>
 
-                {/* タグ */}
-                <div className="flex flex-wrap gap-1.5 mb-6">
+                {/* タグ — 控えめなテキストリンク */}
+                <div className="flex flex-wrap gap-x-5 gap-y-2 mb-7">
                     {p.features.map((f) => (
                         <Link
                             key={f}
                             href={`/feature/${f}`}
-                            className="text-[11px] tracking-widest px-2.5 py-1 border border-line hover:border-ink transition-colors"
+                            className="text-[12px] tracking-[0.05em] text-ink-soft hover:text-ink transition-colors duration-300 underline-offset-[5px] hover:underline decoration-gold-deep/40"
                         >
                             {FEATURE_LABEL[f]}
                         </Link>
@@ -115,8 +207,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 </div>
             </div>
 
-            {/* 写真ギャラリー (full-bleed) */}
-            <PropertyGallery images={p.gallery} />
 
             {/* 2カラムレイアウト: コンテンツ + sticky BookingCard */}
             <div className="container mx-auto px-5 md:px-7 mt-12 md:mt-16">
@@ -124,15 +214,18 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     {/* 左カラム: コンテンツ */}
                     <div className="lg:col-span-7">
                         {/* 紹介文 */}
-                        <p className="font-mincho text-base md:text-lg leading-loose tracking-wide text-ink-soft mb-12 md:mb-16">
+                        <p
+                            className="font-mincho text-base md:text-lg leading-[2.1] text-ink-soft mb-14 md:mb-20 max-w-[58ch]"
+                            style={{ textWrap: "pretty" }}
+                        >
                             {p.description}
                         </p>
 
                         {/* スペック表 */}
-                        <div className="mb-12 md:mb-16">
-                            <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-3">Specs</p>
-                            <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide mb-6">仕様</h2>
-                            <dl className="divide-y divide-line border-y border-line">
+                        <div className="mb-14 md:mb-20">
+                            <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— specs</p>
+                            <h2 className="font-mincho text-2xl md:text-[2rem] font-medium mb-8" style={{ letterSpacing: "-0.005em" }}>仕様</h2>
+                            <dl className="divide-y divide-line/60">
                                 {p.specs.checkIn && (
                                     <Row icon={<Calendar className="w-3.5 h-3.5" />} label="チェックイン / アウト">
                                         {p.specs.checkIn} / {p.specs.checkOut}
@@ -182,9 +275,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
                         {/* TikTok */}
                         {p.tiktokVideoUrl && (
-                            <div className="mb-12 md:mb-16">
-                                <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-3">TikTok</p>
-                                <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide mb-5">
+                            <div className="mb-14 md:mb-20">
+                                <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— on tiktok</p>
+                                <h2 className="font-mincho text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>
                                     TikTokで紹介中
                                 </h2>
                                 <TikTokEmbed url={p.tiktokVideoUrl} fallbackThumbnail={p.mainPhoto} title={p.name} />
@@ -193,10 +286,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
                         {/* マップ */}
                         {p.mapEmbedUrl && (
-                            <div className="mb-12 md:mb-16">
-                                <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-3">Map</p>
-                                <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide mb-5">アクセスマップ</h2>
-                                <div className="w-full h-[300px] md:h-[400px] border border-line rounded-xl overflow-hidden">
+                            <div className="mb-14 md:mb-20">
+                                <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— access</p>
+                                <h2 className="font-mincho text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>アクセスマップ</h2>
+                                <div className="w-full h-[320px] md:h-[440px] overflow-hidden rounded-md">
                                     <iframe
                                         src={p.mapEmbedUrl}
                                         width="100%"
@@ -211,14 +304,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         )}
 
                         {/* モバイル: 中部CTA (デスクトップは BookingCard が常時表示) */}
-                        <div className="lg:hidden bg-bg-card/40 border border-line rounded-xl p-7 text-center mb-10">
-                            <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-3">
-                                Reserve
-                            </p>
-                            <h3 className="font-mincho text-xl font-bold tracking-wide mb-2">
-                                詳細・空室確認は公式サイトへ
+                        <div
+                            className="lg:hidden relative overflow-hidden rounded-md p-8 text-center mb-12 bg-cover bg-center"
+                            style={{ backgroundImage: `linear-gradient(rgba(20,16,12,0.78), rgba(20,16,12,0.88)), url(${p.mainPhoto})` }}
+                        >
+                            <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3 text-bg/90">— reserve</p>
+                            <h3 className="font-mincho text-xl md:text-2xl font-medium mb-3 text-bg" style={{ letterSpacing: "-0.005em" }}>
+                                詳細・空室は公式へ
                             </h3>
-                            <p className="text-xs tracking-wide text-mute mb-5">
+                            <p className="text-xs tracking-wide text-bg/70 mb-6 leading-relaxed">
                                 日程の空室カレンダー、料金詳細は公式サイトでご確認ください
                             </p>
                             <OfficialSiteCTA property={p} placement="mid" />
@@ -248,9 +342,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             <RecentlyViewed excludeId={p.id} />
 
             {/* 下部CTA */}
-            <div className="container mx-auto px-5 md:px-7 max-w-3xl mt-14 md:mt-20 text-center">
+            <div className="container mx-auto px-5 md:px-7 max-w-3xl mt-16 md:mt-24 text-center">
                 <OfficialSiteCTA property={p} placement="bottom" />
-                <p className="text-[10px] tracking-widest text-mute mt-4">
+                <p className="text-[11px] tracking-[0.12em] text-mute mt-5 italic">
                     予約は{p.name}公式サイトからどうぞ
                 </p>
             </div>
@@ -263,12 +357,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
 function Row({ icon, label, children }: { icon?: React.ReactNode; label: string; children: React.ReactNode }) {
     return (
-        <div className="grid grid-cols-[140px_1fr] md:grid-cols-[180px_1fr] py-3.5">
-            <dt className="flex items-center gap-1.5 text-[11px] md:text-xs tracking-widest text-mute uppercase font-display">
+        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[160px_1fr] py-4 md:py-5">
+            <dt className="flex items-center gap-1.5 text-[11px] md:text-xs tracking-[0.08em] text-mute font-display">
                 {icon}
                 {label}
             </dt>
-            <dd className="text-sm tracking-wide text-ink-soft leading-relaxed">{children}</dd>
+            <dd className="text-[15px] text-ink-soft leading-[1.85]">{children}</dd>
         </div>
     );
 }
