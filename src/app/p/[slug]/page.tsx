@@ -111,8 +111,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             {/* ============================== */}
             {/* Hero 下から横スクロール ギャラリー (UNIQ 風: rounded-md + 控えめ shadow + 適切な余白) */}
+            {/* Hero と画像セクションの間に明確な呼吸 (mt-14 md:mt-24) */}
             {/* ============================== */}
-            <div className="relative z-20 -mt-10 md:-mt-16 mb-16 md:mb-24">
+            <div className="relative mt-14 md:mt-24 mb-16 md:mb-24">
                 <div className="overflow-x-auto no-scrollbar">
                     <div className="inline-flex gap-3 md:gap-4 px-5 md:px-10 pb-2">
                         {p.gallery.map((img, i) => (
