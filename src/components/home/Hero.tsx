@@ -22,15 +22,15 @@ export function Hero() {
     }, [imgs.length]);
 
     return (
-        <section className="relative h-[78vh] md:h-[82vh] min-h-[600px] flex flex-col overflow-hidden bg-ink">
-            {/* 背景写真クロスフェード */}
+        <section className="relative h-[92vh] md:h-[96vh] min-h-[680px] flex flex-col overflow-hidden bg-ink">
+            {/* 背景写真クロスフェード — Ken Burns 効果 (slow zoom) */}
             <AnimatePresence mode="sync">
                 <motion.div
                     key={imgIdx}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, scale: 1.08 }}
+                    animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 1.6, ease: "easeInOut" }}
+                    transition={{ opacity: { duration: 1.8, ease: "easeInOut" }, scale: { duration: 7, ease: "easeOut" } }}
                     className="absolute inset-0"
                 >
                     <Image
@@ -43,49 +43,54 @@ export function Hero() {
                     />
                 </motion.div>
             </AnimatePresence>
-            {/* 微粒子グレイン + 上下のtinted overlay (Anti-Slop: flat に depth を) */}
+            {/* warm dark tinted overlay + 上下 vignette (flat 解消) */}
             <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
                     background:
-                        "linear-gradient(to bottom, rgba(20,16,12,0.55) 0%, rgba(20,16,12,0.30) 40%, rgba(20,16,12,0.78) 100%)",
+                        "radial-gradient(ellipse at 30% 30%, rgba(40,28,20,0.30) 0%, rgba(20,14,10,0.50) 50%, rgba(10,7,5,0.85) 100%)",
+                }}
+            />
+            {/* 微細グレイン (premium texture) */}
+            <div
+                className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-overlay"
+                style={{
+                    backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
                 }}
             />
 
-            {/* 上部: 100 VILLA + tagline (押し上げ) */}
-            <div className="relative z-10 container mx-auto px-5 md:px-7 pt-20 md:pt-24 text-bg">
-                <p className="text-[11px] md:text-xs tracking-[0.18em] text-gold-deep/90 mb-3 font-display italic">
-                    — curated vacation rentals
+            {/* 中央配置: 巨大 100 + tagline */}
+            <div className="relative z-10 container mx-auto px-5 md:px-7 flex-1 flex flex-col justify-center text-bg">
+                <p className="text-xs md:text-sm tracking-[0.16em] text-gold-deep/95 mb-6 md:mb-8 font-display italic">
+                    — curated vacation rentals — japan&apos;s 100 best stays
                 </p>
-                <div className="flex items-end gap-3 md:gap-4">
+                <div className="relative">
                     <span
-                        className="font-mincho text-[18vw] md:text-[9rem] lg:text-[11rem] font-medium leading-[0.85]"
-                        style={{ letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}
+                        className="block font-mincho text-[36vw] md:text-[26rem] lg:text-[32rem] font-medium leading-[0.78] -ml-2 md:-ml-6"
+                        style={{ letterSpacing: "-0.05em", fontVariantNumeric: "tabular-nums" }}
                     >
                         100
                     </span>
-                    <div className="pb-1.5 md:pb-5">
-                        <p className="font-display text-2xl md:text-5xl tracking-[0.18em] font-medium leading-none">
-                            VILLA
-                        </p>
-                        <p className="text-[11px] md:text-xs tracking-[0.16em] text-bg/65 mt-2 font-display italic">
-                            japan&apos;s best stays
-                        </p>
-                    </div>
+                    <p
+                        className="absolute right-0 bottom-[8%] md:bottom-[12%] font-display text-3xl md:text-7xl lg:text-8xl tracking-[0.22em] font-light leading-none text-bg/95"
+                    >
+                        VILLA
+                    </p>
                 </div>
                 <p
-                    className="font-mincho text-lg md:text-3xl font-medium mt-5 md:mt-7 max-w-2xl leading-[1.5]"
+                    className="font-mincho text-xl md:text-4xl font-medium mt-8 md:mt-12 max-w-3xl leading-[1.45]"
                     style={{ letterSpacing: "-0.005em", textWrap: "balance" }}
                 >
                     {siteMeta.tagline}
                 </p>
-                <div className="mt-4">
+                <div className="mt-6 md:mt-8">
                     <ViewerCounter />
                 </div>
             </div>
 
-            {/* 中央上寄せ: 検索バー (タグライン直後に近い位置) */}
-            <div className="relative z-10 container mx-auto px-5 md:px-7 flex-grow flex items-start pt-6 md:pt-10">
+            {/* 下部: 検索バー */}
+            <div className="relative z-10 container mx-auto px-5 md:px-7 pb-12 md:pb-16">
                 <div className="w-full">
                     <Suspense fallback={<div className="h-14" />}>
                         <SearchBar />

@@ -10,18 +10,30 @@ import { AllProperties } from "@/components/home/AllProperties";
 
 export default function Home() {
     return (
-        <main>
+        <main className="overflow-hidden">
             {/* SearchBar の絞り込みが効いた時に最上位で表示。空のときは null */}
             <Suspense fallback={null}>
                 <FilteredResults />
             </Suspense>
-            <TikTokFeed />
-            <AllProperties />
+            <div className="py-12 md:py-20">
+                <TikTokFeed />
+            </div>
+            <div className="bg-bg-card/30">
+                <AllProperties />
+            </div>
             <Hero />
-            <RegionTiles />
-            <FeatureTiles />
-            <FeaturedSection />
-            <Ranking />
+            <div className="py-12 md:py-20">
+                <RegionTiles />
+            </div>
+            <div className="py-12 md:py-20 bg-bg-card/30">
+                <FeatureTiles />
+            </div>
+            <div className="py-12 md:py-20">
+                <FeaturedSection />
+            </div>
+            <div className="py-12 md:py-20">
+                <Ranking />
+            </div>
         </main>
     );
 }
