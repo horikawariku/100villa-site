@@ -48,15 +48,15 @@ export function RegionTiles() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
                             <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-5 text-bg">
-                                <p className="text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-bg/65 font-display mb-1">
-                                    {REGION_EN[r]}
+                                <p className="text-[11px] md:text-xs tracking-[0.1em] text-gold-deep/90 font-display italic mb-1.5">
+                                    {REGION_EN[r].toLowerCase()}
                                 </p>
                                 <div className="flex items-end justify-between">
-                                    <h3 className="font-mincho text-lg md:text-2xl font-bold tracking-wide leading-none">
+                                    <h3 className="font-mincho text-xl md:text-2xl font-medium leading-none" style={{ letterSpacing: "-0.005em" }}>
                                         {REGION_LABEL[r]}
                                     </h3>
-                                    <span className="font-display text-[10px] md:text-xs tracking-widest text-bg/65">
-                                        {counts[r]} <span className="text-[8px]">stays</span>
+                                    <span className="text-[11px] md:text-xs tracking-[0.04em] text-bg/65 font-light" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                        {counts[r]} <span className="opacity-70">stays</span>
                                     </span>
                                 </div>
                             </div>

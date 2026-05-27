@@ -80,7 +80,8 @@ export function Header() {
                         <Link
                             href="/search"
                             onClick={() => setOpen(false)}
-                            className="font-serif text-2xl md:text-3xl text-ink hover:text-gold transition-colors"
+                            className="font-mincho text-3xl md:text-4xl font-medium text-ink hover:text-gold-deep transition-colors duration-300"
+                            style={{ letterSpacing: "-0.005em" }}
                         >
                             宿を探す
                         </Link>
@@ -89,15 +90,16 @@ export function Header() {
                                 key={item.name}
                                 href={item.href}
                                 onClick={() => setOpen(false)}
-                                className="font-serif text-xl md:text-2xl text-ink-soft hover:text-ink transition-colors tracking-wide"
+                                className="font-mincho text-xl md:text-2xl font-medium text-ink-soft hover:text-ink transition-colors duration-300"
+                                style={{ letterSpacing: "-0.005em" }}
                             >
                                 {item.name}
                             </Link>
                         ))}
                     </nav>
-                    <div className="px-5 md:px-7 py-6 border-t border-line flex items-center justify-between text-[10px] tracking-widest text-mute">
+                    <div className="px-5 md:px-7 py-6 border-t border-line flex items-center justify-between text-[11px] tracking-[0.06em] text-mute italic">
                         <span>{siteMeta.tagline}</span>
-                        <span>EDITOR / {siteMeta.editor.name}</span>
+                        <span>editor — {siteMeta.editor.name}</span>
                     </div>
                 </div>
             )}

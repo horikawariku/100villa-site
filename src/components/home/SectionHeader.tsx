@@ -11,16 +11,24 @@ interface Props {
  */
 export function SectionHeader({ eyebrow, title, suffix }: Props) {
     return (
-        <div className="border-b border-line/70 pb-3 mb-6 md:mb-7">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1">
-                {eyebrow}
+        <div className="mb-8 md:mb-10">
+            <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-2.5">
+                — {eyebrow.toLowerCase()}
             </p>
-            <div className="flex items-baseline gap-3">
-                <h2 className="font-display text-lg md:text-2xl font-bold tracking-wider text-ink">
+            <div className="flex items-baseline gap-3 flex-wrap">
+                <h2
+                    className="font-mincho text-2xl md:text-[2rem] font-medium text-ink leading-[1.1]"
+                    style={{ letterSpacing: "-0.005em" }}
+                >
                     {title}
                 </h2>
                 {suffix && (
-                    <span className="text-xs md:text-sm text-mute font-normal">{suffix}</span>
+                    <span
+                        className="text-xs md:text-sm text-mute font-light tracking-wide"
+                        style={{ fontVariantNumeric: "tabular-nums" }}
+                    >
+                        {suffix}
+                    </span>
                 )}
             </div>
         </div>

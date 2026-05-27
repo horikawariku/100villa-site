@@ -47,15 +47,15 @@ export function FeatureTiles() {
                                 sizes="(max-width: 640px) 36vw, 220px"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                            <div className="absolute inset-x-0 bottom-0 p-3 md:p-4 text-bg">
-                                <p className="text-[9px] tracking-[0.25em] uppercase text-bg/65 font-display mb-0.5">
-                                    {f.toUpperCase()}
+                            <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 text-bg">
+                                <p className="text-[11px] tracking-[0.1em] text-gold-deep/90 font-display italic mb-1">
+                                    {f.toLowerCase()}
                                 </p>
                                 <div className="flex items-baseline justify-between gap-2">
-                                    <h3 className="font-mincho text-sm md:text-base font-bold tracking-wide leading-none">
+                                    <h3 className="font-mincho text-base md:text-lg font-medium leading-none" style={{ letterSpacing: "-0.005em" }}>
                                         {FEATURE_LABEL[f]}
                                     </h3>
-                                    <span className="font-display text-[10px] tracking-widest text-bg/65 shrink-0">
+                                    <span className="text-[11px] tracking-[0.04em] text-bg/65 shrink-0 font-light" style={{ fontVariantNumeric: "tabular-nums" }}>
                                         {counts[f]}
                                     </span>
                                 </div>

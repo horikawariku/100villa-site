@@ -68,17 +68,20 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                     )}
 
                     {/* オーバーレイ情報 (下) */}
-                    <div className="absolute inset-x-0 bottom-0 p-3 md:p-3.5 text-bg">
-                        <h3 className="font-sans text-[14px] md:text-[15px] font-semibold tracking-tight leading-snug line-clamp-1 mb-1.5 text-bg">
+                    <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 text-bg">
+                        <h3
+                            className="font-mincho text-[15px] md:text-[17px] font-medium leading-[1.2] line-clamp-2 mb-2 text-bg"
+                            style={{ letterSpacing: "-0.005em" }}
+                        >
                             {p.name}
                         </h3>
-                        <div className="flex items-center justify-between gap-2 text-[12px] md:text-[13px] font-sans font-light text-bg">
+                        <div className="flex items-center justify-between gap-2 text-[12px] md:text-[13px] font-sans font-light text-bg/85">
                             <span className="flex items-center gap-1 whitespace-nowrap">
                                 <Users className="w-3 h-3 shrink-0" strokeWidth={1.5} />
                                 {p.capacity.min}–{p.capacity.max}名
                             </span>
-                            <span className="whitespace-nowrap">
-                                ¥{p.pricePerPersonFrom.toLocaleString()}〜/人
+                            <span className="whitespace-nowrap" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                ¥{p.pricePerPersonFrom.toLocaleString()}<span className="text-[10px] opacity-70 ml-0.5">〜/人</span>
                             </span>
                         </div>
                     </div>

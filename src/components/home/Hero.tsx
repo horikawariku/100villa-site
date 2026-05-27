@@ -43,30 +43,43 @@ export function Hero() {
                     />
                 </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70" />
+            {/* 微粒子グレイン + 上下のtinted overlay (Anti-Slop: flat に depth を) */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    background:
+                        "linear-gradient(to bottom, rgba(20,16,12,0.55) 0%, rgba(20,16,12,0.30) 40%, rgba(20,16,12,0.78) 100%)",
+                }}
+            />
 
             {/* 上部: 100 VILLA + tagline (押し上げ) */}
             <div className="relative z-10 container mx-auto px-5 md:px-7 pt-20 md:pt-24 text-bg">
-                <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-bg/65 mb-2.5 font-display">
-                    Curated Vacation Rentals
+                <p className="text-[11px] md:text-xs tracking-[0.18em] text-gold-deep/90 mb-3 font-display italic">
+                    — curated vacation rentals
                 </p>
                 <div className="flex items-end gap-3 md:gap-4">
-                    <span className="font-display text-[18vw] md:text-[9rem] lg:text-[11rem] font-semibold leading-none tracking-tighter">
+                    <span
+                        className="font-mincho text-[18vw] md:text-[9rem] lg:text-[11rem] font-medium leading-[0.85]"
+                        style={{ letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}
+                    >
                         100
                     </span>
-                    <div className="pb-1.5 md:pb-4">
-                        <p className="font-display text-2xl md:text-5xl tracking-[0.15em] font-medium leading-none">
+                    <div className="pb-1.5 md:pb-5">
+                        <p className="font-display text-2xl md:text-5xl tracking-[0.18em] font-medium leading-none">
                             VILLA
                         </p>
-                        <p className="text-[10px] md:text-xs tracking-[0.3em] text-bg/60 mt-1.5 font-display uppercase">
-                            JAPAN&apos;s Best Stays
+                        <p className="text-[11px] md:text-xs tracking-[0.16em] text-bg/65 mt-2 font-display italic">
+                            japan&apos;s best stays
                         </p>
                     </div>
                 </div>
-                <p className="font-mincho text-base md:text-2xl font-bold tracking-wider mt-3 md:mt-4 max-w-2xl leading-relaxed">
+                <p
+                    className="font-mincho text-lg md:text-3xl font-medium mt-5 md:mt-7 max-w-2xl leading-[1.5]"
+                    style={{ letterSpacing: "-0.005em", textWrap: "balance" }}
+                >
                     {siteMeta.tagline}
                 </p>
-                <div className="mt-3">
+                <div className="mt-4">
                     <ViewerCounter />
                 </div>
             </div>
@@ -101,7 +114,7 @@ export function Hero() {
                 transition={{ delay: 1.2, duration: 0.8 }}
                 className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-bg/65 pointer-events-none"
             >
-                <span className="text-[9px] tracking-[0.4em] uppercase mb-1 font-display">Discover</span>
+                <span className="text-[10px] tracking-[0.18em] mb-1 font-display italic">discover</span>
                 <motion.div
                     animate={{ y: [0, 5, 0] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
