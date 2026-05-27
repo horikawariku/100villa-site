@@ -60,7 +60,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             {/* ============================== */}
             {/* UNIQ 風フルブリード Hero */}
             {/* ============================== */}
-            <section className="relative h-[100vh] min-h-[680px] overflow-hidden bg-ink">
+            <section className="relative h-[82vh] md:h-[85vh] min-h-[560px] overflow-hidden bg-ink">
                 <Image
                     src={p.mainPhoto}
                     alt={p.name}
