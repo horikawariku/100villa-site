@@ -83,7 +83,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 {/* キャッチコピー上部 */}
                 <div className="absolute inset-x-0 top-0 pt-24 md:pt-32 px-5 md:px-7 z-10">
                     <p
-                        className="text-center text-[11px] md:text-sm tracking-[0.32em] uppercase text-bg/95 max-w-3xl mx-auto leading-relaxed font-light"
+                        className="text-center text-[10px] md:text-[13px] tracking-[0.28em] md:tracking-[0.36em] uppercase text-bg/95 max-w-2xl md:max-w-3xl mx-auto leading-[1.7] font-light"
                         style={{ textWrap: "balance" }}
                     >
                         {p.catchcopy}
@@ -93,12 +93,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 {/* 中央: 宿名 + 場所 */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-5 md:px-7 z-10 text-bg text-center">
                     <h1
-                        className="font-mincho italic text-5xl md:text-7xl lg:text-[7rem] font-light leading-[0.95]"
-                        style={{ letterSpacing: "0.005em", textWrap: "balance" }}
+                        className="font-mincho italic text-[10vw] md:text-7xl lg:text-[6.5rem] font-light leading-[0.95] whitespace-nowrap"
+                        style={{ letterSpacing: "0.005em" }}
                     >
                         {p.name}
                     </h1>
-                    <p className="mt-5 md:mt-7 text-[11px] md:text-sm tracking-[0.4em] uppercase text-bg/80 font-light">
+                    <p className="mt-5 md:mt-7 text-[11px] md:text-sm tracking-[0.4em] uppercase text-bg/80 font-light whitespace-nowrap">
                         {p.area.prefecture}, {REGION_LABEL[p.area.region]}
                     </p>
                 </div>
@@ -110,51 +110,52 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             </section>
 
             {/* ============================== */}
-            {/* Hero 下から横スクロール ギャラリー */}
+            {/* Hero 下から横スクロール ギャラリー (UNIQ 風: rounded-md + 控えめ shadow + 適切な余白) */}
             {/* ============================== */}
-            <div className="relative z-20 -mt-16 md:-mt-24 mb-12 md:mb-20">
+            <div className="relative z-20 -mt-10 md:-mt-16 mb-16 md:mb-24">
                 <div className="overflow-x-auto no-scrollbar">
-                    <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
+                    <div className="inline-flex gap-3 md:gap-4 px-5 md:px-10 pb-2">
                         {p.gallery.map((img, i) => (
                             <div
                                 key={i}
-                                className="relative w-[72vw] sm:w-[420px] md:w-[480px] aspect-[4/5] overflow-hidden bg-line shadow-2xl shrink-0"
+                                className="relative w-[68vw] sm:w-[360px] md:w-[400px] lg:w-[440px] aspect-[4/5] overflow-hidden bg-line rounded-md shrink-0 group"
+                                style={{ boxShadow: "0 20px 60px -20px rgba(20,14,10,0.35), 0 8px 24px -8px rgba(20,14,10,0.18)" }}
                             >
                                 <Image
                                     src={img.src}
                                     alt={img.caption || `${p.name} ${i + 1}`}
                                     fill
-                                    className="object-cover transition-transform duration-700 hover:scale-105"
-                                    sizes="(max-width: 640px) 72vw, 480px"
+                                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                                    sizes="(max-width: 640px) 68vw, 440px"
                                     priority={i < 2}
                                 />
                                 {img.caption && (
-                                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                                        <p className="text-bg/95 text-xs md:text-sm tracking-wide font-mincho italic">
+                                    <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 bg-gradient-to-t from-black/65 via-black/20 to-transparent">
+                                        <p className="text-bg/95 text-xs md:text-[13px] tracking-wide font-mincho italic leading-snug">
                                             {img.caption}
                                         </p>
                                     </div>
                                 )}
                             </div>
                         ))}
-                        <div className="w-3 shrink-0" />
+                        <div className="w-5 md:w-10 shrink-0" />
                     </div>
                 </div>
             </div>
 
             {/* パンくず */}
-            <nav className="container mx-auto px-5 md:px-7 mb-6 text-[11px] tracking-[0.12em] text-mute">
+            <nav className="container mx-auto px-5 md:px-10 mb-7 md:mb-8 text-[11px] tracking-[0.12em] text-mute">
                 <Link href="/" className="hover:text-ink transition-colors duration-300">home</Link>
-                <span className="mx-2 opacity-50">›</span>
+                <span className="mx-2 opacity-40">›</span>
                 <Link href={`/area/${p.area.region}`} className="hover:text-ink transition-colors duration-300">
                     {REGION_LABEL[p.area.region]}
                 </Link>
-                <span className="mx-2 opacity-50">›</span>
+                <span className="mx-2 opacity-40">›</span>
                 <span className="text-ink-soft">{p.name}</span>
             </nav>
 
             {/* タイトル + 主要情報 */}
-            <div className="container mx-auto px-5 md:px-7 mb-10 md:mb-14">
+            <div className="container mx-auto px-5 md:px-10 mb-10 md:mb-14">
                 <p className="text-[11px] md:text-xs tracking-[0.18em] text-gold-deep font-display italic mb-4">
                     {p.area.prefecture} — {REGION_LABEL[p.area.region]}
                 </p>
@@ -209,7 +210,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
 
             {/* 2カラムレイアウト: コンテンツ + sticky BookingCard */}
-            <div className="container mx-auto px-5 md:px-7 mt-12 md:mt-16">
+            <div className="container mx-auto px-5 md:px-10 mt-12 md:mt-16">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
                     {/* 左カラム: コンテンツ */}
                     <div className="lg:col-span-7">
@@ -342,7 +343,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             <RecentlyViewed excludeId={p.id} />
 
             {/* 下部CTA */}
-            <div className="container mx-auto px-5 md:px-7 max-w-3xl mt-16 md:mt-24 text-center">
+            <div className="container mx-auto px-5 md:px-10 max-w-3xl mt-16 md:mt-24 text-center">
                 <OfficialSiteCTA property={p} placement="bottom" />
                 <p className="text-[11px] tracking-[0.12em] text-mute mt-5 italic">
                     予約は{p.name}公式サイトからどうぞ
