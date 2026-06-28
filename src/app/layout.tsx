@@ -1,23 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, Cinzel, Playfair_Display, Zen_Old_Mincho } from "next/font/google";
+import { Cinzel, Playfair_Display, Zen_Kaku_Gothic_New } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { HomeSearchDock } from "@/components/layout/HomeSearchDock";
 import { PageViewBeacon } from "@/components/PageViewBeacon";
 import { siteMeta } from "@/data/siteMeta";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const cinzel = Cinzel({ weight: ["400", "500", "600", "700"], subsets: ["latin"], variable: "--font-cinzel" });
+const zenGothic = Zen_Kaku_Gothic_New({ weight: ["300", "400", "500", "700"], subsets: ["latin"], variable: "--font-zen-gothic" });
+const cinzel = Cinzel({ weight: ["400", "500", "600"], subsets: ["latin"], variable: "--font-cinzel" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
-const zenMincho = Zen_Old_Mincho({ weight: ["400", "500", "700"], subsets: ["latin"], variable: "--font-zen-mincho" });
 
 export const metadata: Metadata = {
     title: { default: siteMeta.name, template: `%s | ${siteMeta.name}` },
     description: siteMeta.description,
     metadataBase: new URL(siteMeta.url),
     other: {
-        // redirect-tracker の site-tracker-js が読み取る宿ID。
-        // 100villa media自体のアクセス計測用 (個別宿へのクリックは別途redirect-tracker /api/redirect で記録)
+        // redirect-tracker の site-tracker-js が読み取る宿ID (100villa media のアクセス計測用)
         "rt-property": "100villa",
     },
     openGraph: {
@@ -41,21 +40,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="ja">
             <head>
-                {/* DNS+TLS pre-establish で page-view POST を高速化 */}
                 <link rel="preconnect" href={siteMeta.trackerOrigin} />
             </head>
             <body
-                className={`${inter.variable} ${cinzel.variable} ${playfair.variable} ${zenMincho.variable} antialiased bg-bg text-ink`}
-                style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                className={`${zenGothic.variable} ${cinzel.variable} ${playfair.variable} antialiased bg-bg text-ink`}
+                style={{ fontFamily: "var(--font-zen-gothic), system-ui, sans-serif" }}
             >
-                {/*
-                 * page-view 計測: route 切替毎に発火する React Client Component に置き換え.
-                 * 旧 <script defer src=".../site-tracker-js"> は client-side navigation で再発火しないため廃止.
-                 */}
                 <PageViewBeacon />
                 <Header />
                 {children}
                 <Footer />
+                <HomeSearchDock />
             </body>
         </html>
     );

@@ -38,14 +38,14 @@ export function Ranking() {
     if (ranked.length === 0) return null;
 
     return (
-        <section className="py-6 md:py-8 bg-ink text-bg">
+        <section className="py-20 md:py-28 bg-ink text-bg">
             <div className="container mx-auto px-5 md:px-7">
                 {/* ヘッダ (左寄せ・ゴシック・下線) */}
                 <div className="border-b border-bg/15 pb-3 mb-6 md:mb-7">
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-display mb-1">
                         Most Saved
                     </p>
-                    <h2 className="font-display text-lg md:text-2xl font-bold tracking-wider">
+                    <h2 className="font-sans text-2xl md:text-3xl font-medium tracking-wide">
                         保存数ランキング
                     </h2>
                     <p className="text-[10px] md:text-[11px] tracking-widest text-bg/55 mt-1.5">
@@ -62,7 +62,7 @@ export function Ranking() {
                                 className="group flex items-center gap-4 md:gap-7 py-5 md:py-7"
                             >
                                 {/* 番号 */}
-                                <span className="font-display italic text-4xl md:text-7xl font-semibold text-gold shrink-0 leading-none w-10 md:w-20 text-right">
+                                <span className="font-display text-4xl md:text-7xl font-medium text-gold shrink-0 leading-none w-10 md:w-20 text-right">
                                     {String(i + 1).padStart(2, "0")}
                                 </span>
 
@@ -82,7 +82,7 @@ export function Ranking() {
                                     <p className="text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-bg/55 font-display mb-1">
                                         {REGION_LABEL[p.area.region]} / {p.area.prefecture}
                                     </p>
-                                    <h3 className="font-mincho text-base md:text-2xl font-bold tracking-wide leading-tight group-hover:text-gold transition-colors mb-1.5 truncate">
+                                    <h3 className="font-sans text-base md:text-2xl font-bold tracking-wide leading-tight group-hover:text-gold transition-colors mb-1.5 truncate">
                                         {p.name}
                                     </h3>
                                     <p className="hidden md:block text-xs tracking-wide text-bg/65 leading-relaxed line-clamp-1 mb-2">

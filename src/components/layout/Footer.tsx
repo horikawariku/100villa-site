@@ -44,7 +44,7 @@ export function Footer() {
 
                     {/* エリア */}
                     <div>
-                        <p className="text-[11px] tracking-[0.14em] text-gold-deep/80 mb-4 font-display italic">Area</p>
+                        <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">Area</p>
                         <ul className="space-y-2">
                             {REGIONS_FOR_FOOTER.map((r) => (
                                 <li key={r}>
@@ -61,7 +61,7 @@ export function Footer() {
 
                     {/* 体験 */}
                     <div>
-                        <p className="text-[11px] tracking-[0.14em] text-gold-deep/80 mb-4 font-display italic">Feature</p>
+                        <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">Feature</p>
                         <ul className="space-y-2">
                             {FEATURES_FOR_FOOTER.map((f) => (
                                 <li key={f}>
@@ -78,16 +78,11 @@ export function Footer() {
 
                     {/* About */}
                     <div>
-                        <p className="text-[11px] tracking-[0.14em] text-gold-deep/80 mb-4 font-display italic">About</p>
+                        <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">About</p>
                         <ul className="space-y-2 text-[13px] tracking-[0.04em] text-bg/65">
-                            <li><Link href="/about" className="hover:text-bg transition-colors duration-300">編集部について</Link></li>
                             <li><Link href="/wishlist" className="hover:text-bg transition-colors duration-300">お気に入り</Link></li>
                             <li><a href={`mailto:`} className="hover:text-bg transition-colors duration-300">掲載希望のお問い合わせ</a></li>
                         </ul>
-                        <div className="mt-6 pt-5 border-t border-bg/10 text-[12px] tracking-[0.04em] text-bg/45 leading-[1.7] italic">
-                            <p>editor — {siteMeta.editor.name}</p>
-                            <p className="mt-1">{siteMeta.editor.title}</p>
-                        </div>
                     </div>
                 </div>
 

@@ -49,7 +49,7 @@ export function RecentlyViewed({ excludeId }: Props) {
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1.5">
                         Recently Viewed
                     </p>
-                    <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide">最近見た宿</h2>
+                    <h2 className="font-sans text-xl md:text-2xl font-bold tracking-wide">最近見た宿</h2>
                 </div>
                 <div className="md:hidden flex overflow-x-auto no-scrollbar gap-3 pb-2">
                     {items.map((p) => (

@@ -1,36 +1,30 @@
 interface Props {
-    eyebrow: string;
-    title: string;
-    /** 任意・タイトルの右側に表示する補助テキスト (件数等) */
+    /** 英語見出し (大) */
+    en: string;
+    /** 和文サブ (小) */
+    jp: string;
+    /** 任意・見出し右の補助 (件数等) */
     suffix?: string;
 }
 
 /**
- * ホームページ各セクションの共通ヘッダ。
- * 左寄せ・ゴシック (font-display) ・下線。デザイン統一用。
+ * earthboat / mysa 調のバイリンガル見出し:
+ *   英語見出し (ゴシック・大) → 和文サブ (小・muted)。明朝・装飾アクセントは使わない。
  */
-export function SectionHeader({ eyebrow, title, suffix }: Props) {
+export function SectionHeader({ en, jp, suffix }: Props) {
     return (
-        <div className="mb-12 md:mb-16 max-w-3xl">
-            <p className="text-xs md:text-sm tracking-[0.14em] text-gold-deep font-display italic mb-4 md:mb-5">
-                — {eyebrow.toLowerCase()}
-            </p>
-            <div className="flex items-baseline gap-4 flex-wrap">
-                <h2
-                    className="font-mincho text-4xl md:text-6xl font-medium text-ink leading-[0.95]"
-                    style={{ letterSpacing: "-0.015em" }}
-                >
-                    {title}
+        <div className="mb-6 md:mb-8">
+            <div className="flex items-baseline gap-3 flex-wrap">
+                <h2 className="font-sans text-3xl md:text-5xl font-bold text-ink leading-none tracking-[0.01em]">
+                    {en}
                 </h2>
                 {suffix && (
-                    <span
-                        className="text-sm md:text-base text-mute font-light tracking-wide italic"
-                        style={{ fontVariantNumeric: "tabular-nums" }}
-                    >
+                    <span className="text-xs md:text-sm text-mute" style={{ fontVariantNumeric: "tabular-nums" }}>
                         {suffix}
                     </span>
                 )}
             </div>
+            <p className="text-sm md:text-base text-ink-soft mt-3">{jp}</p>
         </div>
     );
 }

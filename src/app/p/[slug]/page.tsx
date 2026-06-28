@@ -93,7 +93,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 {/* 中央: 宿名 + 場所 */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-5 md:px-7 z-10 text-bg text-center">
                     <h1
-                        className="font-mincho italic text-[10vw] md:text-7xl lg:text-[6.5rem] font-light leading-[0.95] whitespace-nowrap"
+                        className="font-sans italic text-[10vw] md:text-7xl lg:text-[6.5rem] font-light leading-[0.95] whitespace-nowrap"
                         style={{ letterSpacing: "0.005em" }}
                     >
                         {p.name}
@@ -132,7 +132,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                 />
                                 {img.caption && (
                                     <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 bg-gradient-to-t from-black/65 via-black/20 to-transparent">
-                                        <p className="text-bg/95 text-xs md:text-[13px] tracking-wide font-mincho italic leading-snug">
+                                        <p className="text-bg/95 text-xs md:text-[13px] tracking-wide font-sans italic leading-snug">
                                             {img.caption}
                                         </p>
                                     </div>
@@ -161,13 +161,13 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     {p.area.prefecture} — {REGION_LABEL[p.area.region]}
                 </p>
                 <h2
-                    className="font-mincho text-3xl md:text-5xl font-medium leading-[1.05] mb-6"
+                    className="font-sans text-3xl md:text-5xl font-medium leading-[1.05] mb-6"
                     style={{ letterSpacing: "-0.01em", textWrap: "balance" }}
                 >
                     {p.name}
                 </h2>
                 <p
-                    className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-mincho italic"
+                    className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-sans italic"
                     style={{ textWrap: "pretty" }}
                 >
                     {p.catchcopy}
@@ -175,7 +175,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
                 {/* 主要スペック行 — 価格を主役に */}
                 <div className="flex flex-wrap items-baseline gap-x-7 gap-y-3 mb-7 text-ink">
-                    <div className="font-mincho text-2xl md:text-3xl font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
+                    <div className="font-sans text-2xl md:text-3xl font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
                         ¥{p.pricePerPersonFrom.toLocaleString()}
                         <span className="text-xs ml-1.5 font-sans font-light tracking-wide text-ink-soft">〜 / 人</span>
                     </div>
@@ -217,7 +217,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     <div className="lg:col-span-7">
                         {/* 紹介文 */}
                         <p
-                            className="font-mincho text-base md:text-lg leading-[2.1] text-ink-soft mb-14 md:mb-20 max-w-[58ch]"
+                            className="font-sans text-base md:text-lg leading-[2.1] text-ink-soft mb-14 md:mb-20 max-w-[58ch]"
                             style={{ textWrap: "pretty" }}
                         >
                             {p.description}
@@ -226,7 +226,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         {/* スペック表 */}
                         <div className="mb-14 md:mb-20">
                             <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— specs</p>
-                            <h2 className="font-mincho text-2xl md:text-[2rem] font-medium mb-8" style={{ letterSpacing: "-0.005em" }}>仕様</h2>
+                            <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-8" style={{ letterSpacing: "-0.005em" }}>仕様</h2>
                             <dl className="divide-y divide-line/60">
                                 {p.specs.checkIn && (
                                     <Row icon={<Calendar className="w-3.5 h-3.5" />} label="チェックイン / アウト">
@@ -279,7 +279,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         {p.tiktokVideoUrl && (
                             <div className="mb-14 md:mb-20">
                                 <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— on tiktok</p>
-                                <h2 className="font-mincho text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>
+                                <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>
                                     TikTokで紹介中
                                 </h2>
                                 <TikTokEmbed url={p.tiktokVideoUrl} fallbackThumbnail={p.mainPhoto} title={p.name} />
@@ -290,7 +290,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         {p.mapEmbedUrl && (
                             <div className="mb-14 md:mb-20">
                                 <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— access</p>
-                                <h2 className="font-mincho text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>アクセスマップ</h2>
+                                <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>アクセスマップ</h2>
                                 <div className="w-full h-[320px] md:h-[440px] overflow-hidden rounded-md">
                                     <iframe
                                         src={p.mapEmbedUrl}
@@ -311,7 +311,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                             style={{ backgroundImage: `linear-gradient(rgba(20,16,12,0.78), rgba(20,16,12,0.88)), url(${p.mainPhoto})` }}
                         >
                             <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3 text-bg/90">— reserve</p>
-                            <h3 className="font-mincho text-xl md:text-2xl font-medium mb-3 text-bg" style={{ letterSpacing: "-0.005em" }}>
+                            <h3 className="font-sans text-xl md:text-2xl font-medium mb-3 text-bg" style={{ letterSpacing: "-0.005em" }}>
                                 詳細・空室は公式へ
                             </h3>
                             <p className="text-xs tracking-wide text-bg/70 mb-6 leading-relaxed">

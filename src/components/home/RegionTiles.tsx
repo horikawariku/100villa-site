@@ -27,35 +27,35 @@ export function RegionTiles() {
     }, {} as Record<Region, number>);
 
     return (
-        <section id="area" className="py-6 md:py-8">
+        <section id="area" className="py-10 md:py-14">
             <div className="container mx-auto px-5 md:px-7">
-                <SectionHeader eyebrow="Area" title="エリアから探す" />
+                <SectionHeader en="Areas" jp="エリアから探す" />
             </div>
             <div className="overflow-x-auto no-scrollbar">
-                <div className="inline-flex gap-2 md:gap-3 px-5 md:px-7">
+                <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
                     {REGIONS.map((r) => (
                         <Link
                             key={r}
                             href={`/area/${r}`}
-                            className="group relative w-[44vw] sm:w-[260px] md:w-[300px] aspect-[4/3] shrink-0 overflow-hidden bg-ink"
+                            className="group relative w-[44vw] sm:w-[260px] md:w-[300px] aspect-[4/3] shrink-0 overflow-hidden rounded-xl bg-ink"
                         >
                             <Image
                                 src={REGION_IMAGE[r]}
                                 alt={REGION_LABEL[r]}
                                 fill
-                                className="object-cover opacity-75 group-hover:opacity-90 group-hover:scale-[1.05] transition-all duration-700"
+                                className="object-cover opacity-80 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700"
                                 sizes="(max-width: 640px) 44vw, 300px"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
                             <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-5 text-bg">
-                                <p className="text-[11px] md:text-xs tracking-[0.1em] text-gold-deep/90 font-display italic mb-1.5">
-                                    {REGION_EN[r].toLowerCase()}
+                                <p className="text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-bg/70 mb-1.5">
+                                    {REGION_EN[r]}
                                 </p>
                                 <div className="flex items-end justify-between">
-                                    <h3 className="font-mincho text-xl md:text-2xl font-medium leading-none" style={{ letterSpacing: "-0.005em" }}>
+                                    <h3 className="font-sans text-xl md:text-2xl font-medium leading-none">
                                         {REGION_LABEL[r]}
                                     </h3>
-                                    <span className="text-[11px] md:text-xs tracking-[0.04em] text-bg/65 font-light" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                    <span className="text-[11px] md:text-xs tracking-wide text-bg/65" style={{ fontVariantNumeric: "tabular-nums" }}>
                                         {counts[r]} <span className="opacity-70">stays</span>
                                     </span>
                                 </div>

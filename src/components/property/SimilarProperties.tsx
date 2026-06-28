@@ -16,7 +16,7 @@ export function SimilarProperties({ label, en, properties }: Props) {
                     <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1.5">
                         {en}
                     </p>
-                    <h2 className="font-mincho text-xl md:text-2xl font-bold tracking-wide">{label}</h2>
+                    <h2 className="font-sans text-xl md:text-2xl font-bold tracking-wide">{label}</h2>
                 </div>
                 {/* モバイル: 横スクロール / デスクトップ: グリッド */}
                 <div className="md:hidden flex overflow-x-auto no-scrollbar gap-3 pb-2">

@@ -1,62 +1,49 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Heart, Search } from "lucide-react";
 import { siteMeta } from "@/data/siteMeta";
 
 const NAV = [
-    { name: "エリアから探す", href: "/#area" },
-    { name: "体験から探す", href: "/#feature" },
-    { name: "全宿一覧", href: "/#all" },
-    { name: "編集部について", href: "/about" },
+    { name: "宿一覧", href: "/#all" },
+    { name: "エリア", href: "/#area" },
+    { name: "体験", href: "/#feature" },
 ];
 
 export function Header() {
-    const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        const h = () => setScrolled(window.scrollY > 30);
-        window.addEventListener("scroll", h, { passive: true });
-        return () => window.removeEventListener("scroll", h);
-    }, []);
 
     return (
         <>
-            <header
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-                    scrolled ? "bg-bg/95 backdrop-blur-md border-b border-line py-2.5" : "bg-transparent py-4"
-                }`}
-            >
-                <div className="container mx-auto px-5 md:px-7 flex items-center justify-between">
-                    <Link
-                        href="/"
-                        className="group [perspective:600px] inline-block"
-                        aria-label={siteMeta.name}
-                    >
-                        <span className="relative inline-block font-display text-base md:text-lg tracking-[0.25em] font-semibold transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateX(180deg)]">
-                            <span className="block [backface-visibility:hidden]">100 VILLA</span>
-                            <span className="absolute inset-0 [backface-visibility:hidden] [transform:rotateX(180deg)] font-mincho">100 ヴィラ</span>
-                        </span>
+            <header className="fixed top-0 left-0 w-full z-50 bg-bg/95 backdrop-blur-md border-b border-line">
+                <div className="container mx-auto px-5 md:px-7 h-16 flex items-center justify-between">
+                    <Link href="/" aria-label={siteMeta.name} className="font-sans text-ink leading-[0.9] tracking-tight">
+                        <span className="block text-base md:text-lg font-bold">100</span>
+                        <span className="block text-base md:text-lg font-bold tracking-[0.18em]">VILLA</span>
                     </Link>
-                    <div className="flex items-center gap-3 md:gap-5">
-                        <Link
-                            href="/search"
-                            aria-label="検索"
-                            className="hidden md:flex items-center gap-2 text-xs tracking-widest text-ink-soft hover:text-ink transition-colors"
-                        >
-                            <Search className="w-4 h-4" /> 宿を探す
+
+                    <nav className="hidden md:flex items-center gap-8">
+                        {NAV.map((item) => (
+                            <Link
+                                key={item.name}
+                                href={item.href}
+                                className="text-[13px] tracking-[0.06em] text-ink-soft hover:text-ink transition-colors"
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </nav>
+
+                    <div className="flex items-center gap-4 md:gap-5 text-ink-soft">
+                        <Link href="/search" aria-label="検索" className="hover:text-ink transition-colors">
+                            <Search className="w-[18px] h-[18px]" strokeWidth={1.6} />
                         </Link>
-                        <Link
-                            href="/wishlist"
-                            aria-label="お気に入り"
-                            className="hover:opacity-70 transition-opacity"
-                        >
-                            <Heart className="w-4 h-4 md:w-5 md:h-5" />
+                        <Link href="/wishlist" aria-label="お気に入り" className="hover:text-ink transition-colors">
+                            <Heart className="w-[18px] h-[18px]" strokeWidth={1.6} />
                         </Link>
-                        <button onClick={() => setOpen(true)} aria-label="メニュー">
-                            <Menu className="w-5 h-5 md:w-6 md:h-6" />
+                        <button onClick={() => setOpen(true)} aria-label="メニュー" className="md:hidden text-ink">
+                            <Menu className="w-6 h-6" strokeWidth={1.6} />
                         </button>
                     </div>
                 </div>
@@ -64,15 +51,12 @@ export function Header() {
 
             {open && (
                 <div className="fixed inset-0 z-[60] bg-bg flex flex-col">
-                    <div className="container mx-auto px-5 md:px-7 py-4 flex items-center justify-between border-b border-line">
-                        <Link
-                            href="/"
-                            onClick={() => setOpen(false)}
-                            className="font-display text-base md:text-lg tracking-[0.25em] font-semibold"
-                        >
-                            {siteMeta.name}
+                    <div className="container mx-auto px-5 md:px-7 h-16 flex items-center justify-between border-b border-line">
+                        <Link href="/" onClick={() => setOpen(false)} className="font-sans text-ink leading-[0.9] tracking-tight">
+                            <span className="block text-base font-bold">100</span>
+                            <span className="block text-base font-bold tracking-[0.18em]">VILLA</span>
                         </Link>
-                        <button onClick={() => setOpen(false)} aria-label="閉じる">
+                        <button onClick={() => setOpen(false)} aria-label="閉じる" className="text-ink">
                             <X className="w-5 h-5" />
                         </button>
                     </div>
@@ -80,8 +64,7 @@ export function Header() {
                         <Link
                             href="/search"
                             onClick={() => setOpen(false)}
-                            className="font-mincho text-3xl md:text-4xl font-medium text-ink hover:text-gold-deep transition-colors duration-300"
-                            style={{ letterSpacing: "-0.005em" }}
+                            className="font-sans text-2xl font-medium text-ink hover:text-ink-soft transition-colors"
                         >
                             宿を探す
                         </Link>
@@ -90,16 +73,14 @@ export function Header() {
                                 key={item.name}
                                 href={item.href}
                                 onClick={() => setOpen(false)}
-                                className="font-mincho text-xl md:text-2xl font-medium text-ink-soft hover:text-ink transition-colors duration-300"
-                                style={{ letterSpacing: "-0.005em" }}
+                                className="font-sans text-lg font-normal text-ink-soft hover:text-ink transition-colors"
                             >
                                 {item.name}
                             </Link>
                         ))}
                     </nav>
-                    <div className="px-5 md:px-7 py-6 border-t border-line flex items-center justify-between text-[11px] tracking-[0.06em] text-mute italic">
+                    <div className="px-5 md:px-7 py-6 border-t border-line text-[11px] tracking-[0.06em] text-mute">
                         <span>{siteMeta.tagline}</span>
-                        <span>editor — {siteMeta.editor.name}</span>
                     </div>
                 </div>
             )}

@@ -35,7 +35,7 @@ function SearchContent() {
                 <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
                     Search
                 </p>
-                <h1 className="font-mincho text-3xl md:text-5xl font-bold tracking-wide mb-7 md:mb-9">
+                <h1 className="font-sans text-3xl md:text-5xl font-bold tracking-wide mb-7 md:mb-9">
                     宿を探す
                 </h1>
 

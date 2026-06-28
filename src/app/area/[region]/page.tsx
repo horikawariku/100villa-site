@@ -40,7 +40,7 @@ export default async function AreaPage({ params }: { params: Promise<{ region: s
                 <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
                     Area
                 </p>
-                <h1 className="font-mincho text-3xl md:text-5xl font-bold tracking-wide mb-2">{label}</h1>
+                <h1 className="font-sans text-3xl md:text-5xl font-bold tracking-wide mb-2">{label}</h1>
                 <p className="text-sm tracking-widest text-mute mb-10 md:mb-14">{list.length} stays</p>
 
                 {list.length === 0 ? (

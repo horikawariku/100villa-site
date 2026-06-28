@@ -47,17 +47,17 @@ export function FilteredResults() {
     features.forEach((f) => labels.push(FEATURE_LABEL[f]));
 
     return (
-        <section id="results" className="py-6 md:py-8 bg-bg-card/50 border-y border-line">
+        <section id="results" className="py-12 md:py-16 bg-bg-alt">
             <div className="container mx-auto px-5 md:px-7">
-                <div className="border-b border-line/70 pb-3 mb-6 md:mb-7">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1">
+                <div className="mb-9 md:mb-12">
+                    <p className="text-[11px] tracking-[0.26em] uppercase text-gold-deep mb-3">
                         Filtered
                     </p>
                     <div className="flex items-baseline gap-3">
-                        <h2 className="font-display text-lg md:text-2xl font-bold tracking-wider text-ink">
+                        <h2 className="font-sans text-3xl md:text-4xl font-bold text-ink">
                             絞り込み結果
                         </h2>
-                        <span className="text-xs md:text-sm text-mute font-normal">
+                        <span className="text-xs md:text-sm text-mute">
                             {results.length} 件
                         </span>
                     </div>
@@ -73,7 +73,7 @@ export function FilteredResults() {
                         条件に該当する宿が見つかりませんでした。フィルターを変更してください。
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10 md:gap-x-7 md:gap-y-12">
                         {results.map((p) => (
                             <PropertyCard key={p.id} property={p} size="md" />
                         ))}

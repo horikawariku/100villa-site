@@ -21,7 +21,7 @@ export function StickyMobileCTA({ property }: Props) {
         <div className="fixed bottom-0 left-0 w-full z-40 md:hidden bg-bg/95 backdrop-blur-md border-t border-line p-3 shadow-lg">
             <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                    <p className="font-mincho text-sm font-bold truncate">{property.name}</p>
+                    <p className="font-sans text-sm font-bold truncate">{property.name}</p>
                     <p className="text-[10px] tracking-widest text-mute mt-0.5">
                         ¥{property.pricePerPersonFrom.toLocaleString()}〜 / 人
                     </p>

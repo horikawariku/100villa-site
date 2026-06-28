@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* カラー */
-  --color-bg: #fafaf8;
+  /* カラー (warm neutral / earthboat・mysa調) */
+  --color-bg: #f5f2ec;          /* 温かいクリーム地 */
+  --color-bg-alt: #ece7dd;      /* 一段深いクリーム (alt section) */
   --color-bg-card: #ffffff;
-  --color-ink: #0a0a0a;
-  --color-ink-soft: #555555;
-  --color-mute: #888888;
-  --color-line: #e8e6e1;
-  --color-line-strong: #cfcdc7;
-  /* アクセント: ミュートゴールド (luxury villa) */
-  --color-gold: #b89968;
-  --color-gold-deep: #8a6e3a;
+  --color-ink: #1b1714;         /* warm near-black */
+  --color-ink-soft: #6b645b;
+  --color-mute: #a39b8e;
+  --color-line: #e4ddd0;
+  --color-line-strong: #d2cabb;
+  --color-gold: #9c8e79;
+  --color-gold-deep: #897a64;
 
-  /* フォント */
-  --font-display: var(--font-cinzel), serif;          /* 100 / VILLA など見出し巨大 */
-  --font-serif: var(--font-playfair), serif;           /* 装飾的セリフ */
-  --font-mincho: var(--font-zen-mincho), serif;        /* 和文セリフ */
-  --font-sans: var(--font-inter), sans-serif;          /* 本文 */
+  /* フォント: 明朝は廃止し、和文・本文ともゴシックに統一。Cinzelは100 VILLA wordmarkのみ。 */
+  --font-display: var(--font-cinzel), serif;
+  --font-serif: var(--font-playfair), serif;
+  --font-mincho: var(--font-zen-gothic), system-ui, sans-serif;
+  --font-sans: var(--font-zen-gothic), system-ui, sans-serif;
 }
 
 @layer base {

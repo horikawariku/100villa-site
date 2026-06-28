@@ -26,36 +26,35 @@ export function FeatureTiles() {
     }, {});
 
     return (
-        <section id="feature" className="py-6 md:py-8">
+        <section id="feature" className="py-10 md:py-14 bg-bg-alt">
             <div className="container mx-auto px-5 md:px-7">
-                <SectionHeader eyebrow="Feature" title="体験から探す" />
+                <SectionHeader en="Experiences" jp="体験から探す" />
             </div>
-            {/* 横スクロール (写真付きタイル) */}
             <div className="overflow-x-auto no-scrollbar">
-                <div className="inline-flex gap-2 md:gap-3 px-5 md:px-7">
+                <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
                     {FEATURES.map((f) => (
                         <Link
                             key={f}
                             href={`/feature/${f}`}
-                            className="group relative w-[36vw] sm:w-[200px] md:w-[220px] aspect-[4/5] shrink-0 overflow-hidden bg-ink"
+                            className="group relative w-[36vw] sm:w-[200px] md:w-[220px] aspect-[4/5] shrink-0 overflow-hidden rounded-xl bg-ink"
                         >
                             <Image
                                 src={FEATURE_IMAGE[f]}
                                 alt={FEATURE_LABEL[f]}
                                 fill
-                                className="object-cover opacity-80 group-hover:opacity-95 group-hover:scale-[1.05] transition-all duration-700"
+                                className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                                 sizes="(max-width: 640px) 36vw, 220px"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                             <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 text-bg">
-                                <p className="text-[11px] tracking-[0.1em] text-gold-deep/90 font-display italic mb-1">
-                                    {f.toLowerCase()}
+                                <p className="text-[10px] tracking-[0.16em] uppercase text-bg/70 mb-1">
+                                    {f}
                                 </p>
                                 <div className="flex items-baseline justify-between gap-2">
-                                    <h3 className="font-mincho text-base md:text-lg font-medium leading-none" style={{ letterSpacing: "-0.005em" }}>
+                                    <h3 className="font-sans text-base md:text-lg font-medium leading-none">
                                         {FEATURE_LABEL[f]}
                                     </h3>
-                                    <span className="text-[11px] tracking-[0.04em] text-bg/65 shrink-0 font-light" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                    <span className="text-[11px] tracking-wide text-bg/65 shrink-0" style={{ fontVariantNumeric: "tabular-nums" }}>
                                         {counts[f]}
                                     </span>
                                 </div>

@@ -27,7 +27,7 @@ const FEATURES: FeatureTag[] = [
  * テキスト + エリア + 体験 の3軸絞り込み検索バー。
  * 選択した結果はURLパラメータで保持され、同ページ内 FilteredResults が即座に反映する。
  */
-export function SearchBar() {
+export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
     const router = useRouter();
     const sp = useSearchParams();
 
@@ -100,7 +100,7 @@ export function SearchBar() {
             {/* メイン検索フォーム */}
             <form
                 onSubmit={submit}
-                className="flex items-center gap-2 bg-bg/95 border border-line shadow-sm"
+                className="flex items-center gap-2 bg-bg/95 border border-line shadow-sm rounded-lg overflow-hidden"
             >
                 <Search className="w-4 h-4 ml-4 text-mute shrink-0" />
                 <input
@@ -182,7 +182,7 @@ export function SearchBar() {
 
             {/* エリアポップアップ */}
             {openRegion && (
-                <div className="absolute z-30 left-0 right-0 mt-2 p-3 bg-bg border border-line shadow-lg">
+                <div className={`absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-2" : "mt-2"} p-3 bg-bg border border-line shadow-lg rounded-lg`}>
                     <p className="text-[10px] tracking-widest text-mute mb-2 uppercase font-display">Area (複数可)</p>
                     <div className="flex flex-wrap gap-1.5">
                         {REGIONS.map((r) => (
@@ -205,7 +205,7 @@ export function SearchBar() {
 
             {/* 体験ポップアップ */}
             {openFeature && (
-                <div className="absolute z-30 left-0 right-0 mt-2 p-3 bg-bg border border-line shadow-lg">
+                <div className={`absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-2" : "mt-2"} p-3 bg-bg border border-line shadow-lg rounded-lg`}>
                     <p className="text-[10px] tracking-widest text-mute mb-2 uppercase font-display">Feature (複数可)</p>
                     <div className="flex flex-wrap gap-1.5">
                         {FEATURES.map((f) => (
