@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { bookingUrl } from "@/data/siteMeta";
+import { bookingUrl, mysaSiteUrl } from "@/data/siteMeta";
 import type { Property } from "@/data/types";
 
 interface Props {
@@ -18,12 +18,15 @@ interface Props {
  * 後日その公式サイトで予約があれば成果として計上される。
  */
 export function OfficialSiteCTA({ property, placement, variant = "primary", fullWidth = false }: Props) {
-    const url = bookingUrl({
-        propertyId: property.redirectId,
-        source: "100villa",
-        cta: `100villa-${placement}`,
-        campaign: property.id,
-    });
+    // mysa宿は mysa-site の宿ページへ（そこからBeds24予約=redirect経由で100villa成果に計上）
+    const url =
+        mysaSiteUrl(property.id, "100villa") ??
+        bookingUrl({
+            propertyId: property.redirectId,
+            source: "100villa",
+            cta: `100villa-${placement}`,
+            campaign: property.id,
+        });
     const base = fullWidth ? "w-full" : "inline-flex";
     if (variant === "outline") {
         return (

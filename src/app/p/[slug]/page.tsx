@@ -90,19 +90,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     </p>
                 </div>
 
-                {/* 中央: 宿名 + 場所 */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-5 md:px-7 z-10 text-bg text-center">
-                    <h1
-                        className="font-sans italic text-[10vw] md:text-7xl lg:text-[6.5rem] font-light leading-[0.95] whitespace-nowrap"
-                        style={{ letterSpacing: "0.005em" }}
-                    >
-                        {p.name}
-                    </h1>
-                    <p className="mt-5 md:mt-7 text-[11px] md:text-sm tracking-[0.4em] uppercase text-bg/80 font-light whitespace-nowrap">
-                        {p.area.prefecture}, {REGION_LABEL[p.area.region]}
-                    </p>
-                </div>
-
                 {/* スクロールヒント (下部) */}
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-bg/70 text-[10px] tracking-[0.3em] uppercase">
                     scroll
@@ -160,12 +147,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 <p className="text-[11px] md:text-xs tracking-[0.18em] text-gold-deep font-display italic mb-4">
                     {p.area.prefecture} — {REGION_LABEL[p.area.region]}
                 </p>
-                <h2
+                <h1
                     className="font-sans text-3xl md:text-5xl font-medium leading-[1.05] mb-6"
                     style={{ letterSpacing: "-0.01em", textWrap: "balance" }}
                 >
                     {p.name}
-                </h2>
+                </h1>
                 <p
                     className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-sans italic"
                     style={{ textWrap: "pretty" }}

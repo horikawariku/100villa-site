@@ -40,3 +40,22 @@ export function bookingUrl(opts: { propertyId: string; source?: string; cta?: st
     if (opts.campaign) params.set("c", opts.campaign);
     return `${siteMeta.trackerOrigin}/api/redirect?${params.toString()}`;
 }
+
+/**
+ * mysa ブランドの4宿は、Beds24直ではなく mysa-site の宿ページへ送客する。
+ * mysa-site 側の track.js が utm_source を拾い、最終的なBeds24予約を
+ * /api/redirect(s=<utm_source>) 経由にするため、100villa の成果として計上される。
+ * mysa宿でなければ null（通常の bookingUrl を使う）。
+ */
+export const MYSA_SITE_ORIGIN = "https://mysa-site.100villa.workers.dev";
+const MYSA_SITE_PATH: Record<string, string> = {
+    "mysa-hakone": "/hakone/",
+    "mysa-fuji": "/fuji/",
+    "mysa-yamanakako": "/yamanakako/",
+    "the-time-fuji": "/the-time-fuji/",
+};
+export function mysaSiteUrl(propertyId: string, source = "100villa"): string | null {
+    const path = MYSA_SITE_PATH[propertyId];
+    if (!path) return null;
+    return `${MYSA_SITE_ORIGIN}${path}?utm_source=${encodeURIComponent(source)}`;
+}
