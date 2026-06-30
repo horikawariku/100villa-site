@@ -38,7 +38,7 @@ export function ViewerCounter({ className = "text-bg/85", minCount = 1 }: Props)
     if (count === null) return null;
 
     return (
-        <div className={`inline-flex items-center gap-1.5 text-[10px] md:text-[11px] tracking-[0.15em] font-light ${className}`}>
+        <div className={`inline-flex items-center gap-1.5 text-[10px] md:text-[11px] tracking-[0.15em] ${className}`}>
             <Eye size={12} strokeWidth={1.4} />
             <span>{count} 人が閲覧中</span>
         </div>

@@ -183,7 +183,7 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
             {/* エリアポップアップ */}
             {openRegion && (
                 <div className={`absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-2" : "mt-2"} p-3 bg-bg border border-line shadow-lg rounded-lg`}>
-                    <p className="text-[10px] tracking-widest text-mute mb-2 uppercase font-display">Area (複数可)</p>
+                    <p className="text-[10px] tracking-widest text-mute mb-2 uppercase font-medium">Area (複数可)</p>
                     <div className="flex flex-wrap gap-1.5">
                         {REGIONS.map((r) => (
                             <button
@@ -206,7 +206,7 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
             {/* 体験ポップアップ */}
             {openFeature && (
                 <div className={`absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-2" : "mt-2"} p-3 bg-bg border border-line shadow-lg rounded-lg`}>
-                    <p className="text-[10px] tracking-widest text-mute mb-2 uppercase font-display">Feature (複数可)</p>
+                    <p className="text-[10px] tracking-widest text-mute mb-2 uppercase font-medium">Feature (複数可)</p>
                     <div className="flex flex-wrap gap-1.5">
                         {FEATURES.map((f) => (
                             <button

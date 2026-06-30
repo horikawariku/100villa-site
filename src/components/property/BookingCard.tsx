@@ -34,7 +34,7 @@ export function BookingCard({ property: p }: Props) {
                 {/* 中身 */}
                 <div className="p-5 space-y-4">
                     <div>
-                        <p className="text-[10px] tracking-[0.25em] uppercase text-gold-deep font-display mb-1">
+                        <p className="text-[10px] tracking-[0.25em] uppercase text-ink-soft font-medium mb-1">
                             {p.area.prefecture}
                         </p>
                         <h3 className="font-sans text-base font-semibold leading-snug line-clamp-2 text-ink">
@@ -43,7 +43,7 @@ export function BookingCard({ property: p }: Props) {
                     </div>
 
                     {/* 価格 (細いゴシック・単色) */}
-                    <div className="flex items-baseline gap-1 pb-3 border-b border-line font-sans font-light text-ink">
+                    <div className="flex items-baseline gap-1 pb-3 border-b border-line font-sans font-normal text-ink">
                         <span className="text-2xl">¥{p.pricePerPersonFrom.toLocaleString()}</span>
                         <span className="text-xs">〜 / 人</span>
                         {p.pricePerNightFrom && (
@@ -54,7 +54,7 @@ export function BookingCard({ property: p }: Props) {
                     </div>
 
                     {/* 仕様サマリー */}
-                    <div className="space-y-2 text-xs tracking-wide text-ink font-sans font-light">
+                    <div className="space-y-2 text-xs tracking-wide text-ink font-sans font-normal">
                         <div className="flex items-center gap-2">
                             <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
                             <span>定員 {p.capacity.min}〜{p.capacity.max} 名</span>

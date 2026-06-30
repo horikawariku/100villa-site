@@ -89,7 +89,7 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
                     </div>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 p-4 text-bg">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-bg/70 mb-1 font-display">TikTok</p>
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-bg/70 mb-1 font-medium">TikTok</p>
                     {displayTitle && (
                         <p className="font-sans text-sm font-bold tracking-wide line-clamp-2">
                             {displayTitle}

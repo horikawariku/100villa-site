@@ -32,7 +32,7 @@ function SearchContent() {
     return (
         <main className="pt-24 md:pt-32 pb-20 md:pb-24">
             <div className="container mx-auto px-5 md:px-7 max-w-4xl">
-                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
+                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-ink-soft font-medium mb-2">
                     Search
                 </p>
                 <h1 className="font-sans text-3xl md:text-5xl font-bold tracking-wide mb-7 md:mb-9">
@@ -96,7 +96,7 @@ function SearchContent() {
 
                 {/* 検索ヒント */}
                 <div className="mt-10 pt-10 border-t border-line">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-4">
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-ink-soft font-medium mb-4">
                         Quick Browse
                     </p>
                     <div className="space-y-5">
@@ -134,7 +134,7 @@ function SearchContent() {
                 {/* 全宿一覧 (検索なし時のフォールバック) */}
                 {!initialQ && (
                     <div className="mt-14 pt-10 border-t border-line">
-                        <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-4">
+                        <p className="text-[10px] tracking-[0.3em] uppercase text-ink-soft font-medium mb-4">
                             All Stays
                         </p>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-5">

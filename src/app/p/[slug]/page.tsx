@@ -80,16 +80,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     }}
                 />
 
-                {/* キャッチコピー上部 */}
-                <div className="absolute inset-x-0 top-0 pt-24 md:pt-32 px-5 md:px-7 z-10">
-                    <p
-                        className="text-center text-[10px] md:text-[13px] tracking-[0.28em] md:tracking-[0.36em] uppercase text-bg/95 max-w-2xl md:max-w-3xl mx-auto leading-[1.7] font-light"
-                        style={{ textWrap: "balance" }}
-                    >
-                        {p.catchcopy}
-                    </p>
-                </div>
-
                 {/* スクロールヒント (下部) */}
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-bg/70 text-[10px] tracking-[0.3em] uppercase">
                     scroll
@@ -119,7 +109,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                 />
                                 {img.caption && (
                                     <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 bg-gradient-to-t from-black/65 via-black/20 to-transparent">
-                                        <p className="text-bg/95 text-xs md:text-[13px] tracking-wide font-sans italic leading-snug">
+                                        <p className="text-bg/95 text-xs md:text-[13px] tracking-wide font-sans leading-snug">
                                             {img.caption}
                                         </p>
                                     </div>
@@ -144,7 +134,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             {/* タイトル + 主要情報 */}
             <div className="container mx-auto px-5 md:px-10 mb-10 md:mb-14">
-                <p className="text-[11px] md:text-xs tracking-[0.18em] text-gold-deep font-display italic mb-4">
+                <p className="text-[11px] md:text-xs tracking-[0.18em] text-ink-soft font-medium uppercase mb-4">
                     {p.area.prefecture} — {REGION_LABEL[p.area.region]}
                 </p>
                 <h1
@@ -154,7 +144,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     {p.name}
                 </h1>
                 <p
-                    className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-sans italic"
+                    className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-sans"
                     style={{ textWrap: "pretty" }}
                 >
                     {p.catchcopy}
@@ -164,14 +154,14 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 <div className="flex flex-wrap items-baseline gap-x-7 gap-y-3 mb-7 text-ink">
                     <div className="font-sans text-2xl md:text-3xl font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
                         ¥{p.pricePerPersonFrom.toLocaleString()}
-                        <span className="text-xs ml-1.5 font-sans font-light tracking-wide text-ink-soft">〜 / 人</span>
+                        <span className="text-xs ml-1.5 font-sans font-normal tracking-wide text-ink-soft">〜 / 人</span>
                     </div>
                     {p.pricePerNightFrom && (
-                        <div className="text-xs font-sans font-light text-mute" style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <div className="text-xs font-sans font-normal text-mute" style={{ fontVariantNumeric: "tabular-nums" }}>
                             1棟 ¥{p.pricePerNightFrom.toLocaleString()}〜
                         </div>
                     )}
-                    <div className="flex items-center gap-1.5 text-sm font-sans font-light text-ink-soft">
+                    <div className="flex items-center gap-1.5 text-sm font-sans font-normal text-ink-soft">
                         <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
                         <span>{p.capacity.min}〜{p.capacity.max} 名</span>
                     </div>
@@ -212,7 +202,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
                         {/* スペック表 */}
                         <div className="mb-14 md:mb-20">
-                            <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— specs</p>
+                            <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3">— specs</p>
                             <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-8" style={{ letterSpacing: "-0.005em" }}>仕様</h2>
                             <dl className="divide-y divide-line/60">
                                 {p.specs.checkIn && (
@@ -226,7 +216,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                 {p.specs.bedroom && <Row label="寝具">{p.specs.bedroom}</Row>}
                                 {p.specs.sauna && (
                                     <Row icon={<Flame className="w-3.5 h-3.5" />} label="サウナ">
-                                        <div className="flex flex-wrap gap-x-4 gap-y-1 font-light">
+                                        <div className="flex flex-wrap gap-x-4 gap-y-1 font-normal">
                                             {p.specs.sauna.tempMax && (
                                                 <span>サウナ室 最高 {p.specs.sauna.tempMax}℃</span>
                                             )}
@@ -265,7 +255,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         {/* TikTok */}
                         {p.tiktokVideoUrl && (
                             <div className="mb-14 md:mb-20">
-                                <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— on tiktok</p>
+                                <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3">— on tiktok</p>
                                 <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>
                                     TikTokで紹介中
                                 </h2>
@@ -276,7 +266,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         {/* マップ */}
                         {p.mapEmbedUrl && (
                             <div className="mb-14 md:mb-20">
-                                <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3">— access</p>
+                                <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3">— access</p>
                                 <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>アクセスマップ</h2>
                                 <div className="w-full h-[320px] md:h-[440px] overflow-hidden rounded-md">
                                     <iframe
@@ -297,7 +287,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                             className="lg:hidden relative overflow-hidden rounded-md p-8 text-center mb-12 bg-cover bg-center"
                             style={{ backgroundImage: `linear-gradient(rgba(20,16,12,0.78), rgba(20,16,12,0.88)), url(${p.mainPhoto})` }}
                         >
-                            <p className="text-[11px] tracking-[0.14em] text-gold-deep font-display italic mb-3 text-bg/90">— reserve</p>
+                            <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3 text-bg/90">— reserve</p>
                             <h3 className="font-sans text-xl md:text-2xl font-medium mb-3 text-bg" style={{ letterSpacing: "-0.005em" }}>
                                 詳細・空室は公式へ
                             </h3>
@@ -333,7 +323,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             {/* 下部CTA */}
             <div className="container mx-auto px-5 md:px-10 max-w-3xl mt-16 md:mt-24 text-center">
                 <OfficialSiteCTA property={p} placement="bottom" />
-                <p className="text-[11px] tracking-[0.12em] text-mute mt-5 italic">
+                <p className="text-[11px] tracking-[0.12em] text-ink-soft mt-5">
                     予約は{p.name}公式サイトからどうぞ
                 </p>
             </div>
@@ -347,7 +337,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 function Row({ icon, label, children }: { icon?: React.ReactNode; label: string; children: React.ReactNode }) {
     return (
         <div className="grid grid-cols-[120px_1fr] md:grid-cols-[160px_1fr] py-4 md:py-5">
-            <dt className="flex items-center gap-1.5 text-[11px] md:text-xs tracking-[0.08em] text-mute font-display">
+            <dt className="flex items-center gap-1.5 text-[11px] md:text-xs tracking-[0.08em] uppercase text-ink-soft font-medium">
                 {icon}
                 {label}
             </dt>

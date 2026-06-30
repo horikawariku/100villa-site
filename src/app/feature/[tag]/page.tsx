@@ -40,7 +40,7 @@ export default async function FeaturePage({ params }: { params: Promise<{ tag: s
                     <span className="mx-2">/</span>
                     <span className="text-ink-soft">FEATURE / {label}</span>
                 </nav>
-                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
+                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-ink-soft font-medium mb-2">
                     Feature
                 </p>
                 <h1 className="font-sans text-3xl md:text-5xl font-bold tracking-wide mb-2">
@@ -60,7 +60,7 @@ export default async function FeaturePage({ params }: { params: Promise<{ tag: s
 
                 {/* 他特徴への導線 */}
                 <div className="mt-16 md:mt-20 pt-10 border-t border-line">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-3">
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-ink-soft font-medium mb-3">
                         Other Features
                     </p>
                     <div className="flex flex-wrap gap-2">

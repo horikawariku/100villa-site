@@ -14,7 +14,7 @@ export function Footer() {
                 <div className="grid md:grid-cols-4 gap-10">
                     {/* ブランド */}
                     <div className="md:col-span-1">
-                        <p className="font-display text-2xl tracking-[0.2em] font-medium text-bg mb-4">
+                        <p className="text-xl tracking-[0.25em] font-bold text-bg mb-4">
                             {siteMeta.name}
                         </p>
                         <p className="text-[13px] leading-[1.85] text-bg/60 mb-6 max-w-[28ch]" style={{ textWrap: "pretty" }}>
@@ -35,7 +35,7 @@ export function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="TikTok"
-                                className="text-[12px] tracking-[0.06em] text-bg/70 hover:text-bg transition-colors duration-300 italic"
+                                className="text-[12px] tracking-[0.06em] text-bg/70 hover:text-bg transition-colors duration-300"
                             >
                                 tiktok
                             </a>
@@ -92,7 +92,7 @@ export function Footer() {
                     </p>
                     <div className="flex items-center gap-4">
                         <ViewerCounter className="text-bg/45" />
-                        <p className="text-[11px] tracking-[0.06em] text-bg/40 italic">
+                        <p className="text-[11px] tracking-[0.06em] text-bg/40">
                             本サイトは民泊メディアです。予約は各宿の公式サイトでお願いします。
                         </p>
                     </div>

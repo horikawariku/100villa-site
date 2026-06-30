@@ -16,7 +16,7 @@ export default function WishlistPage() {
     return (
         <main className="pt-24 md:pt-32 pb-20 md:pb-24">
             <div className="container mx-auto px-5 md:px-7 max-w-5xl">
-                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-gold-deep font-display mb-2">
+                <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-ink-soft font-medium mb-2">
                     Wishlist
                 </p>
                 <h1 className="font-sans text-3xl md:text-5xl font-bold tracking-wide mb-2">

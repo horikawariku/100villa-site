@@ -13,7 +13,7 @@ export function SimilarProperties({ label, en, properties }: Props) {
         <section className="border-t border-line py-12 md:py-16">
             <div className="container mx-auto px-5 md:px-7">
                 <div className="mb-6 md:mb-8">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-gold-deep font-display mb-1.5">
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-ink-soft font-medium mb-1.5">
                         {en}
                     </p>
                     <h2 className="font-sans text-xl md:text-2xl font-bold tracking-wide">{label}</h2>
