@@ -46,11 +46,6 @@ export function BookingCard({ property: p }: Props) {
                     <div className="flex items-baseline gap-1 pb-3 border-b border-line font-sans font-normal text-ink">
                         <span className="text-2xl">¥{p.pricePerPersonFrom.toLocaleString()}</span>
                         <span className="text-xs">〜 / 人</span>
-                        {p.pricePerNightFrom && (
-                            <span className="ml-auto text-[11px] tracking-wide">
-                                1棟 ¥{p.pricePerNightFrom.toLocaleString()}〜
-                            </span>
-                        )}
                     </div>
 
                     {/* 仕様サマリー */}

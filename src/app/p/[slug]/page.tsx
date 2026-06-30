@@ -143,12 +143,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 >
                     {p.name}
                 </h1>
-                <p
-                    className="text-base md:text-xl text-ink-soft leading-[1.85] mb-8 md:mb-10 max-w-[60ch] font-sans"
-                    style={{ textWrap: "pretty" }}
-                >
-                    {p.catchcopy}
-                </p>
 
                 {/* 主要スペック行 — 価格を主役に */}
                 <div className="flex flex-wrap items-baseline gap-x-7 gap-y-3 mb-7 text-ink">
@@ -156,11 +150,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         ¥{p.pricePerPersonFrom.toLocaleString()}
                         <span className="text-xs ml-1.5 font-sans font-normal tracking-wide text-ink-soft">〜 / 人</span>
                     </div>
-                    {p.pricePerNightFrom && (
-                        <div className="text-xs font-sans font-normal text-mute" style={{ fontVariantNumeric: "tabular-nums" }}>
-                            1棟 ¥{p.pricePerNightFrom.toLocaleString()}〜
-                        </div>
-                    )}
                     <div className="flex items-center gap-1.5 text-sm font-sans font-normal text-ink-soft">
                         <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
                         <span>{p.capacity.min}〜{p.capacity.max} 名</span>
