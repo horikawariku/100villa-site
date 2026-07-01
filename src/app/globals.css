@@ -33,3 +33,8 @@
 /* Fade in (IntersectionObserver駆動) */
 .fade-in { opacity: 0; transform: translateY(14px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* Ken Burns (宿詳細ページ hero のゆっくりズーム) */
+@keyframes kenburns { from { transform: scale(1.04); } to { transform: scale(1.14); } }
+.animate-kenburns { animation: kenburns 24s ease-in-out infinite alternate; transform-origin: center; will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .animate-kenburns { animation: none; } }

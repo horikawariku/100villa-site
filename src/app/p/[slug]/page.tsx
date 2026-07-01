@@ -2,17 +2,35 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, MapPin, Wifi, Flame, Tv, Calendar } from "lucide-react";
+import { MapPin, Check } from "lucide-react";
 import { PROPERTIES, getProperty, getSimilarProperties, getSameRegionProperties } from "@/data/properties";
 import { FEATURE_LABEL, REGION_LABEL } from "@/data/types";
 import { siteMeta } from "@/data/siteMeta";
 import { OfficialSiteCTA } from "@/components/property/OfficialSiteCTA";
-import { BookingCard } from "@/components/property/BookingCard";
 import { SimilarProperties } from "@/components/property/SimilarProperties";
 import { RecentlyViewed } from "@/components/property/RecentlyViewed";
 import { RecordView } from "@/components/property/RecordView";
-import { StickyMobileCTA } from "@/components/property/StickyMobileCTA";
 import { TikTokEmbed } from "@/components/property/TikTokEmbed";
+import { StickyBookBar } from "@/components/property/StickyBookBar";
+
+// Facilities セクション用: ギャラリー category → 英ラベル + 短い汎用キャプション。
+// 優先順に並べ、その宿のギャラリーに存在するカテゴリだけを最大3枚表示する。
+const FACILITY_ORDER = ["サウナ", "温泉", "囲炉裏", "プール", "BBQ", "焚き火", "シアター", "リビング", "ダイニング", "ウェルネス", "客室", "ベッドルーム", "食事"];
+const FACILITY_META: Record<string, { en: string; note: string }> = {
+    "サウナ": { en: "Sauna", note: "貸切のプライベートサウナ。" },
+    "温泉": { en: "Onsen", note: "気兼ねなく浸かる温泉。" },
+    "囲炉裏": { en: "Irori", note: "囲炉裏を囲むひととき。" },
+    "プール": { en: "Pool", note: "プライベートプール。" },
+    "BBQ": { en: "BBQ", note: "屋外で楽しむBBQ。" },
+    "焚き火": { en: "Bonfire", note: "焚き火を囲む夜。" },
+    "シアター": { en: "Theater", note: "大画面のシアター。" },
+    "リビング": { en: "Living", note: "みんなで集う広間。" },
+    "ダイニング": { en: "Dining", note: "食卓を囲む空間。" },
+    "ウェルネス": { en: "Wellness", note: "整うウェルネス空間。" },
+    "客室": { en: "Rooms", note: "寛ぎの客室。" },
+    "ベッドルーム": { en: "Bedroom", note: "ゆっくり休める寝室。" },
+    "食事": { en: "Dining", note: "食事を愉しむ空間。" },
+};
 
 export function generateStaticParams() {
     return PROPERTIES.map((p) => ({ slug: p.id }));
@@ -23,23 +41,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const p = getProperty(slug);
     if (!p) return {};
     const title = `${p.name} — ${REGION_LABEL[p.area.region]} ${p.area.prefecture}`;
+    const desc = `${p.area.prefecture}${p.area.city} / 定員${p.capacity.min}〜${p.capacity.max}名 / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人`;
     return {
         title,
-        description: `${p.catchcopy} / ${p.area.prefecture}${p.area.city} / 定員${p.capacity.min}〜${p.capacity.max}名 / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人`,
+        description: desc,
         other: {
             // 各物件ページのアクセスをproperty別に記録 (PropertyCardの本日閲覧数表示用)
             "rt-property": p.id,
         },
         openGraph: {
             title,
-            description: p.catchcopy,
+            description: desc,
             url: `${siteMeta.url}/p/${p.id}`,
             images: [{ url: p.mainPhoto, width: 1200, height: 630, alt: p.name }],
         },
         twitter: {
             card: "summary_large_image",
             title,
-            description: p.catchcopy,
+            description: desc,
             images: [p.mainPhoto],
         },
     };
@@ -53,284 +72,325 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     const similar = getSimilarProperties(p, 4);
     const sameRegion = getSameRegionProperties(p, 4);
 
+    const s = p.specs;
+    const sauna = s.sauna;
+    const introImg = p.gallery[1]?.src ?? p.mainPhoto;
+
+    // Facilities: ギャラリーの category から施設写真を最大3枚（無ければ非表示）
+    const catImg = new Map<string, string>();
+    for (const g of p.gallery) {
+        if (g.category && !catImg.has(g.category)) catImg.set(g.category, g.src);
+    }
+    const facilities = FACILITY_ORDER.filter((c) => catImg.has(c) && FACILITY_META[c])
+        .slice(0, 3)
+        .map((c) => ({ img: catImg.get(c)!, jp: c, en: FACILITY_META[c].en, note: FACILITY_META[c].note }));
+    const showFacilities = facilities.length >= 2;
+
+    // サウナ深掘りセクションは、語れる情報がある宿のみ表示
+    const showSauna = !!sauna && !!(sauna.entertainment || sauna.tempMax || sauna.tempMin || sauna.chairs);
+
+    // Room Information の項目（存在するものだけ）
+    const specItems: { label: string; value: string }[] = [
+        { label: "定員", value: `${p.capacity.min}〜${p.capacity.max}名` },
+    ];
+    if (s.checkIn) specItems.push({ label: "チェックイン", value: s.checkIn });
+    if (s.checkOut) specItems.push({ label: "チェックアウト", value: s.checkOut });
+    if (s.bedroom) specItems.push({ label: "寝具・間取り", value: s.bedroom });
+    if (s.cancellation) specItems.push({ label: "キャンセル", value: s.cancellation });
+
+    // サウナのポイント（存在するものだけ）
+    const saunaPoints: { en: string; label: string; note?: string }[] = [];
+    if (sauna?.tempMax) {
+        saunaPoints.push({ en: "Heat", label: `最高 ${sauna.tempMax}℃`, note: sauna.tempMin ? `水風呂 ${sauna.tempMin}℃` : undefined });
+    }
+    if (sauna?.selfRoukyu) saunaPoints.push({ en: "Self Löyly", label: "セルフロウリュ", note: "好きなだけ蒸気を" });
+    if (sauna?.chairs) saunaPoints.push({ en: "Chairs", label: `整いチェア × ${sauna.chairs}`, note: "外気浴スペース" });
+    if (sauna?.entertainment) saunaPoints.push({ en: "Feature", label: sauna.entertainment });
+
     return (
-        <main className="pb-24 md:pb-0">
+        <main className="pb-28">
             <RecordView propertyId={p.id} />
 
-            {/* ============================== */}
-            {/* UNIQ 風フルブリード Hero */}
-            {/* ============================== */}
-            <section className="relative h-[82vh] md:h-[85vh] min-h-[560px] overflow-hidden bg-ink">
-                <Image
-                    src={p.mainPhoto}
-                    alt={p.name}
-                    fill
-                    priority
-                    className="object-cover"
-                    sizes="100vw"
-                />
-                {/* 控えめ overlay (写真を見せる) */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/45" />
-                {/* 微細グレイン */}
-                <div
-                    className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
-                    style={{
-                        backgroundImage:
-                            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='nf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23nf)'/%3E%3C/svg%3E\")",
-                    }}
-                />
-
-                {/* スクロールヒント (下部) */}
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-bg/70 text-[10px] tracking-[0.3em] uppercase">
+            {/* ============ HERO (Ken Burns) ============ */}
+            <section className="relative h-[86vh] min-h-[520px] overflow-hidden bg-ink">
+                <div className="absolute inset-0 animate-kenburns">
+                    <Image src={p.mainPhoto} alt={p.name} fill priority className="object-cover" sizes="100vw" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/70" />
+                <div className="absolute inset-x-0 bottom-0">
+                    <div className="mx-auto max-w-4xl px-6 md:px-8 pb-16 md:pb-24">
+                        <p className="text-[11px] md:text-xs tracking-[0.24em] uppercase text-bg/85 font-medium mb-3">
+                            {p.area.prefecture} ・ {REGION_LABEL[p.area.region]}
+                        </p>
+                        <h1
+                            className="font-sans text-[2.4rem] md:text-6xl font-bold text-bg leading-[1.04] mb-4"
+                            style={{ letterSpacing: "-0.01em", textWrap: "balance" }}
+                        >
+                            {p.name}
+                        </h1>
+                        <p className="flex items-center gap-3 text-bg/85 text-sm md:text-base">
+                            <span className="font-sans font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                ¥{p.pricePerPersonFrom.toLocaleString()}
+                                <span className="text-xs text-bg/70">〜 / 人</span>
+                            </span>
+                            <span className="w-px h-3.5 bg-bg/40" />
+                            <span>定員 {p.capacity.min}–{p.capacity.max}名</span>
+                        </p>
+                    </div>
+                </div>
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-bg/60 text-[10px] tracking-[0.3em] uppercase">
                     scroll
                 </div>
             </section>
 
-            {/* ============================== */}
-            {/* Hero 下から横スクロール ギャラリー (UNIQ 風: rounded-md + 控えめ shadow + 適切な余白) */}
-            {/* Hero と画像セクションの間に明確な呼吸 (mt-14 md:mt-24) */}
-            {/* ============================== */}
-            <div className="relative mt-14 md:mt-24 mb-16 md:mb-24">
-                <div className="overflow-x-auto no-scrollbar">
-                    <div className="inline-flex gap-3 md:gap-4 px-5 md:px-10 pb-2">
-                        {p.gallery.map((img, i) => (
-                            <div
-                                key={i}
-                                className="relative w-[68vw] sm:w-[360px] md:w-[400px] lg:w-[440px] aspect-[4/5] overflow-hidden bg-line rounded-md shrink-0 group"
-                                style={{ boxShadow: "0 20px 60px -20px rgba(20,14,10,0.35), 0 8px 24px -8px rgba(20,14,10,0.18)" }}
+            {/* ============ LIGHT SHEET (hero に重なる角丸) ============ */}
+            <div className="relative z-10 -mt-7 rounded-t-[28px] bg-bg">
+                {/* パンくず */}
+                <nav className="mx-auto max-w-4xl px-6 md:px-8 pt-8 text-[11px] tracking-[0.1em] text-mute">
+                    <Link href="/" className="hover:text-ink transition-colors">home</Link>
+                    <span className="mx-2 opacity-40">›</span>
+                    <Link href={`/area/${p.area.region}`} className="hover:text-ink transition-colors">
+                        {REGION_LABEL[p.area.region]}
+                    </Link>
+                    <span className="mx-2 opacity-40">›</span>
+                    <span className="text-ink-soft">{p.name}</span>
+                </nav>
+
+                {/* CONCEPT */}
+                <section className="mx-auto max-w-4xl px-6 md:px-8 pt-8 md:pt-12 pb-14 md:pb-20">
+                    <Shead en="Concept" />
+                    <p
+                        className="font-sans text-[17px] md:text-xl leading-[2.05] text-ink-soft max-w-[62ch]"
+                        style={{ textWrap: "pretty" }}
+                    >
+                        {p.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-8">
+                        {p.features.map((f) => (
+                            <Link
+                                key={f}
+                                href={`/feature/${f}`}
+                                className="text-[12px] tracking-wide rounded-full border border-line px-3.5 py-1.5 text-ink-soft hover:border-ink hover:text-ink transition-colors"
                             >
-                                <Image
-                                    src={img.src}
-                                    alt={img.caption || `${p.name} ${i + 1}`}
-                                    fill
-                                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-                                    sizes="(max-width: 640px) 68vw, 440px"
-                                    priority={i < 2}
-                                />
-                                {img.caption && (
-                                    <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 bg-gradient-to-t from-black/65 via-black/20 to-transparent">
-                                        <p className="text-bg/95 text-xs md:text-[13px] tracking-wide font-sans leading-snug">
-                                            {img.caption}
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
+                                {FEATURE_LABEL[f]}
+                            </Link>
                         ))}
-                        <div className="w-5 md:w-10 shrink-0" />
                     </div>
-                </div>
-            </div>
-
-            {/* パンくず */}
-            <nav className="container mx-auto px-5 md:px-10 mb-7 md:mb-8 text-[11px] tracking-[0.12em] text-mute">
-                <Link href="/" className="hover:text-ink transition-colors duration-300">home</Link>
-                <span className="mx-2 opacity-40">›</span>
-                <Link href={`/area/${p.area.region}`} className="hover:text-ink transition-colors duration-300">
-                    {REGION_LABEL[p.area.region]}
-                </Link>
-                <span className="mx-2 opacity-40">›</span>
-                <span className="text-ink-soft">{p.name}</span>
-            </nav>
-
-            {/* タイトル + 主要情報 */}
-            <div className="container mx-auto px-5 md:px-10 mb-10 md:mb-14">
-                <p className="text-[11px] md:text-xs tracking-[0.18em] text-ink-soft font-medium uppercase mb-4">
-                    {p.area.prefecture} — {REGION_LABEL[p.area.region]}
-                </p>
-                <h1
-                    className="font-sans text-3xl md:text-5xl font-medium leading-[1.05] mb-6"
-                    style={{ letterSpacing: "-0.01em", textWrap: "balance" }}
-                >
-                    {p.name}
-                </h1>
-
-                {/* 主要スペック行 — 価格を主役に */}
-                <div className="flex flex-wrap items-baseline gap-x-7 gap-y-3 mb-7 text-ink">
-                    <div className="font-sans text-2xl md:text-3xl font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
-                        ¥{p.pricePerPersonFrom.toLocaleString()}
-                        <span className="text-xs ml-1.5 font-sans font-normal tracking-wide text-ink-soft">〜 / 人</span>
+                    <div className="relative mt-10 md:mt-12 overflow-hidden rounded-2xl aspect-[4/3] md:aspect-[16/9] bg-line">
+                        <Image src={introImg} alt={p.name} fill className="object-cover" sizes="(max-width:768px) 100vw, 900px" />
                     </div>
-                    <div className="flex items-center gap-1.5 text-sm font-sans font-normal text-ink-soft">
-                        <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
-                        <span>{p.capacity.min}〜{p.capacity.max} 名</span>
-                    </div>
-                </div>
+                </section>
 
-                {/* タグ — 控えめなテキストリンク */}
-                <div className="flex flex-wrap gap-x-5 gap-y-2 mb-7">
-                    {p.features.map((f) => (
-                        <Link
-                            key={f}
-                            href={`/feature/${f}`}
-                            className="text-[12px] tracking-[0.05em] text-ink-soft hover:text-ink transition-colors duration-300 underline-offset-[5px] hover:underline decoration-gold-deep/40"
-                        >
-                            {FEATURE_LABEL[f]}
-                        </Link>
-                    ))}
-                </div>
-
-                {/* モバイル: トップCTA (デスクトップは BookingCard が代替) */}
-                <div className="lg:hidden">
-                    <OfficialSiteCTA property={p} placement="top" />
-                </div>
-            </div>
-
-
-            {/* 2カラムレイアウト: コンテンツ + sticky BookingCard */}
-            <div className="container mx-auto px-5 md:px-10 mt-12 md:mt-16">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
-                    {/* 左カラム: コンテンツ */}
-                    <div className="lg:col-span-7">
-                        {/* 紹介文 */}
-                        <p
-                            className="font-sans text-base md:text-lg leading-[2.1] text-ink-soft mb-14 md:mb-20 max-w-[58ch]"
-                            style={{ textWrap: "pretty" }}
-                        >
-                            {p.description}
-                        </p>
-
-                        {/* スペック表 */}
-                        <div className="mb-14 md:mb-20">
-                            <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3">— specs</p>
-                            <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-8" style={{ letterSpacing: "-0.005em" }}>仕様</h2>
-                            <dl className="divide-y divide-line/60">
-                                {p.specs.checkIn && (
-                                    <Row icon={<Calendar className="w-3.5 h-3.5" />} label="チェックイン / アウト">
-                                        {p.specs.checkIn} / {p.specs.checkOut}
-                                    </Row>
-                                )}
-                                <Row icon={<Users className="w-3.5 h-3.5" />} label="定員">
-                                    {p.capacity.min}〜{p.capacity.max} 名
-                                </Row>
-                                {p.specs.bedroom && <Row label="寝具">{p.specs.bedroom}</Row>}
-                                {p.specs.sauna && (
-                                    <Row icon={<Flame className="w-3.5 h-3.5" />} label="サウナ">
-                                        <div className="flex flex-wrap gap-x-4 gap-y-1 font-normal">
-                                            {p.specs.sauna.tempMax && (
-                                                <span>サウナ室 最高 {p.specs.sauna.tempMax}℃</span>
-                                            )}
-                                            {p.specs.sauna.tempMin && (
-                                                <span>水風呂 最低 {p.specs.sauna.tempMin}℃</span>
-                                            )}
-                                            {p.specs.sauna.selfRoukyu && <span>セルフロウリュ可</span>}
-                                            {p.specs.sauna.entertainment && <span>{p.specs.sauna.entertainment}</span>}
-                                            {p.specs.sauna.chairs && <span>整いチェア × {p.specs.sauna.chairs}</span>}
-                                        </div>
-                                    </Row>
-                                )}
-                                {p.specs.amenities && (
-                                    <Row icon={<Wifi className="w-3.5 h-3.5" />} label="設備・アメニティ">
-                                        {p.specs.amenities.join(" / ")}
-                                    </Row>
-                                )}
-                                {p.specs.cancellation && (
-                                    <Row label="キャンセルポリシー">{p.specs.cancellation}</Row>
-                                )}
-                                <Row icon={<MapPin className="w-3.5 h-3.5" />} label="所在地">
-                                    {p.address}
-                                </Row>
-                                {p.accessNotes && (
-                                    <Row label="アクセス">
-                                        <div className="space-y-0.5">
-                                            {p.accessNotes.map((n, i) => (
-                                                <p key={i}>・{n}</p>
-                                            ))}
-                                        </div>
-                                    </Row>
-                                )}
-                            </dl>
+                {/* GALLERY */}
+                {p.gallery.length > 1 && (
+                    <section className="py-14 md:py-20 border-t border-line">
+                        <div className="mx-auto max-w-4xl px-6 md:px-8">
+                            <Shead en="Gallery" jp={`館内の様子 ─ 全${p.gallery.length}枚。`} />
                         </div>
+                        <div className="mt-1 overflow-x-auto no-scrollbar">
+                            <div className="inline-flex gap-3 md:gap-4 px-6 md:px-8 pb-2">
+                                {p.gallery.map((img, i) => (
+                                    <div
+                                        key={i}
+                                        className="relative w-[70vw] sm:w-[340px] md:w-[380px] aspect-[4/5] overflow-hidden rounded-xl bg-line shrink-0 group"
+                                    >
+                                        <Image
+                                            src={img.src}
+                                            alt={img.caption || `${p.name} ${i + 1}`}
+                                            fill
+                                            className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                                            sizes="(max-width:640px) 70vw, 380px"
+                                            priority={i < 2}
+                                        />
+                                        {img.category && (
+                                            <div className="absolute top-3 left-3 text-[10px] tracking-widest uppercase text-bg bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">
+                                                {img.category}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                                <div className="w-3 shrink-0" />
+                            </div>
+                        </div>
+                    </section>
+                )}
 
-                        {/* TikTok */}
-                        {p.tiktokVideoUrl && (
-                            <div className="mb-14 md:mb-20">
-                                <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3">— on tiktok</p>
-                                <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>
-                                    TikTokで紹介中
-                                </h2>
+                {/* FACILITIES */}
+                {showFacilities && (
+                    <section className="py-14 md:py-20 border-t border-line">
+                        <div className="mx-auto max-w-4xl px-6 md:px-8">
+                            <Shead en="Facilities" jp="設備・空間。" />
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-7">
+                                {facilities.map((f, i) => (
+                                    <div key={i}>
+                                        <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-line">
+                                            <Image
+                                                src={f.img}
+                                                alt={f.jp}
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width:640px) 100vw, 300px"
+                                            />
+                                        </div>
+                                        <p className="text-[11px] tracking-[0.14em] uppercase text-gold-deep font-medium mt-4">
+                                            0{i + 1} ・ {f.en}
+                                        </p>
+                                        <p className="font-sans text-lg font-bold mt-1">{f.jp}</p>
+                                        <p className="text-[13px] text-ink-soft leading-relaxed mt-1">{f.note}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* TIKTOK */}
+                {p.tiktokVideoUrl && (
+                    <section className="py-14 md:py-20 border-t border-line">
+                        <div className="mx-auto max-w-4xl px-6 md:px-8">
+                            <Shead en="On TikTok" jp="動画で見る。" />
+                            <div className="mt-1 flex justify-center md:justify-start">
                                 <TikTokEmbed url={p.tiktokVideoUrl} fallbackThumbnail={p.mainPhoto} title={p.name} />
                             </div>
-                        )}
+                        </div>
+                    </section>
+                )}
 
-                        {/* マップ */}
-                        {p.mapEmbedUrl && (
-                            <div className="mb-14 md:mb-20">
-                                <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3">— access</p>
-                                <h2 className="font-sans text-2xl md:text-[2rem] font-medium mb-7" style={{ letterSpacing: "-0.005em" }}>アクセスマップ</h2>
-                                <div className="w-full h-[320px] md:h-[440px] overflow-hidden rounded-md">
-                                    <iframe
-                                        src={p.mapEmbedUrl}
-                                        width="100%"
-                                        height="100%"
-                                        style={{ border: 0 }}
-                                        allowFullScreen
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                    />
+                {/* SAUNA (dark) */}
+                {showSauna && (
+                    <section className="py-16 md:py-24 bg-ink text-bg">
+                        <div className="mx-auto max-w-4xl px-6 md:px-8">
+                            <p className="font-sans text-xl md:text-2xl font-bold tracking-wide">Sauna</p>
+                            <p className="text-[13px] text-bg/55 mt-1.5">サウナ・ととのい。</p>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 mt-9">
+                                {saunaPoints.map((pt, i) => (
+                                    <div key={i}>
+                                        <p className="text-[10px] tracking-[0.16em] uppercase text-gold font-medium">{pt.en}</p>
+                                        <p className="font-sans text-[15px] font-medium mt-1.5 leading-snug">{pt.label}</p>
+                                        {pt.note && <p className="text-[12px] text-bg/55 mt-1 leading-relaxed">{pt.note}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* ROOM INFORMATION */}
+                <section className="py-14 md:py-20 border-t border-line">
+                    <div className="mx-auto max-w-4xl px-6 md:px-8">
+                        <Shead en="Room Information" jp="客室・設備情報。" />
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {specItems.map((it, i) => (
+                                <div key={i} className="rounded-xl border border-line bg-bg-card/40 p-4">
+                                    <p className="text-[10px] tracking-[0.1em] uppercase text-mute font-medium">{it.label}</p>
+                                    <p className="font-sans text-[15px] text-ink mt-1.5 leading-snug">{it.value}</p>
+                                </div>
+                            ))}
+                        </div>
+                        {s.amenities && s.amenities.length > 0 && (
+                            <div className="mt-10">
+                                <p className="font-sans text-base font-bold mb-3">設備・アメニティ</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                                    {s.amenities.map((a, i) => (
+                                        <div key={i} className="flex items-center gap-3 py-2.5 border-b border-line/70 text-[14px] text-ink">
+                                            <Check className="w-4 h-4 text-gold-deep shrink-0" strokeWidth={1.8} />
+                                            <span>{a}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
+                    </div>
+                </section>
 
-                        {/* モバイル: 中部CTA (デスクトップは BookingCard が常時表示) */}
-                        <div
-                            className="lg:hidden relative overflow-hidden rounded-md p-8 text-center mb-12 bg-cover bg-center"
-                            style={{ backgroundImage: `linear-gradient(rgba(20,16,12,0.78), rgba(20,16,12,0.88)), url(${p.mainPhoto})` }}
-                        >
-                            <p className="text-[11px] tracking-[0.14em] text-ink-soft font-medium uppercase mb-3 text-bg/90">— reserve</p>
-                            <h3 className="font-sans text-xl md:text-2xl font-medium mb-3 text-bg" style={{ letterSpacing: "-0.005em" }}>
-                                詳細・空室は公式へ
-                            </h3>
-                            <p className="text-xs tracking-wide text-bg/70 mb-6 leading-relaxed">
-                                日程の空室カレンダー、料金詳細は公式サイトでご確認ください
-                            </p>
+                {/* ACCESS */}
+                <section className="py-14 md:py-20 border-t border-line">
+                    <div className="mx-auto max-w-4xl px-6 md:px-8">
+                        <Shead en="Access" jp="アクセス。" />
+                        <div>
+                            <div className="py-3.5 border-b border-line">
+                                <p className="text-[10px] tracking-[0.12em] uppercase text-mute font-medium mb-1.5">Address</p>
+                                <p className="font-sans text-[14.5px] text-ink leading-relaxed flex items-start gap-2">
+                                    <MapPin className="w-4 h-4 text-ink-soft shrink-0 mt-0.5" strokeWidth={1.6} />
+                                    {p.address}
+                                </p>
+                            </div>
+                            {p.accessNotes && p.accessNotes.length > 0 && (
+                                <div className="py-3.5 border-b border-line">
+                                    <p className="text-[10px] tracking-[0.12em] uppercase text-mute font-medium mb-1.5">Route</p>
+                                    <div className="space-y-1">
+                                        {p.accessNotes.map((n, i) => (
+                                            <p key={i} className="font-sans text-[14px] text-ink-soft leading-relaxed">・{n}</p>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        {p.mapEmbedUrl && (
+                            <div className="mt-6 w-full h-[300px] md:h-[400px] overflow-hidden rounded-2xl border border-line">
+                                <iframe
+                                    src={p.mapEmbedUrl}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </section>
+
+                {/* CTA (full-bleed) */}
+                <section className="relative overflow-hidden text-center py-24 md:py-32">
+                    <div className="absolute inset-0">
+                        <Image src={p.mainPhoto} alt="" fill className="object-cover" sizes="100vw" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/75" />
+                    </div>
+                    <div className="relative z-10 mx-auto max-w-xl px-6">
+                        <h2 className="font-sans text-2xl md:text-3xl font-bold text-bg mb-3 leading-snug">
+                            {p.name} の空室を確認する
+                        </h2>
+                        <p className="text-[13px] text-bg/80 mb-8">
+                            ¥{p.pricePerPersonFrom.toLocaleString()}〜 / 人 ・ 定員 {p.capacity.min}–{p.capacity.max}名
+                        </p>
+                        <div className="flex justify-center">
                             <OfficialSiteCTA property={p} placement="mid" />
                         </div>
+                        <Link
+                            href="/"
+                            className="inline-block mt-6 text-[13px] text-bg/85 underline underline-offset-4 hover:text-bg transition-colors"
+                        >
+                            他の宿も見る
+                        </Link>
                     </div>
+                </section>
 
-                    {/* 右カラム: sticky BookingCard (lg+のみ表示) */}
-                    <aside className="lg:col-span-5">
-                        <BookingCard property={p} />
-                    </aside>
-                </div>
-            </div>
+                {/* 回遊 — 他の宿へ */}
+                <SimilarProperties label="似てる宿" en="Similar Stays" properties={similar} />
+                {sameRegion.length > 0 && (
+                    <SimilarProperties label={`${REGION_LABEL[p.area.region]}の宿`} en="Same Area" properties={sameRegion} />
+                )}
+                <RecentlyViewed excludeId={p.id} />
 
-            {/* 似てる宿 */}
-            <SimilarProperties label="似てる宿" en="Similar Stays" properties={similar} />
-
-            {/* 同エリア */}
-            {sameRegion.length > 0 && (
-                <SimilarProperties
-                    label={`${REGION_LABEL[p.area.region]}の宿`}
-                    en="Same Area"
-                    properties={sameRegion}
-                />
-            )}
-
-            {/* 最近見た */}
-            <RecentlyViewed excludeId={p.id} />
-
-            {/* 下部CTA */}
-            <div className="container mx-auto px-5 md:px-10 max-w-3xl mt-16 md:mt-24 text-center">
-                <OfficialSiteCTA property={p} placement="bottom" />
-                <p className="text-[11px] tracking-[0.12em] text-ink-soft mt-5">
-                    予約は{p.name}公式サイトからどうぞ
+                {/* 注記 */}
+                <p className="mx-auto max-w-2xl px-6 py-10 text-[11px] leading-relaxed text-mute text-center">
+                    ※ 写真・情報は各宿の公式情報を元にしています。料金は1名あたりの目安です。空室・料金の詳細および予約は各宿の公式サイトでご確認ください。
                 </p>
             </div>
 
-            {/* モバイル sticky CTA */}
-            <StickyMobileCTA property={p} />
+            {/* 下部固定 予約バー */}
+            <StickyBookBar property={p} />
         </main>
     );
 }
 
-function Row({ icon, label, children }: { icon?: React.ReactNode; label: string; children: React.ReactNode }) {
+function Shead({ en, jp }: { en: string; jp?: string }) {
     return (
-        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[160px_1fr] py-4 md:py-5">
-            <dt className="flex items-center gap-1.5 text-[11px] md:text-xs tracking-[0.08em] uppercase text-ink-soft font-medium">
-                {icon}
-                {label}
-            </dt>
-            <dd className="text-[15px] text-ink-soft leading-[1.85]">{children}</dd>
+        <div className="mb-6 md:mb-8">
+            <h2 className="font-sans text-xl md:text-2xl font-bold tracking-wide text-ink">{en}</h2>
+            {jp && <p className="text-[13px] text-mute mt-1.5">{jp}</p>}
         </div>
     );
 }
