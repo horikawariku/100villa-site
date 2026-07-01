@@ -13,25 +13,6 @@ import { RecordView } from "@/components/property/RecordView";
 import { TikTokEmbed } from "@/components/property/TikTokEmbed";
 import { StickyBookBar } from "@/components/property/StickyBookBar";
 
-// Facilities セクション用: ギャラリー category → 英ラベル + 短い汎用キャプション。
-// 優先順に並べ、その宿のギャラリーに存在するカテゴリだけを最大3枚表示する。
-const FACILITY_ORDER = ["サウナ", "温泉", "囲炉裏", "プール", "BBQ", "焚き火", "シアター", "リビング", "ダイニング", "ウェルネス", "客室", "ベッドルーム", "食事"];
-const FACILITY_META: Record<string, { en: string; note: string }> = {
-    "サウナ": { en: "Sauna", note: "貸切のプライベートサウナ。" },
-    "温泉": { en: "Onsen", note: "気兼ねなく浸かる温泉。" },
-    "囲炉裏": { en: "Irori", note: "囲炉裏を囲むひととき。" },
-    "プール": { en: "Pool", note: "プライベートプール。" },
-    "BBQ": { en: "BBQ", note: "屋外で楽しむBBQ。" },
-    "焚き火": { en: "Bonfire", note: "焚き火を囲む夜。" },
-    "シアター": { en: "Theater", note: "大画面のシアター。" },
-    "リビング": { en: "Living", note: "みんなで集う広間。" },
-    "ダイニング": { en: "Dining", note: "食卓を囲む空間。" },
-    "ウェルネス": { en: "Wellness", note: "整うウェルネス空間。" },
-    "客室": { en: "Rooms", note: "寛ぎの客室。" },
-    "ベッドルーム": { en: "Bedroom", note: "ゆっくり休める寝室。" },
-    "食事": { en: "Dining", note: "食事を愉しむ空間。" },
-};
-
 export function generateStaticParams() {
     return PROPERTIES.map((p) => ({ slug: p.id }));
 }
@@ -75,16 +56,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     const s = p.specs;
     const sauna = s.sauna;
     const introImg = p.gallery[1]?.src ?? p.mainPhoto;
-
-    // Facilities: ギャラリーの category から施設写真を最大3枚（無ければ非表示）
-    const catImg = new Map<string, string>();
-    for (const g of p.gallery) {
-        if (g.category && !catImg.has(g.category)) catImg.set(g.category, g.src);
-    }
-    const facilities = FACILITY_ORDER.filter((c) => catImg.has(c) && FACILITY_META[c])
-        .slice(0, 3)
-        .map((c) => ({ img: catImg.get(c)!, jp: c, en: FACILITY_META[c].en, note: FACILITY_META[c].note }));
-    const showFacilities = facilities.length >= 2;
 
     // サウナ深掘りセクションは、語れる情報がある宿のみ表示
     const showSauna = !!sauna && !!(sauna.entertainment || sauna.tempMax || sauna.tempMin || sauna.chairs);
@@ -202,43 +173,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                             sizes="(max-width:640px) 70vw, 380px"
                                             priority={i < 2}
                                         />
-                                        {img.category && (
-                                            <div className="absolute top-3 left-3 text-[10px] tracking-widest uppercase text-bg bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">
-                                                {img.category}
-                                            </div>
-                                        )}
                                     </div>
                                 ))}
                                 <div className="w-3 shrink-0" />
-                            </div>
-                        </div>
-                    </section>
-                )}
-
-                {/* FACILITIES */}
-                {showFacilities && (
-                    <section className="py-14 md:py-20 border-t border-line">
-                        <div className="mx-auto max-w-4xl px-6 md:px-8">
-                            <Shead en="Facilities" jp="設備・空間。" />
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-7">
-                                {facilities.map((f, i) => (
-                                    <div key={i}>
-                                        <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-line">
-                                            <Image
-                                                src={f.img}
-                                                alt={f.jp}
-                                                fill
-                                                className="object-cover"
-                                                sizes="(max-width:640px) 100vw, 300px"
-                                            />
-                                        </div>
-                                        <p className="text-[11px] tracking-[0.14em] uppercase text-gold-deep font-medium mt-4">
-                                            0{i + 1} ・ {f.en}
-                                        </p>
-                                        <p className="font-sans text-lg font-bold mt-1">{f.jp}</p>
-                                        <p className="text-[13px] text-ink-soft leading-relaxed mt-1">{f.note}</p>
-                                    </div>
-                                ))}
                             </div>
                         </div>
                     </section>
