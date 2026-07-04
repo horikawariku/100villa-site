@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Instagram } from "lucide-react";
 import { siteMeta } from "@/data/siteMeta";
 import { REGION_LABEL, FEATURE_LABEL } from "@/data/types";
 import { ViewerCounter } from "@/components/home/ViewerCounter";
@@ -21,15 +20,6 @@ export function Footer() {
                             {siteMeta.tagline}
                         </p>
                         <div className="flex items-center gap-3">
-                            <a
-                                href={siteMeta.instagram}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Instagram"
-                                className="hover:opacity-70 transition-opacity"
-                            >
-                                <Instagram className="w-4 h-4 text-bg" />
-                            </a>
                             <a
                                 href={siteMeta.tiktok}
                                 target="_blank"
@@ -81,7 +71,7 @@ export function Footer() {
                         <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">About</p>
                         <ul className="space-y-2 text-[13px] tracking-[0.04em] text-bg/65">
                             <li><Link href="/wishlist" className="hover:text-bg transition-colors duration-300">お気に入り</Link></li>
-                            <li><a href={`mailto:`} className="hover:text-bg transition-colors duration-300">掲載希望のお問い合わせ</a></li>
+                            <li><a href={`mailto:${siteMeta.contactEmail}`} className="hover:text-bg transition-colors duration-300">掲載希望のお問い合わせ</a></li>
                         </ul>
                     </div>
                 </div>

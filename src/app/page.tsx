@@ -4,6 +4,7 @@ import { TikTokFeed } from "@/components/home/TikTokFeed";
 import { RegionTiles } from "@/components/home/RegionTiles";
 import { FeatureTiles } from "@/components/home/FeatureTiles";
 import { AllProperties } from "@/components/home/AllProperties";
+import { ClosingCTA } from "@/components/home/ClosingCTA";
 
 export default function Home() {
     return (
@@ -22,6 +23,9 @@ export default function Home() {
             {/* エリア / 体験 */}
             <RegionTiles />
             <FeatureTiles />
+
+            {/* 締めの全幅CTA */}
+            <ClosingCTA />
         </main>
     );
 }

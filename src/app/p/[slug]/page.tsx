@@ -78,8 +78,32 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     if (sauna?.chairs) saunaPoints.push({ en: "Chairs", label: `整いチェア × ${sauna.chairs}`, note: "外気浴スペース" });
     if (sauna?.entertainment) saunaPoints.push({ en: "Feature", label: sauna.entertainment });
 
+    // 構造化データ (JSON-LD): 実データのみ使用 (評価・レビュー等の捏造なし)
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "LodgingBusiness",
+        name: p.name,
+        description: p.description,
+        image: p.mainPhoto,
+        url: `${siteMeta.url}/p/${p.id}`,
+        address: {
+            "@type": "PostalAddress",
+            addressCountry: "JP",
+            addressRegion: p.area.prefecture,
+            addressLocality: p.area.city,
+            streetAddress: p.address,
+        },
+        priceRange: `¥${p.pricePerPersonFrom.toLocaleString()}〜/人`,
+        ...(s.checkIn ? { checkinTime: s.checkIn } : {}),
+        ...(s.checkOut ? { checkoutTime: s.checkOut } : {}),
+    };
+
     return (
         <main className="pb-28">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <RecordView propertyId={p.id} />
 
             {/* ============ HERO (Ken Burns) ============ */}

@@ -10,7 +10,13 @@ import { siteMeta } from "@/data/siteMeta";
  * 既存の <script src=".../api/site-tracker-js" defer> はページ初回ロード時のみ発火し、
  * Link クリックでの遷移では発火しない問題があった。
  * このコンポーネントは usePathname の変化を検知してすべての route 切替で page_view を送る.
+ *
+ * referrer について: SPA 遷移では document.referrer が更新されない (外部流入元のまま) ため、
+ * サイト内回遊 (宿→宿) が計測できない。直前の内部URLをモジュール変数で保持し、
+ * 2ページ目以降はそれを referrer として送る (初回は document.referrer = 外部流入元)。
  */
+let lastInternalUrl: string | null = null;
+
 export function PageViewBeacon() {
     const pathname = usePathname();
 
@@ -51,8 +57,10 @@ export function PageViewBeacon() {
                     property_id: propertyId,
                     page_type,
                     page_url: window.location.href,
-                    referrer: document.referrer || null,
+                    // 2ページ目以降はサイト内の直前URL、初回は外部流入元
+                    referrer: lastInternalUrl ?? (document.referrer || null),
                 });
+                lastInternalUrl = window.location.href;
 
                 if (typeof fetch === "function") {
                     fetch(url, {

@@ -25,6 +25,8 @@ export function RegionTiles() {
         acc[r] = all.filter((p) => p.area.region === r).length;
         return acc;
     }, {} as Record<Region, number>);
+    // 宿が1軒もないエリアは出さない (行き止まりページへの誘導を排除。宿を追加すれば自動で復活)
+    const regions = REGIONS.filter((r) => counts[r] > 0);
 
     return (
         <section id="area" className="py-10 md:py-14">
@@ -33,7 +35,7 @@ export function RegionTiles() {
             </div>
             <div className="overflow-x-auto no-scrollbar">
                 <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
-                    {REGIONS.map((r) => (
+                    {regions.map((r) => (
                         <Link
                             key={r}
                             href={`/area/${r}`}

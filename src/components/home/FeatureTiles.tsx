@@ -24,6 +24,8 @@ export function FeatureTiles() {
         acc[f] = all.filter((p) => (p.features as string[]).includes(f)).length;
         return acc;
     }, {});
+    // 該当宿が0件のタグは出さない (行き止まりページへの誘導を排除)
+    const features = FEATURES.filter((f) => counts[f] > 0);
 
     return (
         <section id="feature" className="py-10 md:py-14 bg-bg-alt">
@@ -32,7 +34,7 @@ export function FeatureTiles() {
             </div>
             <div className="overflow-x-auto no-scrollbar">
                 <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
-                    {FEATURES.map((f) => (
+                    {features.map((f) => (
                         <Link
                             key={f}
                             href={`/feature/${f}`}

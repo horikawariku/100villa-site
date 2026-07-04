@@ -55,9 +55,11 @@ export function TikTokFeedCard({ property: p }: Props) {
                     />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
-                <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-bg/85 flex items-center justify-center">
-                    <Play className="w-3.5 h-3.5 text-ink fill-ink ml-0.5" />
-                </div>
+                {p.tiktokVideoUrl && (
+                    <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-bg/85 flex items-center justify-center">
+                        <Play className="w-3.5 h-3.5 text-ink fill-ink ml-0.5" />
+                    </div>
+                )}
                 <div className="absolute inset-x-0 bottom-0 p-3.5 text-bg">
                     <p className="text-[10px] tracking-[0.16em] uppercase text-bg/75 mb-1">
                         {p.area.prefecture}

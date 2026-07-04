@@ -2,7 +2,7 @@
 export const siteMeta = {
     name: "100 VILLA",
     tagline: "予約が取れない100棟",
-    description: "フォロワー15万人の編集部が選ぶ、日本中の極上ヴィラ・宿。サウナ、貸切、絶景、古民家。次に泊まりたい一棟がここに。",
+    description: "サウナ、貸切、絶景、古民家。日本全国の一棟貸しヴィラ・宿を厳選して紹介。次に泊まりたい一棟がここに。",
     url: "https://100villa.vercel.app",
     ogImage: "https://i.imgur.com/5fv3XpV.png",
     /** Hero背景ローテ用 (実物件の写真) */
@@ -13,20 +13,9 @@ export const siteMeta = {
         "https://villa-saison-fuji.com/wp-content/uploads/2024/05/topintro_600_05.jpg", // VILLA SAISON FUJI 外観
         "https://i.imgur.com/5fv3XpV.png", // AO サウナ室
     ],
-    instagram: "https://www.instagram.com/",  // TODO: 実アカウント
-    tiktok: "https://www.tiktok.com/",         // TODO: 実アカウント
-    line: "https://line.me/",                  // TODO: 実OA
-    /** メディアの数値訴求 */
-    stats: {
-        followers: 150000,
-        properties: 100,
-        prefectures: 25,
-    },
-    /** 編集者プロフィール */
-    editor: {
-        name: "堀河大陸",
-        title: "編集長",
-    },
+    tiktok: "https://www.tiktok.com/@triptrend.com",
+    /** 掲載・お問い合わせ先 */
+    contactEmail: "koloha.ec@gmail.com",
     /** redirect-tracker のオリジン */
     trackerOrigin: "https://redirect-tracker-eta.vercel.app",
 };

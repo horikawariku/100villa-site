@@ -13,11 +13,16 @@ const PIN_FIRST = "hiire-futo";
 export function TikTokFeed() {
     const all = getAllProperties();
     const withVideo = all.filter((p) => p.tiktokVideoUrl);
-    const ordered = [
+    const orderedVideos = [
         ...withVideo.filter((p) => p.id === PIN_FIRST),
         ...withVideo.filter((p) => p.id !== PIN_FIRST),
     ];
-    const list = ordered.length > 0 ? ordered : all;
+    // 動画のない宿も写真カードで後ろに続け、スワイプ慣性のまま全宿を回遊できるようにする。
+    // クライアント宿 (成果報酬あり) を先に (グループ内は publishedAt 降順のまま)。
+    const withoutVideo = all
+        .filter((p) => !p.tiktokVideoUrl)
+        .sort((a, b) => Number(b.isClient) - Number(a.isClient));
+    const list = [...orderedVideos, ...withoutVideo].slice(0, 12);
 
     return (
         <section className="pt-24 md:pt-28 pb-12 md:pb-16">
@@ -41,7 +46,7 @@ export function TikTokFeed() {
             {list.length > 0 && (
                 <div className="overflow-x-auto no-scrollbar">
                     <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
-                        {list.slice(0, 12).map((p) => (
+                        {list.map((p) => (
                             <TikTokFeedCard key={p.id} property={p} />
                         ))}
                         <div className="w-3 shrink-0" />
