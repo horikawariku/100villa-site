@@ -1,106 +1,165 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { X, ChevronDown, MapPin, Sparkles } from "lucide-react";
+import { getAllProperties } from "@/data/properties";
 import { REGION_LABEL, FEATURE_LABEL, type Region, type FeatureTag } from "@/data/types";
 
-const REGIONS: Region[] = ["hokkaido", "tohoku", "kanto", "chubu", "kansai", "chugoku", "shikoku", "kyushu", "okinawa"];
-const FEATURES: FeatureTag[] = [
-    "sauna",
-    "private",
-    "pool",
-    "ocean-view",
-    "lake-view",
-    "mountain-view",
-    "onsen",
-    "bbq",
-    "fire",
-    "kominka",
-    "modern",
-    "luxury",
-    "pet-ok",
-    "anniversary",
-];
-
 /**
- * エリア + 体験 の2軸フィルター。キーワード検索は廃止。
- * 選択は即 URL (?regions=&features=) に反映され、同ページ FilteredResults が切替わる。
- * 候補ポップアップは dropUp=true で上方向に開く（画面下部の固定ドック用）。
+ * エリア + 体験 の2軸フィルター。
+ * - 選択は「保留状態」に溜まり、「◯宿を見る」ボタンで初めて URL (?regions=&features=) に反映される
+ *   (即時反映だと何が起きたか分からない、という UX 指摘への対応)
+ * - 外クリックで保留分は破棄 (適用済み状態に戻る)
+ * - 件数は FilteredResults と同一ロジック (エリア=OR / 体験=AND) でリアルタイム計算
+ * - 宿が0件のエリア/体験は選択肢に出さない (行き止まり防止)
  */
 export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
     const router = useRouter();
     const sp = useSearchParams();
 
-    const selectedRegions = (sp.get("regions") || "").split(",").filter(Boolean) as Region[];
-    const selectedFeatures = (sp.get("features") || "").split(",").filter(Boolean) as FeatureTag[];
+    const appliedRegions = (sp.get("regions") || "").split(",").filter(Boolean) as Region[];
+    const appliedFeatures = (sp.get("features") || "").split(",").filter(Boolean) as FeatureTag[];
 
+    // null = 保留なし (適用済みをそのまま表示)
+    const [pendingR, setPendingR] = useState<Region[] | null>(null);
+    const [pendingF, setPendingF] = useState<FeatureTag[] | null>(null);
     const [openRegion, setOpenRegion] = useState(false);
     const [openFeature, setOpenFeature] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    // ポップアップ外クリックで閉じる
+    const effR = pendingR ?? appliedRegions;
+    const effF = pendingF ?? appliedFeatures;
+    const isOpen = openRegion || openFeature;
+
+    // 選択肢: 宿が1軒以上あるものだけ (件数付き)
+    const { regionOptions, featureOptions } = useMemo(() => {
+        const all = getAllProperties();
+        const rCount = new Map<Region, number>();
+        const fCount = new Map<FeatureTag, number>();
+        for (const p of all) {
+            rCount.set(p.area.region, (rCount.get(p.area.region) || 0) + 1);
+            for (const f of p.features) fCount.set(f, (fCount.get(f) || 0) + 1);
+        }
+        return {
+            regionOptions: [...rCount.entries()],
+            featureOptions: [...fCount.entries()],
+        };
+    }, []);
+
+    // FilteredResults と同一の絞り込みロジックで件数を計算
+    const matchCount = useMemo(() => {
+        let list = getAllProperties();
+        if (effR.length > 0) list = list.filter((p) => effR.includes(p.area.region));
+        if (effF.length > 0) list = list.filter((p) => effF.every((f) => (p.features as string[]).includes(f)));
+        return list.length;
+    }, [effR, effF]);
+
+    const discardPending = () => {
+        setPendingR(null);
+        setPendingF(null);
+        setOpenRegion(false);
+        setOpenFeature(false);
+    };
+
+    // ポップアップ外クリック → 保留分を破棄して閉じる
     useEffect(() => {
         const onDocClick = (e: MouseEvent) => {
-            if (!wrapperRef.current?.contains(e.target as Node)) {
-                setOpenRegion(false);
-                setOpenFeature(false);
-            }
+            if (!wrapperRef.current?.contains(e.target as Node)) discardPending();
         };
         document.addEventListener("mousedown", onDocClick);
         return () => document.removeEventListener("mousedown", onDocClick);
     }, []);
 
-    const updateUrl = (next: { regions?: Region[]; features?: FeatureTag[] }) => {
+    const toggleR = (r: Region) => {
+        const base = pendingR ?? appliedRegions;
+        setPendingR(base.includes(r) ? base.filter((x) => x !== r) : [...base, r]);
+    };
+    const toggleF = (f: FeatureTag) => {
+        const base = pendingF ?? appliedFeatures;
+        setPendingF(base.includes(f) ? base.filter((x) => x !== f) : [...base, f]);
+    };
+
+    const apply = () => {
         const params = new URLSearchParams();
-        const finalR = next.regions ?? selectedRegions;
-        const finalF = next.features ?? selectedFeatures;
-        if (finalR.length) params.set("regions", finalR.join(","));
-        if (finalF.length) params.set("features", finalF.join(","));
+        if (effR.length) params.set("regions", effR.join(","));
+        if (effF.length) params.set("features", effF.join(","));
         const qStr = params.toString();
         router.replace(qStr ? `/?${qStr}#results` : "/", { scroll: false });
+        setPendingR(null);
+        setPendingF(null);
+        setOpenRegion(false);
+        setOpenFeature(false);
+        // 絞り込み結果までスクロール (結果セクションはページ最上部に描画される)
+        setTimeout(() => {
+            document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 200);
     };
 
-    const toggleRegion = (r: Region) => {
-        const next = selectedRegions.includes(r)
-            ? selectedRegions.filter((x) => x !== r)
-            : [...selectedRegions, r];
-        updateUrl({ regions: next });
+    const clearAll = () => {
+        setPendingR(null);
+        setPendingF(null);
+        setOpenRegion(false);
+        setOpenFeature(false);
+        router.replace("/", { scroll: false });
     };
 
-    const toggleFeature = (f: FeatureTag) => {
-        const next = selectedFeatures.includes(f)
-            ? selectedFeatures.filter((x) => x !== f)
-            : [...selectedFeatures, f];
-        updateUrl({ features: next });
+    const clearPending = () => {
+        setPendingR([]);
+        setPendingF([]);
     };
 
-    const clearAll = () => router.replace("/", { scroll: false });
+    const hasApplied = appliedRegions.length > 0 || appliedFeatures.length > 0;
+    const pendingChanged = pendingR !== null || pendingF !== null;
 
-    const hasFilters = selectedRegions.length > 0 || selectedFeatures.length > 0;
+    // トリガーラベル: 1件選択ならその名前、複数なら件数
+    const regionLabel =
+        effR.length === 1 ? `エリア・${REGION_LABEL[effR[0]]}` : "エリア";
+    const featureLabel =
+        effF.length === 1 ? `体験・${FEATURE_LABEL[effF[0]]}` : "体験";
 
     const trigger = (open: boolean, active: boolean) =>
-        `inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-[13px] tracking-[0.08em] transition-colors duration-200 ${
-            open
+        `inline-flex items-center gap-2 rounded-full border px-5 min-h-[44px] text-[13px] font-semibold tracking-[0.04em] transition-colors duration-200 ${
+            open || active
                 ? "border-ink bg-ink text-bg"
-                : active
-                  ? "border-ink/60 bg-bg text-ink"
-                  : "border-line bg-bg/70 text-ink-soft hover:border-ink hover:text-ink"
+                : "border-line-strong bg-bg-card text-ink hover:border-ink"
         }`;
 
-    const popupCls =`absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-3" : "mt-3"} p-4 md:p-5 bg-bg border border-line shadow-xl rounded-2xl`;
+    const popupCls = `absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-3" : "mt-3"} p-4 md:p-5 bg-bg-card border border-line-strong shadow-xl rounded-2xl`;
     const optionCls = (selected: boolean) =>
-        `text-xs tracking-wide px-3.5 py-2 rounded-full border transition-colors duration-200 ${
-            selected ? "bg-ink text-bg border-ink" : "bg-bg border-line text-ink-soft hover:border-ink hover:text-ink"
+        `inline-flex items-center gap-1.5 text-[13px] font-medium tracking-wide px-4 min-h-[40px] rounded-full border transition-colors duration-200 ${
+            selected
+                ? "bg-ink text-bg border-ink"
+                : "bg-bg-card border-line-strong text-ink hover:border-ink"
         }`;
+
+    const popupFooter = (
+        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-line">
+            <button
+                type="button"
+                onClick={apply}
+                disabled={matchCount === 0}
+                className={`flex-1 rounded-xl min-h-[46px] text-[14px] font-semibold tracking-[0.04em] transition-colors ${
+                    matchCount === 0
+                        ? "bg-line text-mute cursor-not-allowed"
+                        : "bg-ink text-bg hover:bg-ink/90"
+                }`}
+            >
+                {matchCount === 0 ? "該当なし — 条件を減らしてください" : `${matchCount}宿を見る`}
+            </button>
+            <button
+                type="button"
+                onClick={clearPending}
+                className="text-[13px] font-medium text-ink-soft px-2 py-2 underline underline-offset-4 hover:text-ink transition-colors"
+            >
+                クリア
+            </button>
+        </div>
+    );
 
     return (
         <div ref={wrapperRef} className="w-full max-w-3xl mx-auto relative">
             <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
-                <span className="hidden md:inline text-[11px] tracking-[0.18em] text-mute mr-1.5">
-                    宿を絞り込む
-                </span>
-
                 {/* エリア */}
                 <button
                     type="button"
@@ -108,17 +167,17 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
                         setOpenRegion(!openRegion);
                         setOpenFeature(false);
                     }}
-                    className={trigger(openRegion, selectedRegions.length > 0)}
+                    className={trigger(openRegion, effR.length > 0)}
                     aria-expanded={openRegion}
                 >
-                    <MapPin className="w-4 h-4" strokeWidth={1.6} />
-                    エリア
-                    {selectedRegions.length > 0 && (
-                        <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-gold-deep text-bg text-[10px] leading-none">
-                            {selectedRegions.length}
+                    <MapPin className="w-4 h-4" strokeWidth={2} />
+                    {regionLabel}
+                    {effR.length > 1 && (
+                        <span className="inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-gold-deep text-bg text-[11px] font-semibold leading-none">
+                            {effR.length}
                         </span>
                     )}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${openRegion ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${openRegion ? "rotate-180" : ""}`} strokeWidth={2} />
                 </button>
 
                 {/* 体験 */}
@@ -128,50 +187,28 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
                         setOpenFeature(!openFeature);
                         setOpenRegion(false);
                     }}
-                    className={trigger(openFeature, selectedFeatures.length > 0)}
+                    className={trigger(openFeature, effF.length > 0)}
                     aria-expanded={openFeature}
                 >
-                    <Sparkles className="w-4 h-4" strokeWidth={1.6} />
-                    体験
-                    {selectedFeatures.length > 0 && (
-                        <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-gold-deep text-bg text-[10px] leading-none">
-                            {selectedFeatures.length}
+                    <Sparkles className="w-4 h-4" strokeWidth={2} />
+                    {featureLabel}
+                    {effF.length > 1 && (
+                        <span className="inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-gold-deep text-bg text-[11px] font-semibold leading-none">
+                            {effF.length}
                         </span>
                     )}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${openFeature ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${openFeature ? "rotate-180" : ""}`} strokeWidth={2} />
                 </button>
 
-                {/* 選択中チップ */}
-                {hasFilters && <span className="hidden md:block w-px h-5 bg-line mx-1" />}
-                {selectedRegions.map((r) => (
-                    <button
-                        key={r}
-                        type="button"
-                        onClick={() => toggleRegion(r)}
-                        className="group text-[12px] tracking-wide rounded-full bg-ink text-bg pl-3 pr-2 py-1.5 inline-flex items-center gap-1 hover:bg-ink/85 transition-colors"
-                    >
-                        {REGION_LABEL[r]}
-                        <X className="w-3 h-3 opacity-70 group-hover:opacity-100" />
-                    </button>
-                ))}
-                {selectedFeatures.map((f) => (
-                    <button
-                        key={f}
-                        type="button"
-                        onClick={() => toggleFeature(f)}
-                        className="group text-[12px] tracking-wide rounded-full bg-gold-deep text-bg pl-3 pr-2 py-1.5 inline-flex items-center gap-1 hover:bg-gold-deep/85 transition-colors"
-                    >
-                        {FEATURE_LABEL[f]}
-                        <X className="w-3 h-3 opacity-70 group-hover:opacity-100" />
-                    </button>
-                ))}
-                {hasFilters && (
+                {/* 適用済みの解除 (ポップアップを開いていない時のみ表示) */}
+                {hasApplied && !isOpen && !pendingChanged && (
                     <button
                         type="button"
                         onClick={clearAll}
-                        className="text-[12px] tracking-widest text-mute px-2 py-1.5 underline underline-offset-2 hover:text-ink transition-colors"
+                        className="text-[13px] font-medium tracking-wide text-ink-soft px-2 min-h-[44px] underline underline-offset-4 hover:text-ink transition-colors"
                     >
-                        クリア
+                        <X className="w-3.5 h-3.5 inline -mt-0.5 mr-0.5" />
+                        解除
                     </button>
                 )}
             </div>
@@ -179,28 +216,34 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
             {/* エリアポップアップ */}
             {openRegion && (
                 <div className={popupCls}>
-                    <p className="text-[11px] tracking-[0.12em] text-mute mb-3 font-medium">エリアを選ぶ（複数可）</p>
+                    <p className="text-[12px] tracking-[0.1em] text-ink font-semibold mb-3">エリアを選ぶ（複数可）</p>
                     <div className="flex flex-wrap gap-2">
-                        {REGIONS.map((r) => (
-                            <button key={r} type="button" onClick={() => toggleRegion(r)} className={optionCls(selectedRegions.includes(r))}>
+                        {regionOptions.map(([r, n]) => (
+                            <button key={r} type="button" onClick={() => toggleR(r)} className={optionCls(effR.includes(r))}>
+                                {effR.includes(r) && <span aria-hidden>✓</span>}
                                 {REGION_LABEL[r]}
+                                <span className={`text-[11px] ${effR.includes(r) ? "text-bg/70" : "text-mute"}`}>{n}</span>
                             </button>
                         ))}
                     </div>
+                    {popupFooter}
                 </div>
             )}
 
             {/* 体験ポップアップ */}
             {openFeature && (
                 <div className={popupCls}>
-                    <p className="text-[11px] tracking-[0.12em] text-mute mb-3 font-medium">体験で選ぶ（複数可）</p>
+                    <p className="text-[12px] tracking-[0.1em] text-ink font-semibold mb-3">体験で選ぶ（複数可）</p>
                     <div className="flex flex-wrap gap-2">
-                        {FEATURES.map((f) => (
-                            <button key={f} type="button" onClick={() => toggleFeature(f)} className={optionCls(selectedFeatures.includes(f))}>
+                        {featureOptions.map(([f, n]) => (
+                            <button key={f} type="button" onClick={() => toggleF(f)} className={optionCls(effF.includes(f))}>
+                                {effF.includes(f) && <span aria-hidden>✓</span>}
                                 {FEATURE_LABEL[f]}
+                                <span className={`text-[11px] ${effF.includes(f) ? "text-bg/70" : "text-mute"}`}>{n}</span>
                             </button>
                         ))}
                     </div>
+                    {popupFooter}
                 </div>
             )}
         </div>

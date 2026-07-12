@@ -9,6 +9,23 @@ const FEATURES_FOR_FOOTER = ["sauna", "private", "pool", "ocean-view", "onsen", 
 export function Footer() {
     return (
         <footer className="bg-ink text-bg/70">
+            {/* 信頼バンド: 実事実のみ (公式予約・上乗せなし・実SNSアカウント) */}
+            <div className="border-b border-bg/10">
+                <div className="container mx-auto px-5 md:px-7 py-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+                    <p className="text-[13px] leading-relaxed text-bg/85 font-medium">
+                        ご予約は各宿の<span className="text-bg font-bold">公式サイト・公式料金</span>です。
+                        100 VILLAが宿泊料金に上乗せすることはありません。
+                    </p>
+                    <a
+                        href={siteMeta.tiktok}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 inline-flex items-center gap-1.5 text-[12px] font-medium tracking-[0.06em] text-bg/80 hover:text-bg border border-bg/25 hover:border-bg/60 rounded-full px-4 py-2 transition-colors self-start md:self-auto"
+                    >
+                        TikTok @triptrend.com →
+                    </a>
+                </div>
+            </div>
             <div className="container mx-auto px-5 md:px-7 py-14 md:py-20">
                 <div className="grid md:grid-cols-4 gap-10">
                     {/* ブランド */}

@@ -35,9 +35,9 @@ export function HomeSearchDock() {
     return (
         <div
             ref={ref}
-            className="fixed bottom-0 left-0 w-full z-40 bg-bg/95 backdrop-blur-md border-t border-line"
+            className="fixed bottom-0 left-0 w-full z-40 bg-bg/95 backdrop-blur-md border-t border-line-strong shadow-[0_-4px_16px_rgba(27,23,20,0.08)]"
         >
-            <div className="container mx-auto px-5 md:px-7 py-4">
+            <div className="container mx-auto px-5 md:px-7 py-3.5">
                 <Suspense fallback={<div className="h-11" />}>
                     <SearchBar dropUp />
                 </Suspense>

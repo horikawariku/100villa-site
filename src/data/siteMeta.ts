@@ -3,7 +3,7 @@ export const siteMeta = {
     name: "100 VILLA",
     tagline: "予約が取れない100棟",
     description: "サウナ、貸切、絶景、古民家。日本全国の一棟貸しヴィラ・宿を厳選して紹介。次に泊まりたい一棟がここに。",
-    url: "https://100villa.vercel.app",
+    url: "https://trip-trend.vercel.app",
     ogImage: "https://i.imgur.com/5fv3XpV.png",
     /** Hero背景ローテ用 (実物件の写真) */
     heroImages: [
