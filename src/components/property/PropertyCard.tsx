@@ -40,22 +40,22 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
 
                 {/* 情報: 地名 / 宿名 / 金額 */}
                 <div className="pt-3.5">
-                    <p className="text-[11px] tracking-[0.14em] uppercase text-mute truncate mb-1.5">
+                    <p className="text-[11.5px] tracking-[0.1em] font-medium text-ink-soft truncate mb-1.5">
                         {p.area.prefecture}・{p.area.city}
                     </p>
                     <h3
-                        className="font-sans text-[16px] md:text-[17px] font-medium leading-[1.35] text-ink line-clamp-2 mb-1.5"
+                        className="font-sans text-[16px] md:text-[17px] font-semibold leading-[1.35] text-ink line-clamp-2 mb-1.5"
                         style={{ letterSpacing: "0.005em" }}
                     >
                         {p.name}
                     </h3>
                     {p.pricePerPersonFrom !== undefined ? (
-                        <p className="text-[14px] text-ink" style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <p className="text-[14.5px] font-semibold text-ink" style={{ fontVariantNumeric: "tabular-nums" }}>
                             ¥{p.pricePerPersonFrom.toLocaleString()}
-                            <span className="text-[11px] text-mute ml-0.5">〜/人</span>
+                            <span className="text-[11.5px] font-medium text-ink-soft ml-0.5">〜/人</span>
                         </p>
                     ) : (
-                        <p className="text-[12px] text-mute">料金は公式サイトで</p>
+                        <p className="text-[12.5px] font-medium text-ink-soft">料金は公式サイトで</p>
                     )}
                 </div>
             </Link>

@@ -18,7 +18,7 @@ export const EXTRA_PROPERTIES: Property[] = [
         pricePerPersonFrom: 33000,
         features: ["sauna", "private", "pool", "ocean-view", "bbq", "fire", "luxury", "anniversary"],
         useCases: ["friends", "family", "corporate"],
-        mainPhoto: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yNTQ0MjUzL3BpY3R1cmUvMTc2OTMxMDkyNy1QSVNBMDQzMC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==",
+        mainPhoto: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yNTQ0MjU4L3BpY3R1cmUvMTc2OTMxNjExMy1QSVNBMDEyNC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==",
         gallery: [
             { src: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yNTQ0MjUzL3BpY3R1cmUvMTc2OTMxMDkyNy1QSVNBMDQzMC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==" },
             { src: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yNTQ0MjU4L3BpY3R1cmUvMTc2OTMxNjExMy1QSVNBMDEyNC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==" },
@@ -111,9 +111,8 @@ export const EXTRA_PROPERTIES: Property[] = [
         capacity: { min: 2, max: 16 },
         features: ["sauna", "private", "pool", "bbq", "fire", "pet-ok", "luxury"],
         useCases: ["friends", "family", "corporate"],
-        mainPhoto: "https://storage.googleapis.com/production-os-assets/assets/47cfc6aa-188e-406c-b36a-d831e2aa7687",
+        mainPhoto: "https://storage.googleapis.com/studio-design-asset-files/projects/xPOR48gbar/s-2400x1646_v-frms_webp_91a3c207-1e96-4af5-92f9-52020e8b72cd_small.webp",
         gallery: [
-            { src: "https://storage.googleapis.com/production-os-assets/assets/47cfc6aa-188e-406c-b36a-d831e2aa7687" },
             { src: "https://storage.googleapis.com/studio-design-asset-files/projects/xPOR48gbar/s-2400x1646_v-frms_webp_91a3c207-1e96-4af5-92f9-52020e8b72cd_small.webp" },
             { src: "https://storage.googleapis.com/studio-design-asset-files/projects/xPOR48gbar/s-2400x1646_v-frms_webp_02dd002f-d661-4bdd-95fc-bb7a9d8a1d59_small.webp" },
             { src: "https://storage.googleapis.com/studio-design-asset-files/projects/xPOR48gbar/s-1456x940_v-fms_webp_60e81141-0885-4bb5-8b83-bd4bd14576ef_middle.webp" },
@@ -282,9 +281,8 @@ export const EXTRA_PROPERTIES: Property[] = [
         capacity: { min: 2, max: 10 },
         features: ["sauna", "private", "pool", "ocean-view", "bbq", "fire", "luxury", "anniversary"],
         useCases: ["friends", "family", "couple"],
-        mainPhoto: "https://panali.jp/wp-content/themes/panali/common/img/ogp/samuneiru.webp",
+        mainPhoto: "https://panali.jp/wp-content/themes/panali/common/img/top/room-pic1.webp",
         gallery: [
-            { src: "https://panali.jp/wp-content/themes/panali/common/img/ogp/samuneiru.webp" },
             { src: "https://panali.jp/wp-content/themes/panali/common/img/top/room-pic1.webp" },
             { src: "https://panali.jp/wp-content/themes/panali/common/img/top/sauna-pic1.webp" },
             { src: "https://panali.jp/wp-content/themes/panali/common/img/top/sauna-pic2.webp" },
@@ -582,9 +580,8 @@ export const EXTRA_PROPERTIES: Property[] = [
         capacity: { min: 2, max: 8 },
         features: ["sauna", "private", "bbq", "pet-ok", "fire"],
         useCases: ["friends", "family"],
-        mainPhoto: "https://storage.googleapis.com/production-os-assets/assets/a5c752ad-cbdd-402a-8844-f9dc56e82333",
+        mainPhoto: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yMDI3NjQwL3BpY3R1cmUvMTcwODQwOTI2Ni1UMDZMMDYwMC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==",
         gallery: [
-            { src: "https://storage.googleapis.com/production-os-assets/assets/a5c752ad-cbdd-402a-8844-f9dc56e82333" },
             { src: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yMDI3NjQwL3BpY3R1cmUvMTcwODQwOTI2Ni1UMDZMMDYwMC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==" },
             { src: "https://d3fueozinnp6qd.cloudfront.net/eyJidWNrZXQiOiJ0cmlvc2t5LWFpcmhvc3QiLCJrZXkiOiJ1cGxvYWRzL3Byb2R1Y3Rpb24vaG91c2VfcGljdHVyZS8yMDI3NTQzL3BpY3R1cmUvMTcwODM5ODA0MC1TX18yMTgzMTcxMy5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgwMCwiZml0IjoiY29udGFpbiJ9LCJyb3RhdGUiOm51bGx9fQ==" },
         ],

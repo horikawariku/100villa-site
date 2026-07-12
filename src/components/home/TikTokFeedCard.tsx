@@ -61,16 +61,16 @@ export function TikTokFeedCard({ property: p }: Props) {
                     </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 p-3.5 text-bg">
-                    <p className="text-[10px] tracking-[0.16em] uppercase text-bg/75 mb-1">
+                    <p className="text-[10.5px] tracking-[0.12em] font-medium text-bg/95 mb-1">
                         {p.area.prefecture}
                     </p>
-                    <p className="font-sans text-sm font-medium tracking-wide leading-snug text-bg mb-1">
+                    <p className="font-sans text-sm font-semibold tracking-wide leading-snug text-bg mb-1">
                         {p.name}
                     </p>
                     {p.pricePerPersonFrom !== undefined && (
-                        <p className="text-[12px] text-bg/90" style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <p className="text-[12.5px] font-semibold text-bg" style={{ fontVariantNumeric: "tabular-nums" }}>
                             ¥{p.pricePerPersonFrom.toLocaleString()}
-                            <span className="text-[10px] text-bg/70 ml-0.5">〜/人</span>
+                            <span className="text-[10.5px] font-medium text-bg/85 ml-0.5">〜/人</span>
                         </p>
                     )}
                 </div>
