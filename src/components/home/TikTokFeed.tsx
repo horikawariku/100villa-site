@@ -13,9 +13,11 @@ const PIN_FIRST = "hiire-futo";
 export function TikTokFeed() {
     const all = getAllProperties();
     const withVideo = all.filter((p) => p.tiktokVideoUrl);
+    // クライアント宿の動画を前に (新規追加宿の動画で ao/goza が後ろに流れないように)
     const orderedVideos = [
         ...withVideo.filter((p) => p.id === PIN_FIRST),
-        ...withVideo.filter((p) => p.id !== PIN_FIRST),
+        ...withVideo.filter((p) => p.id !== PIN_FIRST && p.isClient),
+        ...withVideo.filter((p) => p.id !== PIN_FIRST && !p.isClient),
     ];
     // 動画のない宿も写真カードで後ろに続け、スワイプ慣性のまま全宿を回遊できるようにする。
     // クライアント宿 (成果報酬あり) を先に (グループ内は publishedAt 降順のまま)。

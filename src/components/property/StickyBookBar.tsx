@@ -40,15 +40,19 @@ export function StickyBookBar({ property: p }: Props) {
         >
             <div className="flex items-center justify-between gap-3 rounded-2xl bg-bg-card/95 backdrop-blur border border-line shadow-[0_14px_36px_-8px_rgba(20,16,12,0.28)] py-2.5 pl-5 pr-2.5">
                 <div className="min-w-0">
-                    <p className="flex items-baseline gap-1 text-ink">
-                        <span
-                            className="font-sans text-xl md:text-[22px] font-bold tracking-tight"
-                            style={{ fontVariantNumeric: "tabular-nums" }}
-                        >
-                            ¥{p.pricePerPersonFrom.toLocaleString()}
-                        </span>
-                        <span className="text-[12px] text-mute">〜 / 人</span>
-                    </p>
+                    {p.pricePerPersonFrom !== undefined ? (
+                        <p className="flex items-baseline gap-1 text-ink">
+                            <span
+                                className="font-sans text-xl md:text-[22px] font-bold tracking-tight"
+                                style={{ fontVariantNumeric: "tabular-nums" }}
+                            >
+                                ¥{p.pricePerPersonFrom.toLocaleString()}
+                            </span>
+                            <span className="text-[12px] text-mute">〜 / 人</span>
+                        </p>
+                    ) : (
+                        <p className="font-sans text-[15px] font-bold text-ink truncate">{p.name}</p>
+                    )}
                     <p className="text-[10px] tracking-[0.06em] text-mute mt-0.5 truncate">
                         定員 {p.capacity.min}–{p.capacity.max}名 ・ 公式サイトへ
                     </p>

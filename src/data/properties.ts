@@ -1,4 +1,5 @@
 import type { Property, GalleryImage } from "./types";
+import { EXTRA_PROPERTIES } from "./properties.extra";
 
 /** ダミー画像プール (Unsplash villa/lodging) */
 const IMG = {
@@ -511,14 +512,17 @@ export const PROPERTIES: Property[] = [
     },
 ];
 
+/** 掲載全宿 = 手動管理分 + SNS人気宿の一括追加分 (properties.extra.ts) */
+const ALL = [...PROPERTIES, ...EXTRA_PROPERTIES];
+
 /** 全物件取得 (新着順) */
 export function getAllProperties(): Property[] {
-    return [...PROPERTIES].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+    return [...ALL].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 
 /** slugから物件取得 */
 export function getProperty(slug: string): Property | undefined {
-    return PROPERTIES.find((p) => p.id === slug);
+    return ALL.find((p) => p.id === slug);
 }
 
 /** featured物件のみ */

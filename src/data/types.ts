@@ -54,8 +54,8 @@ export interface Property {
     capacity: { min: number; max: number };
     /** 1棟あたり最低価格 (円) */
     pricePerNightFrom?: number;
-    /** 1人あたり最低価格 (円) */
-    pricePerPersonFrom: number;
+    /** 1人あたり最低価格 (円)。公式サイトに価格の静的記載がない宿は undefined (表示側で非表示) */
+    pricePerPersonFrom?: number;
     features: FeatureTag[];
     useCases: UseCase[];
     /** リスト・カード用メイン写真 */

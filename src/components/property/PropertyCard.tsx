@@ -49,10 +49,14 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                     >
                         {p.name}
                     </h3>
-                    <p className="text-[14px] text-ink" style={{ fontVariantNumeric: "tabular-nums" }}>
-                        ¥{p.pricePerPersonFrom.toLocaleString()}
-                        <span className="text-[11px] text-mute ml-0.5">〜/人</span>
-                    </p>
+                    {p.pricePerPersonFrom !== undefined ? (
+                        <p className="text-[14px] text-ink" style={{ fontVariantNumeric: "tabular-nums" }}>
+                            ¥{p.pricePerPersonFrom.toLocaleString()}
+                            <span className="text-[11px] text-mute ml-0.5">〜/人</span>
+                        </p>
+                    ) : (
+                        <p className="text-[12px] text-mute">料金は公式サイトで</p>
+                    )}
                 </div>
             </Link>
 

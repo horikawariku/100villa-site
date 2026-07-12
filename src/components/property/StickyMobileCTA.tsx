@@ -22,9 +22,11 @@ export function StickyMobileCTA({ property }: Props) {
             <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
                     <p className="font-sans text-sm font-bold truncate">{property.name}</p>
-                    <p className="text-[10px] tracking-widest text-mute mt-0.5">
-                        ¥{property.pricePerPersonFrom.toLocaleString()}〜 / 人
-                    </p>
+                    {property.pricePerPersonFrom !== undefined && (
+                        <p className="text-[10px] tracking-widest text-mute mt-0.5">
+                            ¥{property.pricePerPersonFrom.toLocaleString()}〜 / 人
+                        </p>
+                    )}
                 </div>
                 <OfficialSiteCTA property={property} placement="sticky" />
             </div>

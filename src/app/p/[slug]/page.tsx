@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const p = getProperty(slug);
     if (!p) return {};
     const title = `${p.name} — ${REGION_LABEL[p.area.region]} ${p.area.prefecture}`;
-    const desc = `${p.area.prefecture}${p.area.city} / 定員${p.capacity.min}〜${p.capacity.max}名 / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人`;
+    const desc = `${p.area.prefecture}${p.area.city} / 定員${p.capacity.min}〜${p.capacity.max}名${p.pricePerPersonFrom !== undefined ? ` / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人` : ""}`;
     return {
         title,
         description: desc,
@@ -93,7 +93,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             addressLocality: p.area.city,
             streetAddress: p.address,
         },
-        priceRange: `¥${p.pricePerPersonFrom.toLocaleString()}〜/人`,
+        ...(p.pricePerPersonFrom !== undefined ? { priceRange: `¥${p.pricePerPersonFrom.toLocaleString()}〜/人` } : {}),
         ...(s.checkIn ? { checkinTime: s.checkIn } : {}),
         ...(s.checkOut ? { checkoutTime: s.checkOut } : {}),
     };
@@ -124,11 +124,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                             {p.name}
                         </h1>
                         <p className="flex items-center gap-3 text-bg/85 text-sm md:text-base">
-                            <span className="font-sans font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
-                                ¥{p.pricePerPersonFrom.toLocaleString()}
-                                <span className="text-xs text-bg/70">〜 / 人</span>
-                            </span>
-                            <span className="w-px h-3.5 bg-bg/40" />
+                            {p.pricePerPersonFrom !== undefined && (
+                                <>
+                                    <span className="font-sans font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                        ¥{p.pricePerPersonFrom.toLocaleString()}
+                                        <span className="text-xs text-bg/70">〜 / 人</span>
+                                    </span>
+                                    <span className="w-px h-3.5 bg-bg/40" />
+                                </>
+                            )}
                             <span>定員 {p.capacity.min}–{p.capacity.max}名</span>
                         </p>
                     </div>
@@ -314,7 +318,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                             {p.name} の空室を確認する
                         </h2>
                         <p className="text-[13px] text-bg/80 mb-8">
-                            ¥{p.pricePerPersonFrom.toLocaleString()}〜 / 人 ・ 定員 {p.capacity.min}–{p.capacity.max}名
+                            {p.pricePerPersonFrom !== undefined && `¥${p.pricePerPersonFrom.toLocaleString()}〜 / 人 ・ `}
+                            定員 {p.capacity.min}–{p.capacity.max}名
                         </p>
                         <div className="flex justify-center">
                             <OfficialSiteCTA property={p} placement="mid" />
