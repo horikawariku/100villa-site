@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { bookingUrl, mysaSiteUrl } from "@/data/siteMeta";
+import { bookingUrl, mysaSiteUrl, withVisitorId } from "@/data/siteMeta";
 import type { Property } from "@/data/types";
 
 interface Props {
@@ -59,6 +59,7 @@ export function StickyBookBar({ property: p }: Props) {
                 </div>
                 <a
                     href={url}
+                    onClick={(e) => { e.currentTarget.href = withVisitorId(url); }}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-ink text-bg px-6 py-3 text-sm font-bold tracking-wide hover:bg-gold-deep transition-colors"

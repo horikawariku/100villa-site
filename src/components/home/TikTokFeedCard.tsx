@@ -8,15 +8,19 @@ import type { Property } from "@/data/types";
 
 interface Props {
     property: Property;
+    /** ファーストビューに入るカードは true (LCP改善: 先読みされる) */
+    priority?: boolean;
 }
 
 /**
  * TikTokFeed の各カード (縦9:16)。
- * tiktokVideoUrl があれば /api/tiktok-oembed で実物サムネを取得して表示。
- * 取得失敗 or 動画URL未設定なら mainPhoto を使う。
+ * まず mainPhoto を即座に表示し (グレーの待ち時間を作らない)、
+ * tiktokVideoUrl がある場合は oEmbed サムネ取得後にフェードで差し替える。
+ * ホーム離脱56%の主因だった「初速の空白」への対策。
  */
-export function TikTokFeedCard({ property: p }: Props) {
+export function TikTokFeedCard({ property: p, priority = false }: Props) {
     const [tiktokThumb, setTiktokThumb] = useState<string | null>(null);
+    const [thumbLoaded, setThumbLoaded] = useState(false);
 
     useEffect(() => {
         if (!p.tiktokVideoUrl) return;
@@ -32,26 +36,30 @@ export function TikTokFeedCard({ property: p }: Props) {
         };
     }, [p.tiktokVideoUrl]);
 
-    const useTt = !!tiktokThumb;
-
     return (
         <Link href={`/p/${p.id}`} className="group block w-[58vw] md:w-[230px] shrink-0">
             <div className="relative aspect-[9/16] overflow-hidden rounded-xl bg-line">
-                {useTt ? (
+                {/* ベース: 宿の実写真を即表示 (oEmbed待ちのグレーを出さない) */}
+                <Image
+                    src={p.mainPhoto}
+                    alt={p.name}
+                    fill
+                    priority={priority}
+                    className="object-cover group-hover:scale-[1.04] transition-transform duration-700"
+                    sizes="(max-width: 768px) 58vw, 230px"
+                />
+                {/* TikTokサムネ取得後、上にフェードイン */}
+                {tiktokThumb && (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
-                        src={tiktokThumb!}
-                        alt={p.name}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700"
+                        src={tiktokThumb}
+                        alt=""
+                        aria-hidden
                         loading="lazy"
-                    />
-                ) : (
-                    <Image
-                        src={p.mainPhoto}
-                        alt={p.name}
-                        fill
-                        className="object-cover group-hover:scale-[1.04] transition-transform duration-700"
-                        sizes="(max-width: 768px) 58vw, 230px"
+                        onLoad={() => setThumbLoaded(true)}
+                        className={`absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-[opacity,transform] duration-500 ${
+                            thumbLoaded ? "opacity-100" : "opacity-0"
+                        }`}
                     />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />

@@ -48,3 +48,23 @@ export function mysaSiteUrl(propertyId: string, source = "100villa"): string | n
     if (!path) return null;
     return `${MYSA_SITE_ORIGIN}${path}?utm_source=${encodeURIComponent(source)}`;
 }
+
+/**
+ * クリック時に呼ぶ: 100villa の訪問者ID (page_views と同じID) を遷移先URLに付与し、
+ * クロスドメインでも同一訪問者として行動が繋がるようにする。
+ * - redirect 経由URL → `v` パラメータ (click_logs の click_id に採用される)
+ * - mysa-site 直リンク → `rt_vid` パラメータ (mysa 側 track.js が引き継ぐ)
+ * SSR時・cookie未発行時は元のURLをそのまま返す (計測が1段浅くなるだけで無害)。
+ */
+export function withVisitorId(url: string): string {
+    if (typeof document === "undefined") return url;
+    const m =
+        document.cookie.match(/(?:^|; )_rt_site_vid=([^;]+)/) ||
+        document.cookie.match(/(?:^|; )_rt_cid=([^;]+)/);
+    if (!m) return url;
+    const vid = decodeURIComponent(m[1]);
+    if (!/^[0-9a-f-]{16,64}$/i.test(vid)) return url;
+    const sep = url.includes("?") ? "&" : "?";
+    const key = url.includes("/api/redirect") ? "v" : "rt_vid";
+    return `${url}${sep}${key}=${encodeURIComponent(vid)}`;
+}

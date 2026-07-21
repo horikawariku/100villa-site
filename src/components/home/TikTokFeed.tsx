@@ -48,8 +48,8 @@ export function TikTokFeed() {
             {list.length > 0 && (
                 <div className="overflow-x-auto no-scrollbar">
                     <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
-                        {list.map((p) => (
-                            <TikTokFeedCard key={p.id} property={p} />
+                        {list.map((p, i) => (
+                            <TikTokFeedCard key={p.id} property={p} priority={i < 2} />
                         ))}
                         <div className="w-3 shrink-0" />
                     </div>

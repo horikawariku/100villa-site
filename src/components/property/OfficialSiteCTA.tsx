@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { bookingUrl, mysaSiteUrl } from "@/data/siteMeta";
+import { bookingUrl, mysaSiteUrl, withVisitorId } from "@/data/siteMeta";
 import type { Property } from "@/data/types";
 
 interface Props {
@@ -28,10 +28,15 @@ export function OfficialSiteCTA({ property, placement, variant = "primary", full
             campaign: property.id,
         });
     const base = fullWidth ? "w-full" : "inline-flex";
+    // クリック直前に訪問者IDを付与 (cookieはクリック時点で読む必要があるため href を書き換える)
+    const attachVid = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.currentTarget.href = withVisitorId(url);
+    };
     if (variant === "outline") {
         return (
             <a
                 href={url}
+                onClick={attachVid}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`${base} group items-center justify-center gap-2 px-6 py-3 border border-ink hover:bg-ink hover:text-bg text-sm tracking-widest font-medium transition-colors`}
@@ -44,6 +49,7 @@ export function OfficialSiteCTA({ property, placement, variant = "primary", full
     return (
         <a
             href={url}
+            onClick={attachVid}
             target="_blank"
             rel="noopener noreferrer"
             className={`${base} group items-center justify-center gap-2 px-7 py-3.5 bg-ink text-bg hover:bg-gold-deep text-sm tracking-widest font-medium transition-colors`}
