@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import { Cinzel, Playfair_Display, Zen_Kaku_Gothic_New } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
+        <ViewTransitions>
         <html lang="ja">
             <head>
                 <link rel="preconnect" href={siteMeta.trackerOrigin} />
@@ -53,5 +55,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <HomeSearchDock />
             </body>
         </html>
+        </ViewTransitions>
     );
 }

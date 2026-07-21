@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { Play } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -37,7 +37,7 @@ export function TikTokFeedCard({ property: p, priority = false }: Props) {
     }, [p.tiktokVideoUrl]);
 
     return (
-        <Link href={`/p/${p.id}`} className="group block w-[58vw] md:w-[230px] shrink-0">
+        <Link href={`/p/${p.id}`} className="group block w-[58vw] md:w-[230px] shrink-0 press">
             <div className="relative aspect-[9/16] overflow-hidden rounded-xl bg-line">
                 {/* ベース: 宿の実写真を即表示 (oEmbed待ちのグレーを出さない) */}
                 <Image
@@ -76,7 +76,7 @@ export function TikTokFeedCard({ property: p, priority = false }: Props) {
                         {p.name}
                     </p>
                     {p.pricePerPersonFrom !== undefined && (
-                        <p className="text-[12.5px] font-semibold text-bg" style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <p className="text-[14px] font-bold text-bg" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" }}>
                             ¥{p.pricePerPersonFrom.toLocaleString()}
                             <span className="text-[10.5px] font-medium text-bg/85 ml-0.5">〜/人</span>
                         </p>

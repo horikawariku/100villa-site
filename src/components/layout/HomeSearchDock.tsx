@@ -19,7 +19,8 @@ export function HomeSearchDock() {
         const el = ref.current;
         if (!el) return;
         const update = () => {
-            document.body.style.paddingBottom = `${el.offsetHeight}px`;
+            // 浮遊ピル分 (下オフセット12px + 余白12px) を加算
+            document.body.style.paddingBottom = `${el.offsetHeight + 24}px`;
         };
         update();
         const ro = new ResizeObserver(update);
@@ -33,11 +34,9 @@ export function HomeSearchDock() {
     if (!isHome) return null;
 
     return (
-        <div
-            ref={ref}
-            className="fixed bottom-0 left-0 w-full z-40 bg-bg/95 backdrop-blur-md border-t border-line-strong shadow-[0_-4px_16px_rgba(27,23,20,0.08)]"
-        >
-            <div className="container mx-auto px-5 md:px-7 py-3.5">
+        <div ref={ref} className="fixed bottom-3 inset-x-3 z-40 pointer-events-none">
+            {/* 浮遊ピル (iOS Dock風): 全幅バーをやめ、左右に余白を持つ丸い浮遊面に */}
+            <div className="pointer-events-auto mx-auto max-w-xl rounded-full site-chrome border border-line-strong shadow-[0_10px_32px_-8px_rgba(27,23,20,0.22)] px-4 py-2.5">
                 <Suspense fallback={<div className="h-11" />}>
                     <SearchBar dropUp />
                 </Suspense>

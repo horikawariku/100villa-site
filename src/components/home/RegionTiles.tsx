@@ -33,7 +33,7 @@ export function RegionTiles() {
             <div className="container mx-auto px-5 md:px-7">
                 <SectionHeader en="Areas" jp="エリアから探す" />
             </div>
-            <div className="overflow-x-auto no-scrollbar">
+            <div className="overflow-x-auto no-scrollbar strip-snap">
                 <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
                     {regions.map((r) => (
                         <Link

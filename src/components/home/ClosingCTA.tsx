@@ -31,7 +31,7 @@ export function ClosingCTA() {
                 </p>
                 <Link
                     href="/#all"
-                    className="rounded-full bg-bg text-ink text-sm font-semibold px-8 py-3.5 hover:opacity-90 transition-opacity"
+                    className="press rounded-full bg-bg text-ink text-sm font-semibold px-8 py-3.5 hover:opacity-90 transition-opacity"
                 >
                     全ての宿を見る
                 </Link>

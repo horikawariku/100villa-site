@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import type { Property } from "@/data/types";
 import { HeartButton } from "./HeartButton";
@@ -9,6 +9,12 @@ interface Props {
     property: Property;
     /** カードサイズバリエーション */
     size?: "sm" | "md" | "lg";
+    /**
+     * View Transition 名 (詳細ページのヒーローへ写真が連続変形する)。
+     * 同一ページ内で同じ宿が複数箇所に出ると名前が重複して遷移が壊れるため、
+     * 「1宿1回しか出ないセクション」(AllProperties) からのみ渡すこと。
+     */
+    vtName?: string;
 }
 
 const SIZE_CLASS: Record<NonNullable<Props["size"]>, { card: string; img: string }> = {
@@ -21,14 +27,17 @@ const SIZE_CLASS: Record<NonNullable<Props["size"]>, { card: string; img: string
  * earthboat / mysa 調のクリーンカード。
  * 写真 (角丸) の下にクリーム地で「地名 / 宿名 / 金額」のみ。
  */
-export function PropertyCard({ property: p, size = "md" }: Props) {
+export function PropertyCard({ property: p, size = "md", vtName }: Props) {
     const cls = SIZE_CLASS[size];
 
     return (
         <div className={`group relative ${cls.card} shrink-0`}>
-            <Link href={`/p/${p.id}`} className="block">
-                {/* 写真 */}
-                <div className={`relative ${cls.img} overflow-hidden rounded-xl bg-line`}>
+            <Link href={`/p/${p.id}`} className="block press">
+                {/* 写真 (vtName指定時: 詳細ページのヒーローへ連続変形する) */}
+                <div
+                    className={`relative ${cls.img} overflow-hidden rounded-xl bg-line`}
+                    style={vtName ? { viewTransitionName: vtName } : undefined}
+                >
                     <Image
                         src={p.mainPhoto}
                         alt={p.name}
@@ -50,9 +59,9 @@ export function PropertyCard({ property: p, size = "md" }: Props) {
                         {p.name}
                     </h3>
                     {p.pricePerPersonFrom !== undefined ? (
-                        <p className="text-[14.5px] font-semibold text-ink" style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <p className="text-[17px] font-bold text-ink" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" }}>
                             ¥{p.pricePerPersonFrom.toLocaleString()}
-                            <span className="text-[11.5px] font-medium text-ink-soft ml-0.5">〜/人</span>
+                            <span className="text-[11.5px] font-medium text-ink-soft ml-1">〜/人</span>
                         </p>
                     ) : (
                         <p className="text-[12.5px] font-medium text-ink-soft">料金は公式サイトで</p>

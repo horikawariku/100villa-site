@@ -51,7 +51,7 @@ export function Footer() {
 
                     {/* エリア */}
                     <div>
-                        <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">Area</p>
+                        <p className="text-[11px] tracking-[0.2em] uppercase text-bg/55 mb-4">Area</p>
                         <ul className="space-y-2">
                             {REGIONS_FOR_FOOTER.map((r) => (
                                 <li key={r}>
@@ -68,7 +68,7 @@ export function Footer() {
 
                     {/* 体験 */}
                     <div>
-                        <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">Feature</p>
+                        <p className="text-[11px] tracking-[0.2em] uppercase text-bg/55 mb-4">Feature</p>
                         <ul className="space-y-2">
                             {FEATURES_FOR_FOOTER.map((f) => (
                                 <li key={f}>
@@ -85,7 +85,7 @@ export function Footer() {
 
                     {/* About */}
                     <div>
-                        <p className="text-[11px] tracking-[0.2em] uppercase text-gold-deep/90 mb-4">About</p>
+                        <p className="text-[11px] tracking-[0.2em] uppercase text-bg/55 mb-4">About</p>
                         <ul className="space-y-2 text-[13px] tracking-[0.04em] text-bg/65">
                             <li><Link href="/wishlist" className="hover:text-bg transition-colors duration-300">お気に入り</Link></li>
                             <li><a href={`mailto:${siteMeta.contactEmail}`} className="hover:text-bg transition-colors duration-300">掲載希望のお問い合わせ</a></li>

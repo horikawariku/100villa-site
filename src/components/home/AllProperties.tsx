@@ -18,13 +18,13 @@ export function AllProperties() {
                 {heroClients.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-7 gap-y-10 mb-10 md:mb-14">
                         {heroClients.map((p) => (
-                            <PropertyCard key={p.id} property={p} size="lg" />
+                            <PropertyCard key={p.id} property={p} size="lg" vtName={`photo-${p.id}`} />
                         ))}
                     </div>
                 )}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-10 md:gap-x-7 md:gap-y-14">
                     {rest.map((p) => (
-                        <PropertyCard key={p.id} property={p} size="md" />
+                        <PropertyCard key={p.id} property={p} size="md" vtName={`photo-${p.id}`} />
                     ))}
                 </div>
             </div>

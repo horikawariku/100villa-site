@@ -16,7 +16,7 @@ export function Header() {
 
     return (
         <>
-            <header className="fixed top-0 left-0 w-full z-50 bg-bg/95 backdrop-blur-md border-b border-line">
+            <header className="fixed top-0 left-0 w-full z-50 site-chrome border-b border-line/60">
                 <div className="container mx-auto px-5 md:px-7 h-16 flex items-center justify-between">
                     <Link href="/" aria-label={siteMeta.name} className="font-sans text-ink leading-[0.9] tracking-tight">
                         <span className="block text-base md:text-lg font-bold">100</span>

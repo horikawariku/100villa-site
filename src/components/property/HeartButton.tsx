@@ -26,14 +26,17 @@ export function HeartButton({ slug }: Props) {
             aria-pressed={saved}
             className="group inline-flex items-center justify-center w-9 h-9 transition-transform hover:scale-110"
         >
-            <Heart
-                className={`w-5 h-5 transition-all drop-shadow-md ${
-                    saved
-                        ? "fill-white text-white"
-                        : "fill-transparent text-white"
-                }`}
-                strokeWidth={2}
-            />
+            {/* key=saved で状態切替のたびに再マウント → スプリングポップが1回だけ再生される */}
+            <span key={String(saved)} className={saved ? "animate-heart-pop inline-flex" : "inline-flex"}>
+                <Heart
+                    className={`w-5 h-5 transition-all drop-shadow-md ${
+                        saved
+                            ? "fill-white text-white"
+                            : "fill-transparent text-white"
+                    }`}
+                    strokeWidth={2}
+                />
+            </span>
         </button>
     );
 }

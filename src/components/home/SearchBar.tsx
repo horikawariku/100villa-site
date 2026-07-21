@@ -125,7 +125,7 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
                 : "border-line-strong bg-bg-card text-ink hover:border-ink"
         }`;
 
-    const popupCls = `absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-3" : "mt-3"} p-4 md:p-5 bg-bg-card border border-line-strong shadow-xl rounded-2xl`;
+    const popupCls = `absolute z-30 left-0 right-0 ${dropUp ? "bottom-full mb-3" : "mt-3"} p-4 md:p-5 bg-bg-card border border-line-strong shadow-xl rounded-2xl animate-pop-in`;
     const optionCls = (selected: boolean) =>
         `inline-flex items-center gap-1.5 text-[13px] font-medium tracking-wide px-4 min-h-[40px] rounded-full border transition-colors duration-200 ${
             selected
@@ -173,7 +173,7 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
                     <MapPin className="w-4 h-4" strokeWidth={2} />
                     {regionLabel}
                     {effR.length > 1 && (
-                        <span className="inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-gold-deep text-bg text-[11px] font-semibold leading-none">
+                        <span className="inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-accent text-bg text-[11px] font-semibold leading-none">
                             {effR.length}
                         </span>
                     )}
@@ -193,7 +193,7 @@ export function SearchBar({ dropUp = false }: { dropUp?: boolean }) {
                     <Sparkles className="w-4 h-4" strokeWidth={2} />
                     {featureLabel}
                     {effF.length > 1 && (
-                        <span className="inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-gold-deep text-bg text-[11px] font-semibold leading-none">
+                        <span className="inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-accent text-bg text-[11px] font-semibold leading-none">
                             {effF.length}
                         </span>
                     )}

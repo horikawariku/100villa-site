@@ -12,6 +12,7 @@ import { RecentlyViewed } from "@/components/property/RecentlyViewed";
 import { RecordView } from "@/components/property/RecordView";
 import { TikTokEmbed } from "@/components/property/TikTokEmbed";
 import { StickyBookBar } from "@/components/property/StickyBookBar";
+import { NextStayPeek } from "@/components/property/NextStayPeek";
 
 export function generateStaticParams() {
     return PROPERTIES.map((p) => ({ slug: p.id }));
@@ -108,7 +109,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             {/* ============ HERO (Ken Burns) ============ */}
             <section className="relative h-[86vh] min-h-[520px] overflow-hidden bg-ink">
-                <div className="absolute inset-0 animate-kenburns">
+                <div className="absolute inset-0 animate-kenburns" style={{ viewTransitionName: `photo-${p.id}` }}>
                     <Image src={p.mainPhoto} alt={p.name} fill priority className="object-cover" sizes="100vw" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/70" />
@@ -126,9 +127,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         <p className="flex items-center gap-3 text-bg/85 text-sm md:text-base">
                             {p.pricePerPersonFrom !== undefined && (
                                 <>
-                                    <span className="font-sans font-medium" style={{ fontVariantNumeric: "tabular-nums" }}>
+                                    <span className="font-sans font-bold text-base md:text-xl" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" }}>
                                         ¥{p.pricePerPersonFrom.toLocaleString()}
-                                        <span className="text-xs text-bg/70">〜 / 人</span>
+                                        <span className="text-xs font-medium text-bg/75 ml-0.5">〜 / 人</span>
                                     </span>
                                     <span className="w-px h-3.5 bg-bg/40" />
                                 </>
@@ -186,7 +187,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         <div className="mx-auto max-w-4xl px-6 md:px-8">
                             <Shead en="Gallery" jp={`館内の様子 ─ 全${p.gallery.length}枚。`} />
                         </div>
-                        <div className="mt-1 overflow-x-auto no-scrollbar">
+                        <div className="mt-1 overflow-x-auto no-scrollbar strip-snap">
                             <div className="inline-flex gap-3 md:gap-4 px-6 md:px-8 pb-2">
                                 {p.gallery.map((img, i) => (
                                     <div
@@ -230,7 +231,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 mt-9">
                                 {saunaPoints.map((pt, i) => (
                                     <div key={i}>
-                                        <p className="text-[10px] tracking-[0.16em] uppercase text-gold font-medium">{pt.en}</p>
+                                        <p className="text-[10px] tracking-[0.16em] uppercase text-bg/60 font-medium">{pt.en}</p>
                                         <p className="font-sans text-[15px] font-medium mt-1.5 leading-snug">{pt.label}</p>
                                         {pt.note && <p className="text-[12px] text-bg/55 mt-1 leading-relaxed">{pt.note}</p>}
                                     </div>
@@ -258,7 +259,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
                                     {s.amenities.map((a, i) => (
                                         <div key={i} className="flex items-center gap-3 py-2.5 border-b border-line/70 text-[14px] text-ink">
-                                            <Check className="w-4 h-4 text-gold-deep shrink-0" strokeWidth={1.8} />
+                                            <Check className="w-4 h-4 text-accent shrink-0" strokeWidth={1.8} />
                                             <span>{a}</span>
                                         </div>
                                     ))}
@@ -344,6 +345,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 <p className="mx-auto max-w-2xl px-6 py-10 text-[11px] leading-relaxed text-mute text-center">
                     ※ 写真・情報は各宿の公式情報を元にしています。料金は1名あたりの目安です。空室・料金の詳細および予約は各宿の公式サイトでご確認ください。
                 </p>
+
+                {/* 次の宿ピーク (宿→宿の直接回遊) */}
+                {similar[0] && <NextStayPeek property={similar[0]} />}
             </div>
 
             {/* 下部固定 予約バー */}

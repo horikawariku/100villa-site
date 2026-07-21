@@ -50,7 +50,7 @@ export function FilteredResults() {
         <section id="results" className="py-12 md:py-16 bg-bg-alt">
             <div className="container mx-auto px-5 md:px-7">
                 <div className="mb-9 md:mb-12">
-                    <p className="text-[11px] tracking-[0.26em] uppercase text-gold-deep mb-3">
+                    <p className="text-[11px] tracking-[0.26em] uppercase text-accent mb-3">
                         Filtered
                     </p>
                     <div className="flex items-baseline gap-3">

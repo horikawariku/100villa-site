@@ -10,8 +10,7 @@
   --color-mute: #776e60;
   --color-line: #e4ddd0;
   --color-line-strong: #d2cabb;
-  --color-gold: #9c8e79;
-  --color-gold-deep: #897a64;
+  --color-accent: #2f3d31; /* アクセントは深緑1色にロック (mysaと血縁の色) */
 
   /* フォント: 明朝は廃止し、和文・本文ともゴシックに統一。Cinzelは100 VILLA wordmarkのみ。 */
   --font-display: var(--font-cinzel), serif;
@@ -37,4 +36,50 @@
 /* Ken Burns (宿詳細ページ hero のゆっくりズーム) */
 @keyframes kenburns { from { transform: scale(1.04); } to { transform: scale(1.14); } }
 .animate-kenburns { animation: kenburns 24s ease-in-out infinite alternate; transform-origin: center; will-change: transform; }
-@media (prefers-reduced-motion: reduce) { .animate-kenburns { animation: none; } }
+
+/* ===== Apple流モーション基盤 ===== */
+
+/* 押した瞬間のフィードバック (pointer-down)。離すのを待たない */
+button:not(:disabled) { transition: transform 100ms ease-out, background 150ms ease, color 150ms ease, border-color 150ms ease, opacity 150ms ease; }
+button:not(:disabled):active { transform: scale(0.97); }
+a.press { transition: transform 100ms ease-out; }
+a.press:active { transform: scale(0.98); }
+
+/* 検索ドックのポップアップ: 素材が「現れる」質感 (blur+scale同時) */
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+.animate-pop-in { animation: pop-in 0.22s ease-out; transform-origin: bottom center; }
+
+/* ハートのスプリングポップ (押した勢いがある操作なのでバウンス許可) */
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.animate-heart-pop { animation: heart-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* 半透明マテリアル (ヘッダー/ドック)。透明度低減設定では不透明にフォールバック */
+.site-chrome {
+  background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .site-chrome { background: var(--color-bg); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .site-chrome { background: var(--color-bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* 横スクロール帯: スナップ+チェーン抑制 (iOSのラバーバンドは帯内で完結)
+   構造が scroller > inline-flex > cards のため孫要素にも align を効かせる */
+.strip-snap { scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scroll-padding-left: 20px; }
+.strip-snap > * > * { scroll-snap-align: start; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-kenburns, .animate-pop-in, .animate-heart-pop { animation: none; }
+  button:not(:disabled):active, a.press:active { transform: none; }
+  .strip-snap { scroll-snap-type: none; }
+}

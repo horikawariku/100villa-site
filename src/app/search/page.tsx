@@ -50,7 +50,7 @@ function SearchContent() {
                     />
                     <button
                         type="submit"
-                        className="px-5 py-3.5 bg-ink text-bg text-xs tracking-widest font-medium hover:bg-gold-deep transition-colors"
+                        className="px-5 py-3.5 bg-ink text-bg text-xs tracking-widest font-medium hover:bg-accent transition-colors"
                     >
                         探す
                     </button>

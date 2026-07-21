@@ -32,7 +32,7 @@ export function FeatureTiles() {
             <div className="container mx-auto px-5 md:px-7">
                 <SectionHeader en="Experiences" jp="体験から探す" />
             </div>
-            <div className="overflow-x-auto no-scrollbar">
+            <div className="overflow-x-auto no-scrollbar strip-snap">
                 <div className="inline-flex gap-3 md:gap-4 px-5 md:px-7">
                     {features.map((f) => (
                         <Link

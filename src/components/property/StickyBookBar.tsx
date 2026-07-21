@@ -62,7 +62,7 @@ export function StickyBookBar({ property: p }: Props) {
                     onClick={(e) => { e.currentTarget.href = withVisitorId(url); }}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-ink text-bg px-6 py-3 text-sm font-bold tracking-wide hover:bg-gold-deep transition-colors"
+                    className="press shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-ink text-bg px-6 py-3 text-sm font-bold tracking-wide hover:bg-accent transition-colors"
                 >
                     予約へ
                     <ArrowUpRight className="w-4 h-4" strokeWidth={2} />
