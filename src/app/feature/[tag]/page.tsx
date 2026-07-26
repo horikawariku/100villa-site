@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { getPropertiesByFeature } from "@/data/properties";
+import { diversify } from "@/lib/diversify";
 import { FEATURE_LABEL, type FeatureTag } from "@/data/types";
 import { siteMeta } from "@/data/siteMeta";
 
@@ -29,7 +30,7 @@ export default async function FeaturePage({ params }: { params: Promise<{ tag: s
     const { tag } = await params;
     if (!FEATURES.includes(tag as FeatureTag)) notFound();
 
-    const list = getPropertiesByFeature(tag);
+    const list = diversify(getPropertiesByFeature(tag), `feature-${tag}`);
     const label = FEATURE_LABEL[tag as FeatureTag];
 
     return (

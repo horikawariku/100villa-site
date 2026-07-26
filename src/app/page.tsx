@@ -7,13 +7,14 @@ import { AllProperties } from "@/components/home/AllProperties";
 import { PropertyRow } from "@/components/home/PropertyRow";
 import { ClosingCTA } from "@/components/home/ClosingCTA";
 import { getAllProperties } from "@/data/properties";
+import { diversify } from "@/lib/diversify";
 
 export default function Home() {
     const all = getAllProperties();
-    const sauna = all.filter((p) => p.features.includes("sauna"));
-    const pet = all.filter((p) => p.features.includes("pet-ok"));
-    const bigGroup = all.filter((p) => p.capacity && p.capacity.max >= 10);
-    const pool = all.filter((p) => p.features.includes("pool"));
+    const sauna = diversify(all.filter((p) => p.features.includes("sauna")), "sauna");
+    const pet = diversify(all.filter((p) => p.features.includes("pet-ok")), "pet");
+    const bigGroup = diversify(all.filter((p) => p.capacity && p.capacity.max >= 10), "big");
+    const pool = diversify(all.filter((p) => p.features.includes("pool")), "pool");
 
     return (
         <main className="overflow-hidden">

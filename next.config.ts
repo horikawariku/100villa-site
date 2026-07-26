@@ -2,13 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    formats: ["image/avif", "image/webp"],
-    // 掲載宿が増えるたびに許可ドメインを追加するのは漏れの温床になる (27宿追加時に全滅した)
-    // ため、https の全ホストを許可する。掲載画像は公式サイト由来のURLのみ使用する運用。
-    remotePatterns: [{ protocol: "https", hostname: "**" }],
-    // 海外IPを遮断するJPホスティングの宿は最適化を迂回 (src/lib/imageLoader.ts 参照)
-    loader: "custom",
-    loaderFile: "./src/lib/imageLoader.ts",
+    // 全画像をブラウザ直読みにする (最適化オフ)。
+    // 理由: ①掲載宿の多くが海外IPを遮断するJPホスティングで、Vercelの最適化サーバー(米国IP)が
+    // 元画像を取得できない ②カスタムローダー方式は最適化エンドポイント自体が無効化され全滅した。
+    // 根本解は画像の自前ホスティング (public/ 配下) — 移行時にこの設定を戻す。
+    unoptimized: true,
   },
 };
 
