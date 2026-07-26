@@ -22,7 +22,7 @@ export function AllProperties() {
                         ))}
                     </div>
                 )}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-10 md:gap-x-7 md:gap-y-14">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                     {rest.map((p) => (
                         <PropertyCard key={p.id} property={p} size="md" vtName={`photo-${p.id}`} />
                     ))}

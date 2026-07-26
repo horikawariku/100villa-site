@@ -39,7 +39,7 @@ export default function WishlistPage() {
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                         {items.map((p) => (
                             <PropertyCard key={p.id} property={p} size="md" />
                         ))}

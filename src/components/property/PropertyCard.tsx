@@ -18,14 +18,14 @@ interface Props {
 }
 
 const SIZE_CLASS: Record<NonNullable<Props["size"]>, { card: string; img: string }> = {
-    sm: { card: "w-[64vw] max-w-[280px]", img: "aspect-[4/5]" },
-    md: { card: "w-full", img: "aspect-[4/5]" },
-    lg: { card: "w-full", img: "aspect-[3/4]" },
+    sm: { card: "w-[58vw] max-w-[260px]", img: "aspect-square" },
+    md: { card: "w-full", img: "aspect-square" },
+    lg: { card: "w-full", img: "aspect-square" },
 };
 
 /**
- * earthboat / mysa 調のクリーンカード。
- * 写真 (角丸) の下にクリーム地で「地名 / 宿名 / 金額」のみ。
+ * Airbnb調のクリーンカード。
+ * 正方形写真 (角丸) の下に「宿名 / 地名 / 金額」をタイトな行間で。
  */
 export function PropertyCard({ property: p, size = "md", vtName }: Props) {
     const cls = SIZE_CLASS[size];
@@ -42,29 +42,26 @@ export function PropertyCard({ property: p, size = "md", vtName }: Props) {
                         src={p.mainPhoto}
                         alt={p.name}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 50vw, 25vw"
                     />
                 </div>
 
-                {/* 情報: 地名 / 宿名 / 金額 */}
-                <div className="pt-3.5">
-                    <p className="text-[11.5px] tracking-[0.1em] font-medium text-ink-soft truncate mb-1.5">
-                        {p.area.prefecture}・{p.area.city}
-                    </p>
-                    <h3
-                        className="font-sans text-[16px] md:text-[17px] font-semibold leading-[1.35] text-ink line-clamp-2 mb-1.5"
-                        style={{ letterSpacing: "0.005em" }}
-                    >
+                {/* 情報: 宿名 / 地名 / 金額 (Airbnb順) */}
+                <div className="pt-2.5">
+                    <h3 className="font-sans text-[14.5px] md:text-[15px] font-semibold leading-[1.4] text-ink line-clamp-1">
                         {p.name}
                     </h3>
+                    <p className="text-[13px] leading-[1.5] text-ink-soft truncate mt-[3px]">
+                        {p.area.prefecture}・{p.area.city}
+                    </p>
                     {p.pricePerPersonFrom !== undefined ? (
-                        <p className="text-[17px] font-bold text-ink" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" }}>
-                            ¥{p.pricePerPersonFrom.toLocaleString()}
-                            <span className="text-[11.5px] font-medium text-ink-soft ml-1">〜/人</span>
+                        <p className="text-[13.5px] leading-[1.5] text-ink mt-[3px]" style={{ fontVariantNumeric: "tabular-nums" }}>
+                            <span className="font-semibold">¥{p.pricePerPersonFrom.toLocaleString()}</span>
+                            <span className="text-ink-soft"> 〜/人</span>
                         </p>
                     ) : (
-                        <p className="text-[12.5px] font-medium text-ink-soft">料金は公式サイトで</p>
+                        <p className="text-[13px] leading-[1.5] text-ink-soft mt-[3px]">料金は公式サイトで</p>
                     )}
                 </div>
             </Link>

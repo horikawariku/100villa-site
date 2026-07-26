@@ -46,7 +46,7 @@ export default async function AreaPage({ params }: { params: Promise<{ region: s
                 {list.length === 0 ? (
                     <p className="text-sm text-mute">この地域の宿はまだ掲載されていません。</p>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                         {list.map((p) => (
                             <PropertyCard key={p.id} property={p} size="md" />
                         ))}

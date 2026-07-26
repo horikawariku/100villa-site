@@ -85,7 +85,7 @@ function SearchContent() {
                                 該当する宿が見つかりませんでした。
                             </div>
                         ) : (
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-14">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10 mb-14">
                                 {results.map((p) => (
                                     <PropertyCard key={p.id} property={p} size="md" />
                                 ))}
@@ -137,7 +137,7 @@ function SearchContent() {
                         <p className="text-[10px] tracking-[0.3em] uppercase text-ink-soft font-medium mb-4">
                             All Stays
                         </p>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                             {all.map((p) => (
                                 <PropertyCard key={p.id} property={p} size="md" />
                             ))}

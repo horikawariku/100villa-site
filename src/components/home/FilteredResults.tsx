@@ -73,7 +73,7 @@ export function FilteredResults() {
                         条件に該当する宿が見つかりませんでした。フィルターを変更してください。
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10 md:gap-x-7 md:gap-y-12">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                         {results.map((p) => (
                             <PropertyCard key={p.id} property={p} size="md" />
                         ))}

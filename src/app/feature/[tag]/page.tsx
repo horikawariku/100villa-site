@@ -51,7 +51,7 @@ export default async function FeaturePage({ params }: { params: Promise<{ tag: s
                 {list.length === 0 ? (
                     <p className="text-sm text-mute">該当する宿はまだ掲載されていません。</p>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                         {list.map((p) => (
                             <PropertyCard key={p.id} property={p} size="md" />
                         ))}
