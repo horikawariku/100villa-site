@@ -11,7 +11,7 @@ export function AllProperties() {
     const pinned = PIN_ORDER.map((id) => all.find((p) => p.id === id)).filter(
         (p): p is NonNullable<typeof p> => !!p,
     );
-    const rest = diversify(all.filter((p) => !PIN_ORDER.includes(p.id)), "all");
+    const rest = diversify(all.filter((p) => !PIN_ORDER.includes(p.id)), "all", { clientsFirst: true });
     return (
         <PropertyRow
             id="all"

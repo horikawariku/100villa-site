@@ -11,7 +11,8 @@ import { diversify } from "@/lib/diversify";
 
 export default function Home() {
     const all = getAllProperties();
-    const sauna = diversify(all.filter((p) => p.features.includes("sauna")), "sauna");
+    // サウナ行のみ gozahills → ao を先頭固定。他の行は完全分散 (提携宿の出過ぎ防止)
+    const sauna = diversify(all.filter((p) => p.features.includes("sauna")), "sauna", { pin: ["gozahills", "ao-villa"] });
     const pet = diversify(all.filter((p) => p.features.includes("pet-ok")), "pet");
     const bigGroup = diversify(all.filter((p) => p.capacity && p.capacity.max >= 10), "big");
     const pool = diversify(all.filter((p) => p.features.includes("pool")), "pool");

@@ -30,7 +30,7 @@ export default async function FeaturePage({ params }: { params: Promise<{ tag: s
     const { tag } = await params;
     if (!FEATURES.includes(tag as FeatureTag)) notFound();
 
-    const list = diversify(getPropertiesByFeature(tag), `feature-${tag}`);
+    const list = diversify(getPropertiesByFeature(tag), `feature-${tag}`, { clientsFirst: true });
     const label = FEATURE_LABEL[tag as FeatureTag];
 
     return (
