@@ -1,33 +1,27 @@
-import { PropertyCard } from "@/components/property/PropertyCard";
 import { getAllProperties } from "@/data/properties";
-import { SectionHeader } from "./SectionHeader";
+import { PropertyRow } from "./PropertyRow";
 
+/** 先頭固定の提携宿 (この順で並ぶ)。以降はクライアント宿 → その他 */
+const PIN_ORDER = ["ao-villa", "mysa-fuji", "mysa-yamanakako", "mysa-hakone", "gozahills"];
+
+/** 全宿一覧 (Airbnb調の横スクロール行) */
 export function AllProperties() {
     const all = getAllProperties();
-    // クライアント宿 (成果報酬あり) を先頭に。featured クライアント (ao/gozahills) は
-    // モバイル全幅・デスクトップ2列の大判で最上段に置く (ラベルではなく並びと大きさで推す)。
-    const heroClients = all.filter((p) => p.isClient && p.featured);
+    const pinned = PIN_ORDER.map((id) => all.find((p) => p.id === id)).filter(
+        (p): p is NonNullable<typeof p> => !!p,
+    );
     const rest = [
-        ...all.filter((p) => p.isClient && !p.featured),
-        ...all.filter((p) => !p.isClient),
+        ...all.filter((p) => !PIN_ORDER.includes(p.id) && p.isClient),
+        ...all.filter((p) => !PIN_ORDER.includes(p.id) && !p.isClient),
     ];
     return (
-        <section id="all" className="py-12 md:py-16 bg-bg-alt">
-            <div className="container mx-auto px-5 md:px-7">
-                <SectionHeader en="Stays" jp="全宿一覧" suffix={`${all.length} stays`} />
-                {heroClients.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-7 gap-y-10 mb-10 md:mb-14">
-                        {heroClients.map((p) => (
-                            <PropertyCard key={p.id} property={p} size="lg" vtName={`photo-${p.id}`} />
-                        ))}
-                    </div>
-                )}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
-                    {rest.map((p) => (
-                        <PropertyCard key={p.id} property={p} size="md" vtName={`photo-${p.id}`} />
-                    ))}
-                </div>
-            </div>
-        </section>
+        <PropertyRow
+            id="all"
+            title="全ての宿"
+            suffix={`${all.length}件`}
+            href="/search"
+            properties={[...pinned, ...rest]}
+            withVt
+        />
     );
 }
