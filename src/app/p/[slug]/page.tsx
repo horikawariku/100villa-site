@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const p = getProperty(slug);
     if (!p) return {};
     const title = `${p.name} — ${REGION_LABEL[p.area.region]} ${p.area.prefecture}`;
-    const desc = `${p.area.prefecture}${p.area.city} / 定員${p.capacity.min}〜${p.capacity.max}名${p.pricePerPersonFrom !== undefined ? ` / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人` : ""}`;
+    const desc = `${p.area.prefecture}${p.area.city}${p.capacity ? ` / 定員${p.capacity.min}〜${p.capacity.max}名` : ""}${p.pricePerPersonFrom !== undefined ? ` / ¥${p.pricePerPersonFrom.toLocaleString()}〜/人` : ""}`;
     return {
         title,
         description: desc,
@@ -62,9 +62,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     const showSauna = !!sauna && !!(sauna.entertainment || sauna.tempMax || sauna.tempMin || sauna.chairs);
 
     // Room Information の項目（存在するものだけ）
-    const specItems: { label: string; value: string }[] = [
-        { label: "定員", value: `${p.capacity.min}〜${p.capacity.max}名` },
-    ];
+    const specItems: { label: string; value: string }[] = [];
+    if (p.capacity) specItems.push({ label: "定員", value: `${p.capacity.min}〜${p.capacity.max}名` });
     if (s.checkIn) specItems.push({ label: "チェックイン", value: s.checkIn });
     if (s.checkOut) specItems.push({ label: "チェックアウト", value: s.checkOut });
     if (s.bedroom) specItems.push({ label: "寝具・間取り", value: s.bedroom });
@@ -131,10 +130,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                         ¥{p.pricePerPersonFrom.toLocaleString()}
                                         <span className="text-xs font-medium text-bg/75 ml-0.5">〜 / 人</span>
                                     </span>
-                                    <span className="w-px h-3.5 bg-bg/40" />
+                                    {p.capacity && <span className="w-px h-3.5 bg-bg/40" />}
                                 </>
                             )}
-                            <span>定員 {p.capacity.min}–{p.capacity.max}名</span>
+                            {p.capacity && <span>定員 {p.capacity.min}–{p.capacity.max}名</span>}
                         </p>
                     </div>
                 </div>
@@ -319,8 +318,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                             {p.name} の空室を確認する
                         </h2>
                         <p className="text-[13px] text-bg/80 mb-8">
-                            {p.pricePerPersonFrom !== undefined && `¥${p.pricePerPersonFrom.toLocaleString()}〜 / 人 ・ `}
-                            定員 {p.capacity.min}–{p.capacity.max}名
+                            {[
+                                p.pricePerPersonFrom !== undefined ? `¥${p.pricePerPersonFrom.toLocaleString()}〜 / 人` : null,
+                                p.capacity ? `定員 ${p.capacity.min}–${p.capacity.max}名` : null,
+                            ].filter(Boolean).join(" ・ ")}
                         </p>
                         <div className="flex justify-center">
                             <OfficialSiteCTA property={p} placement="mid" />

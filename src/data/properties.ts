@@ -338,6 +338,7 @@ export const PROPERTIES: Property[] = [
         },
         address: "〒401-0331 山梨県南都留郡富士河口湖町長浜1838-2",
         accessNotes: ["河口湖ICより車約12分", "河口湖駅より車約12分"],
+        tiktokVideoUrl: "https://vt.tiktok.com/ZSX3AFgtj/",
         officialSiteUrl: "https://hotel-mysa-fuji.com/",
         redirectId: "mysa-fuji",
         isClient: true,
@@ -561,9 +562,9 @@ export function getSimilarProperties(target: Property, limit = 6): Property[] {
         // 共通ユースケース +2 each
         const sharedUseCases = p.useCases.filter((u) => target.useCases.includes(u));
         score += sharedUseCases.length * 2;
-        // 同定員ゾーン +2
+        // 同定員ゾーン +2 (定員不明の宿はスキップ)
         const zone = (c: number) => (c <= 2 ? 1 : c <= 5 ? 2 : c <= 10 ? 3 : 4);
-        if (zone(p.capacity.max) === zone(target.capacity.max)) score += 2;
+        if (p.capacity && target.capacity && zone(p.capacity.max) === zone(target.capacity.max)) score += 2;
         return { p, score };
     });
     return scored.sort((a, b) => b.score - a.score).slice(0, limit).map((s) => s.p);

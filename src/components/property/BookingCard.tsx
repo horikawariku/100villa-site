@@ -52,10 +52,12 @@ export function BookingCard({ property: p }: Props) {
 
                     {/* 仕様サマリー */}
                     <div className="space-y-2 text-xs tracking-wide text-ink font-sans font-normal">
-                        <div className="flex items-center gap-2">
-                            <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
-                            <span>定員 {p.capacity.min}〜{p.capacity.max} 名</span>
-                        </div>
+                        {p.capacity && (
+                            <div className="flex items-center gap-2">
+                                <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
+                                <span>定員 {p.capacity.min}〜{p.capacity.max} 名</span>
+                            </div>
+                        )}
                         {p.specs.checkIn && (
                             <div className="flex items-center gap-2">
                                 <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />

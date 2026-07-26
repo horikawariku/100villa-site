@@ -2,8 +2,8 @@ import Link from "next/link";
 import { getAllProperties } from "@/data/properties";
 import { TikTokFeedCard } from "./TikTokFeedCard";
 
-/** 先頭固定する宿 (一番左) */
-const PIN_FIRST = "hiire-futo";
+/** 先頭固定する宿 (一番左)。以降はクライアント宿(提携)の動画→その他の順 */
+const PIN_FIRST = "mysa-fuji";
 
 /**
  * ヒーロー = TikTokで紹介中の宿一覧 (発見導線)。

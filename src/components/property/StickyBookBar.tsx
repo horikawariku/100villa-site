@@ -54,7 +54,7 @@ export function StickyBookBar({ property: p }: Props) {
                         <p className="font-sans text-[15px] font-bold text-ink truncate">{p.name}</p>
                     )}
                     <p className="text-[10px] tracking-[0.06em] text-mute mt-0.5 truncate">
-                        定員 {p.capacity.min}–{p.capacity.max}名 ・ 公式サイトへ
+                        {p.capacity ? `定員 ${p.capacity.min}–${p.capacity.max}名 ・ ` : ""}公式サイトへ
                     </p>
                 </div>
                 <a
