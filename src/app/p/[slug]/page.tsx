@@ -109,7 +109,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             {/* ============ HERO (Ken Burns) ============ */}
             <section className="relative h-[86vh] min-h-[520px] overflow-hidden bg-ink">
                 <div className="absolute inset-0 animate-kenburns" style={{ viewTransitionName: `photo-${p.id}` }}>
-                    <Image src={p.mainPhoto} alt={p.name} fill priority className="object-cover" sizes="100vw" />
+                    <Image referrerPolicy="no-referrer" src={p.mainPhoto} alt={p.name} fill priority className="object-cover" sizes="100vw" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/70" />
                 <div className="absolute inset-x-0 bottom-0">
@@ -176,7 +176,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         ))}
                     </div>
                     <div className="relative mt-10 md:mt-12 overflow-hidden rounded-2xl aspect-[4/3] md:aspect-[16/9] bg-line">
-                        <Image src={introImg} alt={p.name} fill className="object-cover" sizes="(max-width:768px) 100vw, 900px" />
+                        <Image referrerPolicy="no-referrer" src={introImg} alt={p.name} fill className="object-cover" sizes="(max-width:768px) 100vw, 900px" />
                     </div>
                 </section>
 
@@ -193,7 +193,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                                         key={i}
                                         className="relative w-[70vw] sm:w-[340px] md:w-[380px] aspect-[4/5] overflow-hidden rounded-xl bg-line shrink-0 group"
                                     >
-                                        <Image
+                                        <Image referrerPolicy="no-referrer"
                                             src={img.src}
                                             alt={img.caption || `${p.name} ${i + 1}`}
                                             fill
@@ -310,7 +310,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 {/* CTA (full-bleed) */}
                 <section className="relative overflow-hidden text-center py-24 md:py-32">
                     <div className="absolute inset-0">
-                        <Image src={p.mainPhoto} alt="" fill className="object-cover" sizes="100vw" />
+                        <Image referrerPolicy="no-referrer" src={p.mainPhoto} alt="" fill className="object-cover" sizes="100vw" />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/75" />
                     </div>
                     <div className="relative z-10 mx-auto max-w-xl px-6">

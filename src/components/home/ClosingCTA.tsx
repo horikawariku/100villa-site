@@ -14,7 +14,7 @@ export function ClosingCTA() {
 
     return (
         <section className="relative h-[52vh] min-h-[380px] overflow-hidden bg-ink">
-            <Image
+            <Image referrerPolicy="no-referrer"
                 src={p.mainPhoto}
                 alt={p.name}
                 fill

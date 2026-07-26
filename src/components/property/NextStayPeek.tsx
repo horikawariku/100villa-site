@@ -22,7 +22,7 @@ export function NextStayPeek({ property: p }: { property: Property }) {
                 </div>
                 <div className="flex items-center gap-4 px-5 pb-5">
                     <div className="relative w-24 h-16 shrink-0 overflow-hidden rounded-lg bg-line">
-                        <Image src={p.mainPhoto} alt={p.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="96px" />
+                        <Image referrerPolicy="no-referrer" src={p.mainPhoto} alt={p.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="96px" />
                     </div>
                     <div className="min-w-0">
                         <p className="text-[15px] font-semibold text-ink truncate">{p.name}</p>

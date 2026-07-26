@@ -40,7 +40,7 @@ export function TikTokFeedCard({ property: p, priority = false }: Props) {
         <Link href={`/p/${p.id}`} className="group block w-[58vw] md:w-[230px] shrink-0 press">
             <div className="relative aspect-[9/16] overflow-hidden rounded-xl bg-line">
                 {/* ベース: 宿の実写真を即表示 (oEmbed待ちのグレーを出さない) */}
-                <Image
+                <Image referrerPolicy="no-referrer"
                     src={p.mainPhoto}
                     alt={p.name}
                     fill

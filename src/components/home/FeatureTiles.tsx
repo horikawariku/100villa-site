@@ -40,7 +40,7 @@ export function FeatureTiles() {
                             href={`/feature/${f}`}
                             className="group relative w-[36vw] sm:w-[200px] md:w-[220px] aspect-[4/5] shrink-0 overflow-hidden rounded-xl bg-ink"
                         >
-                            <Image
+                            <Image referrerPolicy="no-referrer"
                                 src={FEATURE_IMAGE[f]}
                                 alt={FEATURE_LABEL[f]}
                                 fill

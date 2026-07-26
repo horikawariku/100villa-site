@@ -38,7 +38,7 @@ export function PropertyCard({ property: p, size = "md", vtName }: Props) {
                     className={`relative ${cls.img} overflow-hidden rounded-xl bg-line`}
                     style={vtName ? { viewTransitionName: vtName } : undefined}
                 >
-                    <Image
+                    <Image referrerPolicy="no-referrer"
                         src={p.mainPhoto}
                         alt={p.name}
                         fill

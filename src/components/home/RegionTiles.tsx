@@ -41,7 +41,7 @@ export function RegionTiles() {
                             href={`/area/${r}`}
                             className="group relative w-[44vw] sm:w-[260px] md:w-[300px] aspect-[4/3] shrink-0 overflow-hidden rounded-xl bg-ink"
                         >
-                            <Image
+                            <Image referrerPolicy="no-referrer"
                                 src={REGION_IMAGE[r]}
                                 alt={REGION_LABEL[r]}
                                 fill

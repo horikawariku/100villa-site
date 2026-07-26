@@ -19,7 +19,7 @@ export function BookingCard({ property: p }: Props) {
             <div className="bg-bg-card border border-line rounded-xl shadow-sm overflow-hidden">
                 {/* ミニ写真 */}
                 <div className="relative aspect-[4/3]">
-                    <Image
+                    <Image referrerPolicy="no-referrer"
                         src={p.mainPhoto}
                         alt={p.name}
                         fill

@@ -74,7 +74,7 @@ export function TikTokEmbed({ url, fallbackThumbnail, title }: Props) {
                         loading="lazy"
                     />
                 ) : (
-                    <Image
+                    <Image referrerPolicy="no-referrer"
                         src={displayThumbnail}
                         alt={displayTitle ?? "TikTok video"}
                         fill
